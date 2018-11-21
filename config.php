@@ -73,7 +73,13 @@ $THEME->layouts = array(
                         'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
                         'defaultregion' => 'side-pre',
                         'options' => array('nonavbar' => true),
-        ) 
+        ), 
+        'twitter' => array(
+                        'file' => 'twitter_course.php',
+                        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+                        'defaultregion' => 'side-pre',
+                        'options' => array('nonavbar' => true),
+        )
 );
 
 $THEME->blockrtlmanipulations = array(
