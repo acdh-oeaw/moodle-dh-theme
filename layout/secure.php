@@ -18,7 +18,7 @@
  * The secure layout.
  *
  * @package   theme_dariahteach
- * @copyright 2017 ACDH
+ * @copyright   2018 ACDH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -57,6 +57,8 @@ echo $OUTPUT->doctype() ?>
         </div>
         <?php echo $OUTPUT->blocks('side-post', 'span3'); ?>
     </div>
+
+    <?php /*?><?php echo $OUTPUT->standard_end_of_body_html() ?><?php */?>
 
 </div>
 

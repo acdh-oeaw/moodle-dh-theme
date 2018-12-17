@@ -46,8 +46,8 @@ a:focus {
 }
 h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
-    font-family: arvoregular;
-    color: #016771;
+    font-family: arvoregular !important;
+    color: #016771 !important;
 }
 h1 {
     font-family: arvoregular;
@@ -929,12 +929,12 @@ div.usermenu{
 		padding-left: 20px;
 }
 .breadcrumb-nav {
-		background: none;
+		background: none !important;
 		border-radius: 0;
 		margin: 0;
 }
 .breadcrumb {
-		background: none;
+		background: none !important;
 		border-radius: 0;
 }
 .breadcrumb > li {
@@ -2516,7 +2516,7 @@ div.singlebutton {
          margin-left: -40px;
     }
      .frontpage_course_boxes{
-        margin-left: -55px;
+        margin-left: -55px !important;
     }
     .frontpage_one_card {
         width: 50%!important;
@@ -2600,7 +2600,7 @@ div.singlebutton {
     }
     
     .frontpage_course_boxes{
-        margin-left: -55px;
+        margin-left: -55px !important;
     }
     #frontpage-course-list{
         margin-left: 35px;
@@ -2645,7 +2645,7 @@ div.singlebutton {
         min-width: 600px;
     }
     .frontpage_course_boxes{
-        margin-left: -55px;
+        margin-left: -45px !important;
     }
     #frontpage-course-list{
         margin-left: -5px;
@@ -3564,8 +3564,6 @@ img.userpicture {
     margin: 0 auto;
 }
 
-
-
 /*
 .usermenu .moodle-actionmenu .toggle-display .userbutton .avatars{
     height: 25px!important;
@@ -3585,3 +3583,44 @@ nav.navbar-default{
     border-color: transparent !important;
     background-color: transparent !important;
 }
+div.modal.modal-lg {
+    display: block !important;
+}
+
+
+#page-mod-hvp-view .breadcrumb {
+Display:none;
+}
+#page-mod-hvp-view .navbar{
+Display:none;
+}
+#page-mod-hvp-view #page-header{
+Display:none;
+}
+#page-mod-hvp-view #page-footer{
+Display:none;
+}
+body#page-mod-hvp-view {
+margin-top: -40px;
+background: none;
+}
+#page-mod-hvp-view #footer {
+display: none;
+}
+#page-mod-hvp-view #header .header-main {
+display: none;
+}
+#page-mod-hvp-view h2 {
+    display: none;
+}
+#page-mod-hvp-view #wrapper {
+    width: 100% !important;
+}
+#page-mod-hvp-view .container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+}
+#page-mod-hvp-view #action-menu-1 {
+    display: none;
+}
+

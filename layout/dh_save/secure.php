@@ -15,36 +15,52 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The embedded layout.
+ * The secure layout.
  *
  * @package   theme_dariahteach
- * @copyright   2018 ACDH
+ * @copyright 2017 ACDH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+// Get the HTML for the settings bits.
+$html = theme_dariahteach_get_html_for_settings($OUTPUT, $PAGE);
 
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
 <head>
     <title><?php echo $OUTPUT->page_title(); ?></title>
-    <meta property="og:url"           content="https://teach.dariah.eu/" />
-    <meta property="og:type"          content="website" />
-    <meta property="og:title"         content="#dariahTeach" />
-    <meta property="og:description"   content="open-source, high quality, multilingual teaching materials for the digital arts and humanities" />
-    <meta property="og:image"         content="https://teach.dariah.eu/theme/dariahteach/pix/logo_darkGreen_100.png" />
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
     <?php echo $OUTPUT->standard_head_html() ?>
-	
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body <?php echo $OUTPUT->body_attributes(); ?>>
-    <?php echo $OUTPUT->standard_top_of_body_html() ?>
-    
-    <div id="page">
-        <div id="page-content" class="clearfix">
-            <?php echo $OUTPUT->main_content(); ?>
+
+<?php echo $OUTPUT->standard_top_of_body_html() ?>
+
+<?php  require_once(dirname(__FILE__) . '/includes/header.php');  ?>
+
+<div id="page" class="container-fluid">
+
+    <header id="page-header" class="clearfix">
+        <?php echo $html->heading; ?>
+    </header>
+
+    <div id="page-content" class="row-fluid">
+        <div id="region-bs-main-and-pre" class="span9">
+            <div class="row-fluid">
+                <section id="region-main" class="span8 pull-right">
+                    <?php echo $OUTPUT->main_content(); ?>
+                </section>
+                <?php echo $OUTPUT->blocks('side-pre', 'span4 desktop-first-column'); ?>
+            </div>
         </div>
+        <?php echo $OUTPUT->blocks('side-post', 'span3'); ?>
     </div>
-    <?php echo $OUTPUT->standard_end_of_body_html() ?>
+
+</div>
+
+<?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
+
 </body>
 </html>

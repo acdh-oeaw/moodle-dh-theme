@@ -18,7 +18,7 @@
  * The two column layout.
  *
  * @package   theme_dariahteach
- * @copyright   2018 ACDH
+ * @copyright 2017 ACDH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,35 +32,33 @@ echo $OUTPUT->doctype() ?>
     <title><?php echo $OUTPUT->page_title(); ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
     <?php echo $OUTPUT->standard_head_html() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:url"           content="https://teach.dariah.eu/" />
-    <meta property="og:type"          content="website" />
-    <meta property="og:title"         content="#dariahTeach" />
-    <meta property="og:description"   content="open-source, high quality, multilingual teaching materials for the digital arts and humanities" />
-    <meta property="og:image"         content="https://teach.dariah.eu/theme/dariahteach/pix/logo_darkGreen_100.png" />
+    <?php echo theme_dariahteach_header_meta_data(); ?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
-<body <?php echo $OUTPUT->body_attributes('two-column'); ?> >
-    <?php echo $OUTPUT->standard_top_of_body_html() ?>    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<body <?php echo $OUTPUT->body_attributes('two-column'); ?>>
+
     <script>
-    $(document).ready(function(){
-            $("ul").removeClass("nav-tabs");
-        $("button").click(function(){
-            $("p").removeClass("intro");
-        });
+$(document).ready(function(){
+        $("ul").removeClass("nav-tabs");
+    $("button").click(function(){
+        $("p").removeClass("intro");
     });
-    </script>
-    
-    <?php  require_once(dirname(__FILE__) . '/includes/header.php');  ?>
+});
+</script>
+
+<?php echo $OUTPUT->standard_top_of_body_html() ?>
+
+<?php  require_once(dirname(__FILE__) . '/includes/header.php');  ?>
 
     <div id="page" class="container-fluid" >
 
         <header id="page-header" class="clearfix">
             <?php echo $html->heading; ?>
-            <div id="page-navbar" class="clearfix">
+            <div id="page-navbar" class="clearfix" >
                 <nav class="breadcrumb-nav"><?php echo $OUTPUT->navbar(); ?></nav>
                 <div class="breadcrumb-button"><?php echo $OUTPUT->page_heading_button(); ?></div>
             </div>
@@ -69,7 +67,7 @@ echo $OUTPUT->doctype() ?>
             </div>
         </header>
 
-        <div id="page-content" class="row-fluid" style="margin-bottom: 20px;">
+        <div id="page-content" class="row-fluid" style="margin-bottom: 20px;">     
             <section id="region-main" class="">
                 <?php
                 echo $OUTPUT->course_content_header();            
@@ -92,7 +90,7 @@ echo $OUTPUT->doctype() ?>
 
     </div>
 
-    <?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>    
+<?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>  
         <?php echo $OUTPUT->blocks('side-pre', 'span3'); ?>

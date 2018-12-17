@@ -37,10 +37,9 @@ echo $OUTPUT->doctype() ?>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body <?php echo $OUTPUT->body_attributes('two-column'); ?>>
+    <?php echo $OUTPUT->standard_top_of_body_html() ?>
 
-<?php echo $OUTPUT->standard_top_of_body_html() ?>
-
-<?php  require_once(dirname(__FILE__) . '/includes/header.php');  ?>
+    <?php  require_once(dirname(__FILE__) . '/includes/header.php');  ?>
     <div id="page" class="container-fluid" >
         <header id="page-header" class="clearfix">
             <?php echo $html->heading; ?>

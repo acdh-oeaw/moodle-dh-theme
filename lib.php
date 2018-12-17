@@ -28,7 +28,7 @@
  */
 function theme_dariahteach_page_init(moodle_page $page) {
     $page->requires->jquery();
-    //$page->requires->jquery_plugin('migrate');
+    $page->requires->jquery_plugin('migrate');
     $page->requires->js('/theme/dariahteach/javascript/theme.js');
 }
 
@@ -260,16 +260,13 @@ function theme_dariahteach_set_fontwww($css) {
  */
 
 
-if (!function_exists('get_logo_url'))
-{	
-    function get_logo_url($type='header')
-    {
+if (!function_exists('get_logo_url')) {	
+    function get_logo_url($type='header') {
         global $OUTPUT;
         static $theme;
         if(empty($theme)) { $theme = theme_config::load('dariahteach'); }
 								
-        if($type=="header")
-        {
+        if($type=="header") {
             $logo = $theme->setting_file_url('logo', 'logo');
             $logo = empty($logo)?$OUTPUT->image_url('home/logo', 'theme'):$logo;
         }
@@ -302,10 +299,8 @@ function theme_dariahteach_get_setting($setting, $format = false) {
  *
 	* @return string
  */
-if (!function_exists('theme_url')) 
-{
-    function theme_url()
-    {
+if (!function_exists('theme_url'))  {
+    function theme_url() {
         global $CFG,$PAGE;
         $theme_url =	$CFG->wwwroot.'/theme/'. $PAGE->theme->name;
         return $theme_url;

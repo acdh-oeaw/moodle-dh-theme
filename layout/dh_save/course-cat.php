@@ -18,7 +18,7 @@
  * The two column layout.
  *
  * @package   theme_dariahteach
- * @copyright   2018 ACDH
+ * @copyright 2017 ACDH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,22 +32,18 @@ echo $OUTPUT->doctype() ?>
     <title><?php echo $OUTPUT->page_title(); ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
     <?php echo $OUTPUT->standard_head_html() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:url"           content="https://teach.dariah.eu/" />
-    <meta property="og:type"          content="website" />
-    <meta property="og:title"         content="#dariahTeach" />
-    <meta property="og:description"   content="open-source, high quality, multilingual teaching materials for the digital arts and humanities" />
-    <meta property="og:image"         content="https://teach.dariah.eu/theme/dariahteach/pix/logo_darkGreen_100.png" />
+    <?php echo theme_dariahteach_header_meta_data(); ?>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>       
+    <script type="text/javascript" src="<?php echo $CFG->wwwroot; ?>/theme/dariahteach/javascript/cookie.js"></script>        
 </head>
 
 <body <?php echo $OUTPUT->body_attributes('two-column'); ?>>
+<?php echo $OUTPUT->standard_top_of_body_html() ?>
 
-    <?php echo $OUTPUT->standard_top_of_body_html() ?>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <?php  require_once(dirname(__FILE__) . '/includes/header_course.php');  ?>
+<?php  require_once(dirname(__FILE__) . '/includes/header_course.php');  ?>
 
     <div id="page" class="container-fluid" >
 
@@ -89,7 +85,6 @@ echo $OUTPUT->doctype() ?>
 
 </div>
 
-<?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
 <?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>  

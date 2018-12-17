@@ -16,7 +16,7 @@
 
 /**
  * @package   theme_dariahteach
- * @copyright   2018 ACDH
+ * @copyright 2017 ACDH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,58 +31,54 @@ if (right_to_left()) {
 
 $PAGE->requires->js('/theme/dariahteach/javascript/bootstrap-carousel.js');
 $PAGE->requires->js('/theme/dariahteach/javascript/bootstrap-transition.js');
-$PAGE->requires->js('/theme/dariahteach/javascript/jquery.awesomeCloud-0.2.js');
 $courserenderer = $PAGE->get_renderer('core', 'course');
+
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
 <head>
     <title><?php echo $OUTPUT->page_title(); ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
-    <?php echo $OUTPUT->standard_head_html() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:url"           content="https://teach.dariah.eu/" />
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="#dariahTeach" />
     <meta property="og:description"   content="open-source, high quality, multilingual teaching materials for the digital arts and humanities" />
     <meta property="og:image"         content="https://teach.dariah.eu/theme/dariahteach/pix/logo_darkGreen_100.png" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     
+    <?php echo $OUTPUT->standard_head_html() ?>
+        
 </head>
 
 <body <?php echo $OUTPUT->body_attributes(); ?>>
-    <?php echo $OUTPUT->standard_top_of_body_html() ?>    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
-    <?php  require_once(dirname(__FILE__) . '/includes/header_course.php');  ?>
-    <!--Custom theme header-->
-    <script type="text/javascript">
+
+<?php echo $OUTPUT->standard_top_of_body_html() ?>
+
+<?php  require_once(dirname(__FILE__) . '/includes/header_course.php');  ?>
+<!--Custom theme header-->
+<script type="text/javascript">
         $(document).ready(function(){
             //hide all menupoint in the first load
             $(".block_course_custom_menu").hide();
             $(".fp-coursebox .readmore").hide();
-             /* the world cloud settings */
-            $("#wordcloud1").awesomeCloud({
-                "size" : {
-                    "grid" : 8,
-                    "factor" : 0
-                },
-                "options" : {
-                    "color" : "random-dark",
-                    "rotationRatio" : 0.35,
-                    //"printMultiplier" : 3,
-                    "sort" : "random"
-                },
-                "font" : "arvoregular, Helvetica, serif",
-                "shape" : "square"
-            });    
         });            
-    </script>            
+</script>            
+<?php
+
+
+//block_course_custom_menu
+?>
+
 <!--Custom theme Who We Are block-->
 <div id="page" class="container-fluid">
 
     <div class="row-fluid">        
-        <div class="col-xs-0 col-sm-2 col-md-2 col-lg-1"></div>
+         <div class="col-xs-0 col-sm-2 col-md-2 col-lg-1">
+
+        </div>
         <div class="col-xs-12 col-sm-10 col-md-10 col-lg-11 frontpage_up_boxes ">
             <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">                    
                 <?php //echo $OUTPUT->blocks('side-content', ''); 

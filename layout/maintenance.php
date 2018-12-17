@@ -18,7 +18,7 @@
  * The maintenance layout.
  *
  * @package   theme_dariahteach
- * @copyright 2017 ACDH
+ * @copyright   2018 ACDH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,8 +29,15 @@ echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
 <head>    
     <title><?php echo $OUTPUT->page_title(); ?></title>
-    <?php echo theme_dariahteach_header_meta_data(); ?>
+    <meta property="og:url"           content="https://teach.dariah.eu/" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="#dariahTeach" />
+    <meta property="og:description"   content="open-source, high quality, multilingual teaching materials for the digital arts and humanities" />
+    <meta property="og:image"         content="https://teach.dariah.eu/theme/dariahteach/pix/logo_darkGreen_100.png" />
+    <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
     <?php echo $OUTPUT->standard_head_html() ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
 </head>
 
 <body <?php echo $OUTPUT->body_attributes(); ?>>
@@ -48,7 +55,15 @@ echo $OUTPUT->doctype() ?>
             <?php echo $OUTPUT->main_content(); ?>
         </section>
     </div>
-    
+
+    <?php /*?><footer id="page-footer">
+        <?php
+        echo $OUTPUT->standard_footer_html();
+        ?>
+    </footer>
+
+    <?php echo $OUTPUT->standard_end_of_body_html() ?><?php */?>
+
 </div>
 
 <?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>

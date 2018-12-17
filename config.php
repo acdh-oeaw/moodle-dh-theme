@@ -25,8 +25,7 @@ $THEME->name = 'dariahteach';
 
 $THEME->doctype = 'html5';
 $THEME->parents = array('bootstrapbase');
-$THEME->sheets = array('custom','theme','font-awesome.min');
-$THEME->sheets = array('custom','theme','https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
+$THEME->sheets = array('custom','font-awesome.min');
 
 $THEME->supportscssoptimisation = false;
 $THEME->yuicssmodules = array();
@@ -39,46 +38,40 @@ $THEME->csspostprocess = 'theme_dariahteach_process_css';
 $THEME->layouts = array(
         // The site home page.
         'frontpage' => array(
-                        'file' => 'frontpage.php',
-                        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-                        'defaultregion' => 'side-pre',
-                        'options' => array('nonavbar' => true),
+            'file' => 'frontpage.php',
+            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post', 'fp-tag'),
+            'defaultregion' => 'side-pre',
+            'options' => array('nonavbar' => true),
         ),
         'course' => array(
-                        'file' => 'course.php',
-                        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-                        'defaultregion' => 'side-pre',
-                        'options' => array('nonavbar' => true),
+            'file' => 'course.php',
+            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+            'defaultregion' => 'side-pre',
+            'options' => array('nonavbar' => true),
         ),
         'coursecategory' => array(
-                        'file' => 'course-cat.php',
-                        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-                        'defaultregion' => 'side-pre',
-                        'options' => array('nonavbar' => true),
+            'file' => 'course-cat.php',
+            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+            'defaultregion' => 'side-pre',
+            'options' => array('nonavbar' => true),
         ),
         'incourse' => array(
-                        'file' => 'incourse.php',
-                        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-                        'defaultregion' => 'side-pre',
-                        'options' => array('nonavbar' => true),
+            'file' => 'incourse.php',
+            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+            'defaultregion' => 'side-pre',
+            'options' => array('nonavbar' => true),
        ),
        'hubcommit' => array(
-                        'file' => 'hubcommit.php',
-                        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-                        'defaultregion' => 'side-pre',
-                        'options' => array('nonavbar' => true),
+            'file' => 'hubcommit.php',
+            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+            'defaultregion' => 'side-pre',
+            'options' => array('nonavbar' => true),
        ),
         'dhvideo' => array(
-                        'file' => 'page.php',
-                        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-                        'defaultregion' => 'side-pre',
-                        'options' => array('nonavbar' => true),
-        ), 
-        'twitter' => array(
-                        'file' => 'twitter_course.php',
-                        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-                        'defaultregion' => 'side-pre',
-                        'options' => array('nonavbar' => true),
+            'file' => 'page.php',
+            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+            'defaultregion' => 'side-pre',
+            'options' => array('nonavbar' => true),
         )
 );
 

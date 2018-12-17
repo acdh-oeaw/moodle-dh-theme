@@ -1,3 +1,11 @@
+<?php
+$footnote = theme_dariahteach_get_setting('footnote', 'format_html');
+
+$address  = theme_dariahteach_get_setting('address');
+$emailid  = theme_dariahteach_get_setting('emailid');
+$phoneno  = theme_dariahteach_get_setting('phoneno');
+
+?>
 <!-- Piwik -->
 <script type="text/javascript">
   var _paq = _paq || [];
@@ -5,7 +13,7 @@
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {
-    var u="//matomo.acdh.oeaw.ac.at//";
+    var u="//piwik.apollo.arz.oeaw.ac.at/";
     _paq.push(['setTrackerUrl', u+'piwik.php']);
     _paq.push(['setSiteId', '39']);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
@@ -33,7 +41,8 @@
                             <img src="<?php echo $CFG->wwwroot;?>/theme/dariahteach/pix/moodle-logo-banner_350.png" width="150px"  alt="moodle"><br>
                             <a href="<?php echo new moodle_url('/local/staticpage/view.php?page=impressum'); ?>">Impressum</a></span>
                         </center>
-                    </div>
+                    </div>            
+
                 </div>  
 
                 <div class="col-xs-12 col-sm-2 col-md-3">&nbsp;</div>       
@@ -49,4 +58,6 @@
         </div>
     </div>    
 </footer>
+<!--E.O.Footer-->
+
 <?php  echo $OUTPUT->standard_end_of_body_html() ?>

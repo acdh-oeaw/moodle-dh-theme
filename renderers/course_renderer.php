@@ -131,8 +131,7 @@ class theme_dariahteach_core_course_renderer extends core_course_renderer {
             foreach ($workshopTags as $workT){            
                 array_push($workTags, $workT->tag_courseid);
             }
-        }        
-        
+        }
         $workshopIds = "";
         $workshopIds = implode(",",$workTags);
        
@@ -148,6 +147,49 @@ class theme_dariahteach_core_course_renderer extends core_course_renderer {
                 $workshop_ids[] = $val;
             }
         }
+        /* workshoptags end  */  
+        
+        /* translated courses */
+        $translatedTags = array();
+        $translatedTags = $DB->get_records_sql(
+                'SELECT 
+                    ti.itemid as tag_courseid
+                FROM {tag} as t
+                LEFT JOIN 
+                    {tag_instance} as ti on t.id = ti.tagid
+                Where 
+                    rawname = "translated"');
+        $translTags = array();  
+        
+        
+        if(count($translatedTags) > 0){
+            foreach ($translatedTags as $tags){            
+                if(!empty($tags->tag_courseid)){
+                    array_push($translTags, $tags->tag_courseid);
+                }
+            }
+            if(count($translTags) > 0) {
+                $translIds = "";
+                $translIds = implode(",",$translTags);
+
+                foreach($translTags as $val){       
+                    $activeTranslated = $DB->get_records_sql(
+                        'SELECT 
+                            id
+                        FROM {course}                
+                        Where 
+                            visible = 1 and id = '.$val);
+
+                    if(count($activeTranslated) > 0){                
+                        $translated_ids[] = $val;
+                    }
+                }
+            }
+            
+        }
+        
+        
+        /* translated courses  end */
         
         foreach(array_keys($courses) as $val){
             $activeCourses = $DB->get_records_sql(
@@ -161,8 +203,12 @@ class theme_dariahteach_core_course_renderer extends core_course_renderer {
                 $course_ids[] = $val;
             }
         }
-      
+        
         $course_ids = array_diff($course_ids, $workshop_ids);
+        if(count($translated_ids) > 0 ) {
+            $course_ids = array_diff($course_ids, $translated_ids);
+        }
+        
         
         $new_course = get_string('availablecourses');
 
@@ -216,7 +262,14 @@ class theme_dariahteach_core_course_renderer extends core_course_renderer {
                 
                 $descriptionText = "";
                 if($course->summary){
-                    $descriptionText = substr(strip_tags($course->summary), 0, 220).'...';                    
+                    $numberOfChars = 220;
+                    if (strpos($course->summary, '<img src=') !== false) {
+                        $imgTags = substr_count($course->summary, '<img src=');
+                        $numberOfChars = 300;
+                        if($imgTags == 0) { $imgTags = 1; }
+                        $numberOfChars = $numberOfChars * $imgTags;
+                    }
+                    $descriptionText = substr(strip_tags($course->summary, "<a><br><img>"), 0, $numberOfChars).'...';
                 }else {
                     $descriptionText = "This course has no description";
                 }
