@@ -25,8 +25,8 @@ defined('MOODLE_INTERNAL') || die;
 $plugin->version   = 2018100400;
 $plugin->maturity = MATURITY_STABLE; // this version's maturity level.
 $plugin->release = '3.5+ (Build: 2018100400)';
-$plugin->requires  = 2013110500;
+$plugin->requires  = 2017051500;
 $plugin->component = 'theme_dariahteach';
-$plugin->dependencies = array(
-    'theme_bootstrapbase'  => 2013110500,
-);
+/*$plugin->dependencies = array(
+    'theme_bootstrapbase'  => 2017051500,
+);*/

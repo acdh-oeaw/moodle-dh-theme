@@ -1,40 +1,7 @@
 <?php
 $surl = new moodle_url('/course/search.php');
 ?>    
-    <script type="text/javascript" src="<?php echo $CFG->wwwroot; ?>/theme/dariahteach/javascript/main.js"></script>        
-    <script type="text/javascript" src="<?php echo $CFG->wwwroot; ?>/theme/dariahteach/javascript/cookie.js"></script>
-    <script type="text/javascript">
-
-        /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
-       function openNav() {
-           document.getElementById("mySidenav").style.width = "400px";
-           //document.getElementById("main").style.marginRight = "400px";
-           document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
-       }
-
-        /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            //document.getElementById("main").style.marginRight = "0";
-            document.body.style.backgroundColor = "white";
-        }
-
-        $(document).mouseup(function (e) {
-            var container = new Array();
-            container.push($('#mySidenav'));
-
-            $.each(container, function(key, value) {
-                if (!$(value).is(e.target) // if the target of the click isn't the container...
-                    && $(value).has(e.target).length === 0) {
-                    $(value).css("width", "0");
-                    $('body').css("background-color","white");
-                }
-            });
-        });
-
-       
-
-    </script>
+    
 <header id="header">
  <div class="header-main">
     <div class="header-main-content">   

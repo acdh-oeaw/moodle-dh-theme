@@ -26,20 +26,19 @@ echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
 <head>
     <title><?php echo $OUTPUT->page_title(); ?></title>
+    <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
     <meta property="og:url"           content="https://teach.dariah.eu/" />
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="#dariahTeach" />
     <meta property="og:description"   content="open-source, high quality, multilingual teaching materials for the digital arts and humanities" />
     <meta property="og:image"         content="https://teach.dariah.eu/theme/dariahteach/pix/logo_darkGreen_100.png" />
-    <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
-    <?php echo $OUTPUT->standard_head_html() ?>
-	
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php echo $OUTPUT->standard_head_html() ?>
 </head>
 
 <body <?php echo $OUTPUT->body_attributes(); ?>>
+    <!-- embed -->
     <?php echo $OUTPUT->standard_top_of_body_html() ?>
-    
     <div id="page">
         <div id="page-content" class="clearfix">
             <?php echo $OUTPUT->main_content(); ?>

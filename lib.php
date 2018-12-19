@@ -27,10 +27,16 @@
 	*
  */
 function theme_dariahteach_page_init(moodle_page $page) {
-    $page->requires->jquery();
-    $page->requires->jquery_plugin('migrate');
-    $page->requires->js('/theme/dariahteach/javascript/theme.js');
+    //$page->requires->jquery();
+    /*
+    $page->requires->js('/theme/dariahteach/javascript/jquery-3.3.1.min.js');
+    $page->requires->js('/theme/dariahteach/javascript/jquery.awesomeCloud-0.2.js');
+    $page->requires->js('/theme/dariahteach/javascript/main.js');
+    $page->requires->js('/theme/dariahteach/javascript/cookie.js');
+    $page->requires->js('/theme/dariahteach/javascript/bootstrap.min.js');
+    $page->requires->js('/theme/dariahteach/lightbox/lightbox.js');*/
 }
+
 
 /**
  * Loads the CSS Styles and replace the background images.

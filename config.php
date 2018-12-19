@@ -22,7 +22,6 @@
  */
 
 $THEME->name = 'dariahteach';
-
 $THEME->doctype = 'html5';
 $THEME->parents = array('bootstrapbase');
 $THEME->sheets = array('custom','font-awesome.min');
@@ -36,43 +35,43 @@ $THEME->rendererfactory = 'theme_overridden_renderer_factory';
 $THEME->csspostprocess = 'theme_dariahteach_process_css';
 
 $THEME->layouts = array(
-        // The site home page.
-        'frontpage' => array(
-            'file' => 'frontpage.php',
-            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post', 'fp-tag'),
-            'defaultregion' => 'side-pre',
-            'options' => array('nonavbar' => true),
-        ),
-        'course' => array(
-            'file' => 'course.php',
-            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-            'defaultregion' => 'side-pre',
-            'options' => array('nonavbar' => true),
-        ),
-        'coursecategory' => array(
-            'file' => 'course-cat.php',
-            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-            'defaultregion' => 'side-pre',
-            'options' => array('nonavbar' => true),
-        ),
-        'incourse' => array(
-            'file' => 'incourse.php',
-            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-            'defaultregion' => 'side-pre',
-            'options' => array('nonavbar' => true),
-       ),
-       'hubcommit' => array(
-            'file' => 'hubcommit.php',
-            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-            'defaultregion' => 'side-pre',
-            'options' => array('nonavbar' => true),
-       ),
-        'dhvideo' => array(
-            'file' => 'page.php',
-            'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-            'defaultregion' => 'side-pre',
-            'options' => array('nonavbar' => true),
-        )
+    // The site home page.
+    'frontpage' => array(
+        'file' => 'frontpage.php',
+        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post', 'fp-tag'),
+        'defaultregion' => 'side-pre',
+        'options' => array('nonavbar' => true),
+    ),
+    'course' => array(
+        'file' => 'course.php',
+        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+        'defaultregion' => 'side-pre',
+        'options' => array('nonavbar' => true),
+    ),
+    'coursecategory' => array(
+        'file' => 'course-cat.php',
+        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+        'defaultregion' => 'side-pre',
+        'options' => array('nonavbar' => true),
+    ),
+    'incourse' => array(
+        'file' => 'incourse.php',
+        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+        'defaultregion' => 'side-pre',
+        'options' => array('nonavbar' => true),
+   ),
+   'hubcommit' => array(
+        'file' => 'hubcommit.php',
+        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+        'defaultregion' => 'side-pre',
+        'options' => array('nonavbar' => true),
+   ),
+    'dhvideo' => array(
+        'file' => 'page.php',
+        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
+        'defaultregion' => 'side-pre',
+        'options' => array('nonavbar' => true),
+    )
 );
 
 $THEME->blockrtlmanipulations = array(

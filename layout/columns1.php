@@ -28,36 +28,25 @@ $html = theme_dariahteach_get_html_for_settings($OUTPUT, $PAGE);
 $left = (!right_to_left());  // To know if to add 'pull-right' and 'desktop-first-column' classes in the layout for LTR.
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
+<html <?php echo $OUTPUT->htmlattributes(); ?>>
 <head>
     <title><?php echo $OUTPUT->page_title(); ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
-    <?php echo $OUTPUT->standard_head_html() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:url"           content="https://teach.dariah.eu/" />
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="#dariahTeach" />
     <meta property="og:description"   content="open-source, high quality, multilingual teaching materials for the digital arts and humanities" />
     <meta property="og:image"         content="https://teach.dariah.eu/theme/dariahteach/pix/logo_darkGreen_100.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php echo $OUTPUT->standard_head_html() ?>
 </head>
 
 <body <?php echo $OUTPUT->body_attributes('two-column'); ?> >
+    <!-- column 1 -->
     <?php echo $OUTPUT->standard_top_of_body_html() ?>    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script>
-    $(document).ready(function(){
-            $("ul").removeClass("nav-tabs");
-        $("button").click(function(){
-            $("p").removeClass("intro");
-        });
-    });
-    </script>
-    
     <?php  require_once(dirname(__FILE__) . '/includes/header.php');  ?>
-
+    
     <div id="page" class="container-fluid" >
-
         <header id="page-header" class="clearfix">
             <?php echo $html->heading; ?>
             <div id="page-navbar" class="clearfix">
@@ -78,18 +67,12 @@ echo $OUTPUT->doctype() ?>
                 ?>
             </section>
             <?php
-            $classextra = '';
-            if ($left) {
-                $classextra = ' desktop-first-column';
-            }
+                $classextra = '';
+                if ($left) { $classextra = ' desktop-first-column'; }
             ?>
             <div  style="color: black;">
-                <?php
-                    //echo $OUTPUT->blocks('side-pre', 'span3'.$classextra);
-                ?>
             </div>        
         </div>
-
     </div>
 
     <?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>    

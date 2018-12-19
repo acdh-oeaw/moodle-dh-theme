@@ -28,66 +28,57 @@ $html = theme_dariahteach_get_html_for_settings($OUTPUT, $PAGE);
 $left = (!right_to_left());  // To know if to add 'pull-right' and 'desktop-first-column' classes in the layout for LTR.
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
+<html <?php echo $OUTPUT->htmlattributes(); ?>>
 <head>
     <title><?php echo $OUTPUT->page_title(); ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
-    <?php echo $OUTPUT->standard_head_html() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:url"           content="https://teach.dariah.eu/" />
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="#dariahTeach" />
     <meta property="og:description"   content="open-source, high quality, multilingual teaching materials for the digital arts and humanities" />
     <meta property="og:image"         content="https://teach.dariah.eu/theme/dariahteach/pix/logo_darkGreen_100.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php echo $OUTPUT->standard_head_html() ?>
 </head>
 
 <body <?php echo $OUTPUT->body_attributes('two-column'); ?>>
+    <!-- column2 -->
     <?php echo $OUTPUT->standard_top_of_body_html() ?>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
     <?php  require_once(dirname(__FILE__) . '/includes/header.php');  ?>
-
+    
     <div id="page" class="container-fluid" >
+        <header id="page-header" class="clearfix">
+            <?php echo $html->heading; ?>
+            <div id="page-navbar" class="clearfix" >
+                <nav class="breadcrumb-nav"><?php echo $OUTPUT->navbar(); ?></nav>
+                <div class="breadcrumb-button"><?php echo $OUTPUT->page_heading_button(); ?></div>
+            </div>
+            <div id="course-header">
+                <?php //echo $OUTPUT->course_header(); ?>
+            </div>
+        </header>
 
-    <header id="page-header" class="clearfix">
-        <?php echo $html->heading; ?>
-        <div id="page-navbar" class="clearfix" >
-            <nav class="breadcrumb-nav"><?php echo $OUTPUT->navbar(); ?></nav>
-            <div class="breadcrumb-button"><?php echo $OUTPUT->page_heading_button(); ?></div>
-        </div>
-        <div id="course-header">
-            <?php //echo $OUTPUT->course_header(); ?>
-        </div>
-    </header>
-
-    <div id="page-content" class="row-fluid" style="margin-bottom: 20px;">  
-        <section id="region-main" class="">
+        <div id="page-content" class="row-fluid" style="margin-bottom: 20px;">  
+            <section id="region-main" class="">
+                <?php
+                echo $OUTPUT->course_content_header();            
+                echo $OUTPUT->main_content();
+                echo $OUTPUT->course_content_footer();
+                ?>
+            </section>
             <?php
-            echo $OUTPUT->course_content_header();            
-            echo $OUTPUT->main_content();
-            echo $OUTPUT->course_content_footer();
+                $classextra = '';
+                if ($left) { $classextra = ' desktop-first-column'; }
             ?>
-        </section>
-        <?php
-        $classextra = '';
-        if ($left) {
-            $classextra = ' desktop-first-column';
-        }
-        ?><div  style="color: black;">
-        <?php
-            //echo $OUTPUT->blocks('side-pre', 'span3'.$classextra);
-        ?>
-        </div>        
+            <div  style="color: black;"> </div>        
+        </div>
     </div>
 
-</div>
+    <?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
 
-<?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
-<?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>  
-    <?php echo $OUTPUT->blocks('side-pre', 'span3'); ?>
-</div>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>  
+        <?php echo $OUTPUT->blocks('side-pre', 'span3'); ?>
+    </div>
 </body>
 </html>

@@ -33,45 +33,12 @@ echo $OUTPUT->doctype() ?>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
     <?php echo $OUTPUT->standard_head_html() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">    
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
 <body <?php echo $OUTPUT->body_attributes('two-column'); ?>>
 
-    <script>
-$(document).ready(function(){
-        $("ul").removeClass("nav-tabs");
-    $("button").click(function(){
-        $("p").removeClass("intro");
-    });
-});
-</script>
-<?php echo $OUTPUT->standard_top_of_body_html() ?>
-
-<?php /*?><header role="banner" class="navbar navbar-fixed-top<?php echo $html->navbarclass ?> moodle-has-zindex">
-    <nav role="navigation" class="navbar-inner">
-        <div class="container-fluid">
-            <a class="brand" href="<?php echo $CFG->wwwroot;?>"><?php echo
-                format_string($SITE->shortname, true, array('context' => context_course::instance(SITEID)));
-                ?></a>
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <?php echo $OUTPUT->user_menu(); ?>
-            <div class="nav-collapse collapse">
-                <?php echo $OUTPUT->custom_menu(); ?>
-                <ul class="nav pull-right">
-                    <li><?php echo $OUTPUT->page_heading_menu(); ?></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header><?php */?>
-<?php  require_once(dirname(__FILE__) . '/includes/header.php');  ?>
+    <?php echo $OUTPUT->standard_top_of_body_html() ?>
+    <?php  require_once(dirname(__FILE__) . '/includes/header.php');  ?>
 
     <div id="page" class="container-fluid" >
 
@@ -109,8 +76,7 @@ $(document).ready(function(){
 
     </div>
 
-<?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
-<?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
+    <?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>  
         <?php echo $OUTPUT->blocks('side-pre', 'span3'); ?>
