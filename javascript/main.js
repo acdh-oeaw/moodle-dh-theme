@@ -148,18 +148,15 @@ $("#wordcloud1").awesomeCloud({
     "shape" : "square"
 });    
 
-
-$(document).on('click','.StepButton input:submit',function() {      
-    console.log("stepButton clicked");
-    //get the step button pressed
-    
-    $(".StepButton").submit(function(ev){
-        var actualPageID = $(this).find('input[name="pageid"]').val();
-        var id = $(this).find('input[name="id"]').val();
-        var sesskey = $(this).find('input[name="sesskey"]').val();
-        var jumpToStepVal = $(this).find('input[name="jumpto"]').val();
-        var method = $(this).attr('method');
-        var url = $(this).attr('action');
+$(document).on('click','div.singlebutton input:submit',function(e) {      
+    //quiz, where we dont have the necessary class
+    let formId = $(this).closest("form").attr('id');
+    if (formId.indexOf("StepButton") >= 0) {
+        var actualPageID = $('#'+formId).find('input[name="pageid"]').val();
+        var id = $('#'+formId).find('input[name="id"]').val();
+        var sesskey = $('#'+formId).find('input[name="sesskey"]').val();
+        var jumpToStepVal = $('#'+formId).find('input[name="jumpto"]').val();
+        var url = $('#'+formId).attr('action');
         //create a formdata based on the pressed button hidden values
         var formData = {
                 'id' : id, 
@@ -184,12 +181,52 @@ $(document).on('click','.StepButton input:submit',function() {
             },
             error: function(xhr, resp, text) {
                 console.log("itt");
-                console.log(xhr, resp, text);
+                console.log(resp);
             }
         });
-        ev.preventDefault(); 
-    });
-});
+        e.preventDefault(); 
+        
+    }else {
+        $(".StepButton").submit(function(ev){
+            var actualPageID = $(this).find('input[name="pageid"]').val();
+            var id = $(this).find('input[name="id"]').val();
+            var sesskey = $(this).find('input[name="sesskey"]').val();
+            var jumpToStepVal = $(this).find('input[name="jumpto"]').val();
+            var method = $(this).attr('method');
+            var url = $(this).attr('action');
+            //create a formdata based on the pressed button hidden values
+            var formData = {
+                    'id' : id, 
+                    'pageid' : actualPageID, 
+                    'sesskey': sesskey, 
+                    'stepButton' : true,
+                    'jumptoStep' : jumpToStepVal
+            }; 
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: formData,
+                dataType: 'JSON',
+                success: function (data) {
+                    $('#lesson-'+ data.nextstepid +' tbody').show();
+                    $('#lesson-'+ data.nextstepid +' thead th.header').css("background-color", "#016771");
+                    $('#lesson-'+ data.nextstepid +' thead th.header').css("color", "white");
+                    $('#lesson-'+ actualPageID +' tbody').hide();
+                    $('#lesson-'+ actualPageID +' thead tr th').css("background-color", "white");
+                    $('#lesson-'+ actualPageID +' thead tr th').css("color", "#016771");
+                },
+                error: function(xhr, resp, text) {
+                    console.log("itt");
+                    console.log(xhr, resp, text);
+                }
+            });
+            ev.preventDefault(); 
+        });
+    }
+    
+});    
+
 
 
 function theme_custom_js() {
