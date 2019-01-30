@@ -1,4 +1,5 @@
 <?php
+
 $surl = new moodle_url('/course/search.php');
 ?>    
     
@@ -20,7 +21,14 @@ $surl = new moodle_url('/course/search.php');
                 <div class="row-fluid" id="header_right_lower">              
                     <div class="col-xs-12 col-sm-6 col-md-5 col-lg-6" style="padding-top:5px;">
                         <span style="margin-right: 10px;" ><a href="<?php echo new moodle_url('/local/staticpage/view.php?page=about'); ?>">About</a></span> <span style="margin-right: 10px;"><a href="<?php echo new moodle_url('/course/index.php#courses'); ?>">Courses</a></span> 
-                                        <span style="margin-right: 10px;"> <a href="<?php echo new moodle_url('/course/index.php#workshops'); ?>">Workshops</a></span> <span > <a href="<?php echo new moodle_url('/local/simple_contact_form/'); ?>">Contact</a></span> 				
+                        <span style="margin-right: 10px;"> <a href="<?php echo new moodle_url('/course/index.php#workshops'); ?>">Workshops</a></span> <span style="margin-right: 10px;"> <a href="<?php echo new moodle_url('/local/simple_contact_form/'); ?>">Contact</a></span>  
+                        <?php 
+                        $context = get_context_instance(CONTEXT_COURSE,$COURSE->id);
+                        if (has_capability('moodle/course:viewhiddensections', $context)) { ?>
+                            <span style="margin-right: 10px;"> <a href="<?php echo new moodle_url('/local/staticpage/view.php?page=documentation'); ?>">Documentation</a></span> 
+                        <?php       
+                        }
+                        ?>
                     </div>
               
                     <div class="col-xs-9 col-sm-1 col-md-4 col-lg-3" id="header_search_box"> 
