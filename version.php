@@ -15,18 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    theme_dariahteach
- * @copyright  2013 Moodle, moodle.org
+ * version.php
+ *
+ * @package    theme_dh
+ * @copyright  2019 ACDH
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
-
-$plugin->version   = 2018100400;
+$plugin->version   = 2019012601; // This component release level.
 $plugin->maturity = MATURITY_STABLE; // this version's maturity level.
-$plugin->release = '3.5+ (Build: 2018100400)';
-$plugin->requires  = 2017051500;
-$plugin->component = 'theme_dariahteach';
-/*$plugin->dependencies = array(
-    'theme_bootstrapbase'  => 2017051500,
-);*/
+$plugin->release = 'v3.6.2'; // This version's release version.
+$plugin->requires  = 2018120300; // This version's moodle require release.
+$plugin->component = 'theme_dh'; // This component type_name.
+$plugin->dependencies = array(
+    'theme_boost'  => 2017111300, // This version's depended the component and its require release.
+);

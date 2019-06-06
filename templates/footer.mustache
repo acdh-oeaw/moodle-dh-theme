@@ -1,0 +1,52 @@
+{{#footerall}}
+<footer id="footer" class="">
+   <div class="footer-main">        
+        <div class="container-fluid  h-200">
+            <div class="row align-items-center h-200">
+
+                <div class="col-xs-0 col-sm-0 col-md-0 col-lg-1"></div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2">
+                    <span class="logo">
+                                <img src="{{logourl}}" alt="{{sitename}}">
+                            </span>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 footer-logo">
+                    <img src="{{dhlogo}}">
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 footer-logo">
+                    <img src="{{moodlelogo}}" >
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 footer-logo">
+                    <img src="{{eulogo}}">
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="footer-foot">
+        <div class="container">
+                <span style="color:white"><a href="https://www.oeaw.ac.at/acdh/">Austrian Centre for Digital Humanities</a></span>
+        </div>
+    </div>
+
+</footer>
+{{/footerall}}
+
+<!--E.O.Footer-->
+
+{{{output.standard_end_of_body_html}}}
+
+{{#js}}
+require(['theme_boost/loader']);
+require(['theme_boost/drawer'], function(mod) {
+    mod.init();
+});
+{{/js}}
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<!-- <link href="/theme/dh/css/fa/all.css" rel="stylesheet">  -->

@@ -1,74 +1,137 @@
-    <!-- Piwik -->
-    <script type="text/javascript">
-      var _paq = _paq || [];
-      // tracker methods like "setCustomDimension" should be called before "trackPageView" 
-      _paq.push(['trackPageView']);
-      _paq.push(['enableLinkTracking']);
-      (function() {
-        var u="//matomo.acdh.oeaw.ac.at//";
-        _paq.push(['setTrackerUrl', u+'piwik.php']);
-        _paq.push(['setSiteId', '39']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-      })();
-    </script>
-    
-    
-    <!-- End Piwik Code -->
-    <link rel="stylesheet" href="<?php echo $CFG->wwwroot;?>/theme/dariahteach/style/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo $CFG->wwwroot;?>/theme/dariahteach/style/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="<?php echo $CFG->wwwroot;?>/theme/dariahteach/lightbox/lightbox.css">    
-    
-    <script>
-        /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
-       function openNav() {
-           document.getElementById("mySidenav").style.width = "400px";
-           //document.getElementById("main").style.marginRight = "400px";
-           document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
-       }
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option)  any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-       /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
-       function closeNav() {
-           document.getElementById("mySidenav").style.width = "0";
-           //document.getElementById("main").style.marginRight = "0";
-           document.body.style.backgroundColor = "white";
-       }
-    </script>
-    
-   
-<footer id="footer">
-    <div class="footer-main">
-        <div class="container-fluid">
-            <div class="row-fluid">
-          
-                <div class="col-xs-12 col-sm-5 col-md-5">          
-                    <div class="footer-logo">
-                        <br>               
-                        <img src="<?php echo $CFG->wwwroot;?>/theme/dariahteach/pix/dariah-eu_logo_300.png" width="150px"  alt="moodle">              
-                    </div>    
-                </div>
-                <div class="col-xs-12 col-sm-2 col-md-2">
+/**
+ * footer.php
+ *
+ * @package    theme_dh
+ * @copyright  2019 ACDH
+ * @author    LMSACE Dev Team
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-                    <div class="footer-logo">
-                        <br>
-                        <center>                            
-                            <img src="<?php echo $CFG->wwwroot;?>/theme/dariahteach/pix/moodle-logo-banner_350.png" width="150px"  alt="moodle"><br>
-                            <a href="<?php echo new moodle_url('/local/staticpage/view.php?page=impressum'); ?>">Impressum</a></span>
-                        </center>
-                    </div>
-                </div>  
+defined('MOODLE_INTERNAL') || die();
 
-                <div class="col-xs-12 col-sm-2 col-md-3">&nbsp;</div>       
+user_preference_allow_ajax_update('drawer-open-nav', PARAM_ALPHA);
+require_once($CFG->libdir . '/behat/lib.php');
 
-                <div class="col-xs-12 col-sm-3 col-md-2">          
-                    <div class="footer-logo">
-                        <br><br>
-                        <img src="<?php echo $CFG->wwwroot; ?>/theme/dariahteach/pix/erasmuslogo.png" width="150px" height="70%">
-                    </div>
+if (isloggedin()) {
+    $navdraweropen = (get_user_preferences('drawer-open-nav', 'true') == 'true');
+} else {
+    $navdraweropen = false;
+}
+$extraclasses = [];
+if ($navdraweropen) {
+    $extraclasses[] = 'drawer-open-left';
+}
+$bodyattributes = $OUTPUT->body_attributes($extraclasses);
+$blockshtml = $OUTPUT->blocks('side-pre');
+$hasblocks = strpos($blockshtml, 'data-block=') !== false;
+$regionmainsettingsmenu = $OUTPUT->region_main_settings_menu();
+// Header content.
+$logourl = get_logo_url();
+$dhlogo = $CFG->wwwroot.'/theme/dh/pix/dh_logo_200.png';
+$eulogo = $CFG->wwwroot.'/theme/dh/pix/eu_logo_200.png';
+$moodlelogo = $CFG->wwwroot.'/theme/dh/pix/md_logo_200.png';
+$surl = new moodle_url('/course/search.php');
+if (! $PAGE->url->compare($surl, URL_MATCH_BASE)) {
+    $compare = 1;
+} else {
+    $compare = 0;
+}
+$surl = new moodle_url('/course/search.php');
+$ssearchcourses = get_string('searchcourses');
+$shome = get_string('home', 'theme_dh');
 
-                </div>
-            </div>
-        </div>
-    </div>    
-</footer>
-<?php  echo $OUTPUT->standard_end_of_body_html() ?>
+
+// Footer Content.
+$logourlfooter = get_logo_url('footer');
+$footlogo = theme_dh_get_setting('footerlogo');
+
+$footnote = theme_dh_get_setting('footnote', 'format_html');
+$copyrightfooter = theme_dh_get_setting('copyright_footer');
+$infolink = theme_dh_infolink();
+
+$sinfo = get_string('info', 'theme_dh');
+$scontactus = get_string('contact_us', 'theme_dh');
+$sphone = get_string('phone', 'theme_dh');
+$semail = get_string('email', 'theme_dh');
+$sgetsocial = get_string('get_social', 'theme_dh');
+
+$contact = ($emailid != '' || $address != '' || $phoneno != '') ? 1 : 0;
+$url = ($fburl != '' || $pinurl != '' || $twurl != '' || $gpurl != '') ? 1 : 0;
+
+if ($footlogo != '' || $footnote != '' || $infolink != '' || $url != 0 || $contact != 0 || $copyrightfooter != '') {
+    $footerall = 1;
+} else {
+    $footerall = 0;
+}
+
+$block1 = ($footlogo != '' || $footnote != '') ? 1 : 0;
+$infoslink = ($infolink != '') ? 1 : 0;
+$blockarrange = $block1 + $infoslink + $contact + $url;
+
+switch ($blockarrange) {
+    case 4:
+        $colclass = 'col-md-3';
+        break;
+    case 3:
+        $colclass = 'col-md-4';
+        break;
+    case 2:
+        $colclass = 'col-md-6';
+        break;
+    case 1:
+        $colclass = 'col-md-12';
+        break;
+    case 0:
+        $colclass = '';
+        break;
+    default:
+        $colclass = 'col-md-3';
+    break;
+}
+
+$templatecontext = [
+    'sitename' => format_string($SITE->shortname, true, ['context' => context_course::instance(SITEID), "escape" => false]),
+    'output' => $OUTPUT,
+    'sidepreblocks' => $blockshtml,
+    'hasblocks' => $hasblocks,
+    'bodyattributes' => $bodyattributes,
+    'navdraweropen' => $navdraweropen,
+    'regionmainsettingsmenu' => $regionmainsettingsmenu,
+    'hasregionmainsettingsmenu' => !empty($regionmainsettingsmenu),
+    "surl" => $surl,
+    "s_searchcourses" => $ssearchcourses,
+    "s_home" => $shome,
+    "logourl" => $logourl,
+    "dhlogo" => $dhlogo,
+    "eulogo" => $eulogo,
+    "moodlelogo" => $moodlelogo,
+    "compare" => $compare,
+    "logourl_footer" => $logourlfooter,
+    "footnote" => $footnote,
+    "copyright_footer" => $copyrightfooter,
+    "infolink" => $infolink,
+    "url" => $url,
+    "contact" => $contact,
+    "footerall" => $footerall,
+    "block1" => $block1,
+    "colclass" => $colclass
+];
+
+$templatecontext['flatnavigation'] = $PAGE->flatnav;
+$footerlayout = $OUTPUT->render_from_template('theme_dh/footer', $templatecontext);

@@ -15,66 +15,69 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    theme_dariahteach
- * @copyright  2018 ACDH
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * config.php
  *
+ * @package    theme_dh
+ * @copyright  2019 ACDH
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die;
 
-$THEME->name = 'dariahteach';
+$THEME->name = 'dh';
+
 $THEME->doctype = 'html5';
-$THEME->parents = array('bootstrapbase');
-$THEME->sheets = array('custom','font-awesome.min');
+
+$THEME->parents = array('boost');
+
+$THEME->sheets = [];
+
+$THEME->javascripts_footer = array('theme');
 
 $THEME->supportscssoptimisation = false;
+
 $THEME->yuicssmodules = array();
-$THEME->enable_dock = true;
+
+$THEME->enable_dock = false;
+
 $THEME->editor_sheets = array();
 
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
-$THEME->csspostprocess = 'theme_dariahteach_process_css';
+
+$THEME->csspostprocess = 'theme_dh_process_css';
+
+$THEME->requiredblocks = '';
+
+$THEME->addblockposition = BLOCK_ADDBLOCK_POSITION_FLATNAV;
+
+$THEME->prescsscallback = 'theme_dh_get_pre_scss';
+
+$THEME->extrascsscallback = 'theme_dh_get_extra_scss';
+
+$THEME->scss = function($theme) {
+    return theme_dh_get_main_scss_content($theme);
+};
 
 $THEME->layouts = array(
-    // The site home page.
-    'frontpage' => array(
-        'file' => 'frontpage.php',
-        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post', 'fp-tag'),
-        'defaultregion' => 'side-pre',
-        'options' => array('nonavbar' => true),
-    ),
-    'course' => array(
-        'file' => 'course.php',
-        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-        'defaultregion' => 'side-pre',
-        'options' => array('nonavbar' => true),
-    ),
-    'coursecategory' => array(
-        'file' => 'course-cat.php',
-        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-        'defaultregion' => 'side-pre',
-        'options' => array('nonavbar' => true),
-    ),
-    'incourse' => array(
-        'file' => 'incourse.php',
-        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-        'defaultregion' => 'side-pre',
-        'options' => array('nonavbar' => true),
-   ),
-   'hubcommit' => array(
-        'file' => 'hubcommit.php',
-        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-        'defaultregion' => 'side-pre',
-        'options' => array('nonavbar' => true),
-   ),
-    'dhvideo' => array(
-        'file' => 'page.php',
-        'regions' => array('side-pre', 'side-post', 'side-content', 'center-post'),
-        'defaultregion' => 'side-pre',
-        'options' => array('nonavbar' => true),
-    )
-);
+        // The site home page.
+        'frontpage' => array(
+                'file' => 'frontpage.php',
+                'regions' => array('side-pre', 'fp-tag'),
+                'defaultregion' => 'side-pre',
+                'options' => array('nonavbar' => true),
+        ),
+        'columns2' => array(
+                'file' => 'columns2.php',
+                'regions' => array('side-pre', 'side-post'),
+                'defaultregion' => 'side-pre',
+                'options' => array('nonavbar' => true),
+        ),
+    
+    
+        'login' => array(
+                'file' => 'login.php',
+                'regions' => array('side-pre'),
+                'defaultregion' => 'side-pre',
+                'options' => array('nonavbar' => true),
+        ),
 
-$THEME->blockrtlmanipulations = array(
-    'side-pre' => 'side-post',
-    'side-post' => 'side-pre'
 );

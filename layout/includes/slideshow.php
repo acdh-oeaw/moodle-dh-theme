@@ -15,56 +15,167 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * slideshow.php
  *
- * @package     theme_dariahteach
- * @copyright   2018 ACDH
+ * @package     theme_dh
+ * @copyright   2019 ACDH
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$numberofslides = theme_dariahteach_get_setting('numberofslides');
+defined('MOODLE_INTERNAL') || die();
+$numberofslides = theme_dh_get_setting('numberofslides');
 
 if ($numberofslides) { ?>
 
 <div class="theme-slider">
-  <div id="home-page-carousel" class="carousel slide" data-ride="carousel">
+  <div id="home-page-carousel" class="carousel slide" data-ride="carousel" data-interval= "2000">
     <!-- Indicators -->
     <ol class="carousel-indicators">
-     <?php for($s=0;$s<$numberofslides;$s++): 
-					       $cls_txt = ($s=="0")?' class="active"':'';
-					?>
-     <li data-target="#home-page-carousel" data-slide-to="<?php echo $s; ?>" <?php echo $cls_txt; ?>></li>
-					<?php endfor; ?>
+        <?php for($s = 0; $s < $numberofslides; $s++):
+                 $clstxt = ($s == "0") ? ' class="active"' : '';
+            ?>
+     <li data-target="#home-page-carousel" data-slide-to="<?php echo $s; ?>" <?php echo $clstxt; ?>></li>
+            <?php endfor; ?>
     </ol>
-  
+
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
-         
-     <?php for($s1=1;$s1<=$numberofslides;$s1++): 
-															$cls_txt2 = ($s1=="1")?' active':'';
-															$slidecaption = theme_dariahteach_get_setting('slide' . $s1 . 'caption', true);
-															$slideurl = theme_dariahteach_get_setting('slide' . $s1 . 'url');
-															$slideimg = theme_dariahteach_render_slideimg($s1,'slide' . $s1 . 'image');
-															
-					?>
-      <div class="item<?php echo $cls_txt2; ?>" style="background-image: url(<?php echo $slideimg; ?>);">
-          <div class="carousel-overlay-content">
-            <div class="content-wrap">
-              <h2><?php echo $slidecaption; ?></h2><br>
-              <a href="<?php echo $slideurl; ?>" class="read-more"><?php echo get_string('readmore','theme_dariahteach'); ?><i class="fa fa-angle-right"></i></a>
-            </div>
-          </div>
-      </div>
-      <?php endfor; ?>
-      
+
+        <?php
+        $allcontent = "";
+        for($s1 = 1; $s1 <= $numberofslides; $s1++):
+            $clstxt2 = ($s1 == "1") ? ' active' : '';
+            $slidecaption = theme_dh_get_setting('slide' . $s1 . 'caption', true);
+            $slideimg = theme_dh_render_slideimg($s1, 'slide' . $s1 . 'image');
+            $icon = "fa-angle-right";
+            if (right_to_left()) {
+                $icon = "fa-angle-left";
+            }
+            $slidebtn = theme_dh_get_setting('slide'.$s1.'urltext');
+            $slidebtn = theme_dh_lang($slidebtn);
+            $slideurl = theme_dh_get_setting('slide' . $s1 . 'url');
+            //$readmore = get_string("readmore", "theme_dh");
+            $content = html_writer::start_tag('div', array('class' => "carousel-item ".
+                $clstxt2, 'style' => "background-image:url(".$slideimg.")"));
+            $content .= html_writer::start_tag('div', array('class' => "carousel-overlay-content container-fluid",));
+            $slidecaption = "
+                <h2 class=''>Welcome to #dariahTeach Beta ! </h2><br>
+                <div>
+                    <span class='slider-subtext'>
+                        #dariahTeach is an open source, multilingual, community-driven platform for high quality teaching and training materials for the digital arts and humanities.<br/>                    
+                    </span>
+                </div>                    
+                ";
+            //#dariahTeach was launched on 23 March 2017 with beta content. All modules will go through a rigorous post-launch review process. If you would like to form part of a Trusted User Group to improve our courses/workshops, please email #dariahTeach AT gmail.com with the subject line ‘Trusted User Group’ and let us know which course you would be interested in testing.<br/>
+            //In the coming months we will be opening the platform for new content. Join us by contributing a course, a workshop, or a video!
+            $content .= html_writer::start_tag('div', array('class' => "content-wrap"));
+            if ($slidecaption != '' || $slidebtn != '') {
+                $content .= html_writer::start_tag('div', array('class' => 'carousel-content'));
+                
+                if ($slidebtn != '') {
+                    $content .= html_writer::start_tag('div', array('class' => 'carousel-btn'));
+                    $content .= html_writer::start_tag('a', array('href' => $slideurl, 'class' => 'read-more'));
+                    $content .= $slidebtn;
+                    /*$content .= html_writer::start_tag('i', array('class' => 'fa fa-angle-right'));
+                    $content .= html_writer::end_tag('i');*/
+                    $content .= html_writer::end_tag('a');
+                    $content .= html_writer::end_tag('div');
+                }
+                $content .= html_writer::end_tag('div');
+            }
+            if (!empty($slidecaption)) {
+                $content .= html_writer::start_tag('div', array('class' => 'carousel-btn'));
+                $content .= $slidecaption;
+                $content .= html_writer::end_tag('div');
+            }
+            $content .= html_writer::empty_tag('br');
+           /* if (!empty($slideurl)) {
+                $content .= html_writer::start_tag('a', array('href' => $slideurl, 'class' => 'read-more'));
+                $content .= $readmore.' ';
+                $content .= html_writer::start_tag('i', array('class' => 'fa '.$icon));
+                $content .= html_writer::end_tag('i');
+                $content .= html_writer::end_tag('a');
+            }*/
+            $content .= html_writer::end_tag('div');
+            $content .= html_writer::end_tag('div');
+            $content .= html_writer::end_tag('div');
+            $allcontent .= $content;
+
+        endfor;
+            echo $allcontent;
+
+    ?>
+
     </div>
-     
-    <a class="left carousel-control" href="#home-page-carousel" data-slide="prev" style="z-index:99;"><i class="fa fa-caret-left"><</i></a>
-      <a class="right carousel-control" href="#home-page-carousel" data-slide="next" style="z-index:99;"><i class="fa fa-caret-right">></i></a>    
-    
+
+      <a class="left carousel-control carousel-control-prev" href="#home-page-carousel" data-slide="prev"></a>
+      <a class="right carousel-control carousel-control-next" href="#home-page-carousel" data-slide="next"></a>
+
   </div>
+
 </div>
-<!--E.O.Slider-->    
-    
-    
-    
-<?php } ?>
+<style>
+
+.carousel-item-next.carousel-item-left,
+.carousel-item-prev.carousel-item-right {
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
+  .carousel-item-next.carousel-item-left,
+  .carousel-item-prev.carousel-item-right {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.carousel-item-next,
+.active.carousel-item-right {
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+}
+
+@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
+  .carousel-item-next,
+  .active.carousel-item-right {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+.carousel-item-prev,
+.active.carousel-item-left {
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+
+@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
+  .carousel-item-prev,
+  .active.carousel-item-left {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.carousel-fade .carousel-item {
+  opacity: 0;
+  transition-duration: .6s;
+  transition-property: opacity;
+}
+
+
+@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
+  .carousel-fade .carousel-item-next,
+  .carousel-fade .carousel-item-prev,
+  .carousel-fade .carousel-item.active,
+  .carousel-fade .active.carousel-item-left,
+  .carousel-fade .active.carousel-item-prev {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+</style>
+<!--E.O.Slider-->
+<?php }

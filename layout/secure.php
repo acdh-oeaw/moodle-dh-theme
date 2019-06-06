@@ -17,13 +17,14 @@
 /**
  * The secure layout.
  *
- * @package   theme_dariahteach
- * @copyright   2018 ACDH
+ * @package   theme_dh
+ * @copyright 2019 ACDH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
 // Get the HTML for the settings bits.
-$html = theme_dariahteach_get_html_for_settings($OUTPUT, $PAGE);
+$html = theme_dh_get_html_for_settings($OUTPUT, $PAGE);
 
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
@@ -38,31 +39,33 @@ echo $OUTPUT->doctype() ?>
 
 <?php echo $OUTPUT->standard_top_of_body_html() ?>
 
-<?php  require_once(dirname(__FILE__) . '/includes/header.php');  ?>
+<?php  require_once(dirname(__FILE__) . '/includes/header.php');
+    echo $headerlayout;
+?>
 
-<div id="page" class="container-fluid">
+<div id="page" class="container">
 
     <header id="page-header" class="clearfix">
         <?php echo $html->heading; ?>
     </header>
 
-    <div id="page-content" class="row-fluid">
-        <div id="region-bs-main-and-pre" class="span9">
-            <div class="row-fluid">
-                <section id="region-main" class="span8 pull-right">
+    <div id="page-content" class="row">
+        <div id="region-bs-main-and-pre" class="col-md-9">
+            <div class="row">
+                <section id="region-main" class="col-md-8 pull-right">
                     <?php echo $OUTPUT->main_content(); ?>
                 </section>
-                <?php echo $OUTPUT->blocks('side-pre', 'span4 desktop-first-column'); ?>
+                <?php echo $OUTPUT->blocks('side-pre', 'col-md-4 desktop-first-column'); ?>
             </div>
         </div>
-        <?php echo $OUTPUT->blocks('side-post', 'span3'); ?>
+        <?php echo $OUTPUT->blocks('side-post', 'col-md-3'); ?>
     </div>
-
-    <?php /*?><?php echo $OUTPUT->standard_end_of_body_html() ?><?php */?>
 
 </div>
 
-<?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
-
+<?php
+require_once(dirname(__FILE__) . '/includes/footer.php');
+echo $footerlayout;
+?>
 </body>
 </html>

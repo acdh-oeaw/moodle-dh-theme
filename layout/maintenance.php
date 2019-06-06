@@ -17,45 +17,17 @@
 /**
  * The maintenance layout.
  *
- * @package   theme_dariahteach
- * @copyright   2018 ACDH
+ * @package   theme_dh
+ * @copyright 2019 ACDH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
 
-// Get the HTML for the settings bits.
-$html = theme_dariahteach_get_html_for_settings($OUTPUT, $PAGE);
+$templatecontext = [
+    // We cannot pass the context to format_string, this layout can be used during
+    // installation. At that stage database tables do not exist yet.
+    'sitename' => format_string($SITE->shortname, true, ["escape" => false]),
+    'output' => $OUTPUT
+];
 
-echo $OUTPUT->doctype() ?>
-<html <?php echo $OUTPUT->htmlattributes(); ?>>
-<head>
-    <title><?php echo $OUTPUT->page_title(); ?></title>
-    <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
-    <meta property="og:url"           content="https://teach.dariah.eu/" />
-    <meta property="og:type"          content="website" />
-    <meta property="og:title"         content="#dariahTeach" />
-    <meta property="og:description"   content="open-source, high quality, multilingual teaching materials for the digital arts and humanities" />
-    <meta property="og:image"         content="https://teach.dariah.eu/theme/dariahteach/pix/logo_darkGreen_100.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php echo $OUTPUT->standard_head_html() ?>
-</head>
-
-<body <?php echo $OUTPUT->body_attributes(); ?>>
-
-    <?php echo $OUTPUT->standard_top_of_body_html() ?>
-
-    <div id="page" class="container-fluid">
-        <header id="page-header" class="clearfix">
-            <?php echo $html->heading; ?>
-        </header>
-
-        <div id="page-content" class="row-fluid">
-            <section id="region-main" class="span12">
-                <?php echo $OUTPUT->main_content(); ?>
-            </section>
-        </div>
-    </div>
-
-    <?php  require_once(dirname(__FILE__) . '/includes/footer.php');  ?>
-
-</body>
-</html>
+echo $OUTPUT->render_from_template('theme_dh/maintenance', $templatecontext);
