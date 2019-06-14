@@ -82,7 +82,7 @@ echo $headerlayout;
                         <div class="row fp-main-sub-title">
                             <div class="col-md-4 col-lg-6">                                
                                  <h2>Courses</h2>
-                                <div class="">Courses represent the equivalent level of student effort as a 5 or 10 ECTS module.</div>
+                                <div class="fp-main-course-subtext">Courses represent the equivalent level of student effort as a 5 or 10 ECTS module.</div>
                             </div>
                                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 mb-10 header-filter-div">
                                 
@@ -120,6 +120,13 @@ echo $headerlayout;
                     echo $courserenderer->frontpage_dh_courses(); 
                     ?>
                 </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
+                    <div class="container-fluid">
+                        <div class="row justify-content-center">
+                            <p class="text-center font-weight-bold"><a href="#" class="show_hide_frontpage_courses">Show All Courses</a></p>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 justify-content-center d-flex" >
                     <div class="container-fluid">    
@@ -127,21 +134,21 @@ echo $headerlayout;
                             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 justify-content-center d-flex" >
                                 <div class="fp-info-box">
                                     <h3 class="text-center"><a href="#">The Publication Concept</a></h3>
-                                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
+                                    <span class="font-weight-normal">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
                                 </div>
                             </div>
 
                             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 justify-content-center d-flex" >
                                 <div class="fp-info-box">
                                     <h3 class="text-center"><a href="#">How to Collaborate</a></h3>
-                                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
+                                    <span class="font-weight-normal">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
                                 </div>
                             </div>
                             
                             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 justify-content-center d-flex" >
                                 <div class="fp-info-box">
                                     <h3 class="text-center"><a href="#">Submit a Course</a></h3>
-                                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
+                                    <span class="font-weight-normal">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
                                 </div>
                             </div>
                             
@@ -168,9 +175,6 @@ echo $headerlayout;
                         </div>
                     </div>
                 </div>
-                <?php //echo $OUTPUT->blocks('side-pre', 'col-md-12'); ?>
-                
-                
                 
             </div>
         </div>       

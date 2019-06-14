@@ -67,10 +67,12 @@
                 <div class="row">        
                     {{#hasblocks}}
                         <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3 left_big_block" >
-                            <div class="fp-main-sub-title">
-                                <h3>Course Structure</h3>
-                                <p style="margin-bottom: 10px;">Details about the core aspects of this course</p>
-                            </div>
+                            {{#course_top_desc}}
+                                <div class="fp-main-sub-title">
+                                    <h3>Course Structure</h3>
+                                    <p>Details about the core aspects of this course</p>
+                                </div>
+                            {{/course_top_desc}}
                             {{#sidepreblocks}}
                                 <section data-region="blocks-column" class="d-print-none">
                                     <div class="column2-sidepreblocks">    
@@ -80,25 +82,28 @@
                             {{/sidepreblocks}}
                         </div>
                     {{/hasblocks}}
-                    {{#hasregionmainsettingsmenu}}
-                    <div id="region-main-settings-menu" class="d-print-none {{#hasblocks}}has-blocks{{/hasblocks}}">
-                        <div> {{{ output.region_main_settings_menu }}} </div>
-                    </div>
-                    {{/hasregionmainsettingsmenu}}
                     
-                    <div class="{{colclass}}">
-                        <div class="fp-main-sub-title">
-                            <h3>Course Information</h3>
-                            <p style="margin-bottom: 10px;">Everything you need to know about this course</p>
+                    
+                    <div class="{{colclass}}">                    
+                        {{#course_top_desc}}
+                            <div class="fp-main-sub-title">
+                                <h3>Course Information</h3>
+                                <p>Everything you need to know about this course</p>
+                            </div>
+                        {{/course_top_desc}}
+
+                        <div>
+                            <section id="region-main" {{#hasblocks}}class="has-blocks mb-3 w-100"{{/hasblocks}}>                    
+                                {{#hasregionmainsettingsmenu}}
+                                    <div id="region-main-settings-menu" class="d-print-none">
+                                        <div> {{{ output.region_main_settings_menu }}} </div>
+                                    </div>
+                                {{/hasregionmainsettingsmenu}}
+                                {{{ output.course_content_header }}}
+                                {{{ output.main_content }}}
+                                {{{ output.activity_navigation }}}
+                            </section>
                         </div>
-                        <section id="region-main" {{#hasblocks}}class="has-blocks mb-3 w-100"{{/hasblocks}}>                    
-                            {{#hasregionmainsettingsmenu}}
-                                <div class="region_main_settings_menu_proxy"></div>
-                            {{/hasregionmainsettingsmenu}}
-                            {{{ output.course_content_header }}}
-                            {{{ output.main_content }}}
-                            {{{ output.activity_navigation }}}
-                        </section>
                     </div>
 
                 </div>

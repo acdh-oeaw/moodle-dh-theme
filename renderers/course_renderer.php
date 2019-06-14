@@ -402,7 +402,7 @@ class theme_dh_core_course_renderer extends core_course_renderer {
         $header = '<div id="frontpage-course-list">';            
             $header .= '<div class="courses frontpage-course-list-all">';
                 $header .= '<div class="container-fluid">';
-                    $header .= '<div class="row-fluid ">'; 
+                    $header .= '<div class="row">'; 
                         $header .= '<div class="col-xs-12 col-lg-12">';
                             $header .= '<div class="card-deck justify-content-center d-flex">';
                     
@@ -412,8 +412,7 @@ class theme_dh_core_course_renderer extends core_course_renderer {
                 $footer .= '</div>';
             $footer .= '</div>';
         $footer .= '</div>';
-        
-        
+                
         $content = '';
         $morecourses = false;
         if(!empty($data)){ 
@@ -504,7 +503,7 @@ class theme_dh_core_course_renderer extends core_course_renderer {
                                 $content .= '<div class="fp-courseinfo-title">';
                                     $content .= '<h5><a href="'.$courseurl.'">'.$course->get_formatted_name().'</a></h5>';
                                     if(!empty($authors)) {
-                                        $content .= '<span><b>'.$authors.'</b></span>';
+                                        $content .= '<span class="fp-author-text">'.$authors.'</span>';
                                     }
                                 $content .= '</div>';
                                 

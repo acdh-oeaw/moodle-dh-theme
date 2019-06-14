@@ -23,19 +23,7 @@
 
 (function($) {
     var resized = false;
-    var cloudSettings = {"size" : {
-            "grid" : 8,
-            "factor" : 0
-        },
-        "options" : {
-            "color" : "random-dark",
-            "rotationRatio" : 0.35,
-            //"printMultiplier" : 3,
-            "sort" : "random"
-        },
-        "font" : "arvoregular, Helvetica, serif",
-        "shape" : "square"};
-    
+        
     if(window.location.pathname == "/") {
         $(window).bind('resize', function(e)
         {
@@ -46,7 +34,18 @@
           }, 100);
         });
         
-        $("#wordcloud1").awesomeCloud(cloudSettings);
+        $("#wordcloud1").awesomeCloud({"size" : {
+            "grid" : 8,
+            "factor" : 0
+        },
+        "options" : {
+            "color" : "random-dark",
+            "rotationRatio" : 0.35,
+            //"printMultiplier" : 3,
+            "sort" : "random"
+        },
+        "font" : "arvoregular, Helvetica, serif",
+        "shape" : "square"});
     }
     
     
@@ -217,6 +216,27 @@
         e.preventDefault();
     });
     
+    
+    $(".show_hide_frontpage_courses").click(function(e){
+        var height = $("#frontpage-course-list").css("height");
+        if(height > "320px") {
+            $( "#frontpage-course-list" ).slideUp( "slow", function() {
+                $("#frontpage-course-list").css("height", "320px");
+                $("#frontpage-course-list").css("display", "block");
+                $("#frontpage-course-list").css("overflow", "hidden");
+            });
+            $(".show_hide_frontpage_courses").text('Show All Courses');
+            e.preventDefault();
+        }else {
+            $( "#frontpage-course-list" ).slideDown( "slow", function() {
+                $("#frontpage-course-list").css("height", "100%");
+                $("#frontpage-course-list").css("overflow", "visible");
+            });
+            $(".show_hide_frontpage_courses").text('Collapse Courses');
+            e.preventDefault();
+        }
+        e.preventDefault();
+    });
     
     
 

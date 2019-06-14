@@ -27,22 +27,18 @@ defined('MOODLE_INTERNAL') || die();
 user_preference_allow_ajax_update('drawer-open-nav', PARAM_ALPHA);
 require_once($CFG->libdir . '/behat/lib.php');
 
-if (isloggedin()) {
-    //$navdraweropen = (get_user_preferences('drawer-open-nav', 'true') == 'true');
-    $navdraweropen = false;
-} else {
-    $navdraweropen = false;
-}
-$extraclasses = [];
-if ($navdraweropen) {
-    $extraclasses[] = 'drawer-open-left';
-}
+
 $bodyattributes = $OUTPUT->body_attributes($extraclasses);
 $blockshtml = $OUTPUT->blocks('side-pre');
 $hasblocks = strpos($blockshtml, 'data-block=') !== false;
 
 $actual_url = "";
 $actual_url = (string)$PAGE->url->__toString();
+
+$course_top_desc = false;
+if ( (strpos($actual_url, '/course/') !== false) ||(strpos($actual_url, '/mod/') !== false)  ) {
+    $course_top_desc = true;
+}
 
 $regionmainsettingsmenu = $OUTPUT->region_main_settings_menu();
 // Header content.
@@ -125,14 +121,8 @@ $templatecontext = [
     "sitelogo" => $sitelogo,
     "compare" => $compare,
     "logourl_footer" => $logourlfooter,
-    "footnote" => $footnote,
-    "fburl" => $fburl,
-    "pinurl" => $pinurl,
-    "twurl" => $twurl,
-    "gpurl" => $gpurl,
-    "address" => $address,
-    "emailid" => $emailid,
-    "phoneno" => $phoneno,
+    "footnote" => $footnote,    
+    "address" => $address,    
     "copyright_footer" => $copyrightfooter,
     "infolink" => $infolink,
     "s_info" => $sinfo,
@@ -140,8 +130,7 @@ $templatecontext = [
     "s_phone" => $sphone,
     "s_email" => $semail,
     "s_get_social" => $sgetsocial,
-    "url" => $url,
-    "contact" => $contact,
+    "url" => $url,    
     "footerall" => $footerall,
     "customclass" => $class,
     "block1" => $block1,
@@ -149,7 +138,8 @@ $templatecontext = [
     "logourl" => $logourl,
     "dhlogo" => $dhlogo,
     "eulogo" => $eulogo,
-    "moodlelogo" => $moodlelogo
+    "moodlelogo" => $moodlelogo,
+    "course_top_desc" => $course_top_desc
 ];
 
 $templatecontext['flatnavigation'] = $PAGE->flatnav;

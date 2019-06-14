@@ -28,15 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 user_preference_allow_ajax_update('drawer-open-nav', PARAM_ALPHA);
 require_once($CFG->libdir . '/behat/lib.php');
 
-if (isloggedin()) {
-    $navdraweropen = (get_user_preferences('drawer-open-nav', 'true') == 'true');
-} else {
-    $navdraweropen = false;
-}
 $extraclasses = [];
-if ($navdraweropen) {
-    $extraclasses[] = 'drawer-open-left';
-}
 $bodyattributes = $OUTPUT->body_attributes($extraclasses);
 $blockshtml = $OUTPUT->blocks('side-pre');
 $hasblocks = strpos($blockshtml, 'data-block=') !== false;
@@ -65,10 +57,6 @@ if ($custom == '') {
 // Footer Content.
 $logourlfooter = get_logo_url('footer');
 $footnote = theme_dh_get_setting('footnote', 'format_html');
-$fburl    = theme_dh_get_setting('fburl');
-$pinurl   = theme_dh_get_setting('pinurl');
-$twurl    = theme_dh_get_setting('twurl');
-$gpurl    = theme_dh_get_setting('gpurl');
 $address  = theme_dh_get_setting('address');
 $emailid  = theme_dh_get_setting('emailid');
 $phoneno  = theme_dh_get_setting('phoneno');

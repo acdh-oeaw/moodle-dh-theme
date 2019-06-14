@@ -933,7 +933,9 @@ nav.navbar .logo img {
 .ccm-menu-icons{
     color: $dh_green;
 }
-
+.modal {
+    width: 90% !important;
+}
 #tagcloud_dh .block .content .tag_cloud a {
     font-size:18px;
     font-family: arvoregular;
@@ -1303,6 +1305,15 @@ nav.navbar .logo img {
 .block_course_custom_fields{
     height: 200px;    
     overflow: hidden;
+    .ccm-kft {
+        margin-left: 10px;
+    }
+    .ccm-kfh {
+        margin-left: 10px;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    
 }
 
 @media (min-width: 1000px) and (max-width: 1400px) {
@@ -1461,17 +1472,28 @@ div.footer_menu ul li a.nav-link {
         margin-bottom: 3px;
     }
     .content {
+        font-weight: normal;
         p {
+            font-weight: normal;
             line-height: 26px;
             margin: 0;
         }
         .posting.fullpost {
+            font-weight: normal;
             margin: 5px 0;
+        }
+    }
+    .options {
+        font-weight: normal;
+        a {
+            font-weight: normal;
         }
     }
     .row .topic .author {
         color: $color_gray_approx;
+        font-weight: normal;
         a {
+            font-weight: normal;
             color: $color_gray_approx;
             &:hover {
                 color: $dh_green;
@@ -2878,6 +2900,10 @@ table {
         min-height: auto;
     }
 }
+#frontpage-course-list {
+    height: 320px;
+    overflow: hidden;
+}
 #frontpage-course-list .coursebox {
     min-height: 240px;
     &.content-block {
@@ -3250,6 +3276,9 @@ i.icon {
   color: $dh_green;
     border-radius: 3px;
 }
+.fp-main-course-subtext {
+    font-weight: normal;
+}
 
 .fp-coursebox {
     height: 100%;
@@ -3288,6 +3317,9 @@ i.icon {
                 color: $dh_green;
                 word-wrap: break-word;
             }
+        }
+        .fp-author-text {
+            text-align: left !important;
         }
         .fp-courseinfo-title span {
             position: absolute;
@@ -3343,7 +3375,6 @@ i.icon {
         color: $dh_green;
         //border: 1px solid $dh_green;
         //border-radius: 3px;
-        font-weight: bold;
         padding: 3px;
         font-size: 10px;
         &:hover {
@@ -3357,7 +3388,6 @@ i.icon {
         float: right;
         font-size: 12px;
         color: $dh_green;
-        font-weight: bold;
         margin-right: 3px;
         margin-top: 5px;
     }
@@ -3748,6 +3778,10 @@ td.submit {
     font-weight: bold;
     border-bottom: 1px solid $dh_fp_subtitle_yellow;
     margin-bottom: 10px;
+    p {
+        margin-bottom: 10px;
+        font-weight: normal;
+    }
 }
 div.backup-section + form {
     background: none;

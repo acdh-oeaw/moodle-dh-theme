@@ -602,6 +602,9 @@ nav.navbar .logo img {
 .ccm-menu-icons {
   color: #016771; }
 
+.modal {
+  width: 90% !important; }
+
 #tagcloud_dh .block .content .tag_cloud a {
   font-size: 18px;
   font-family: arvoregular; }
@@ -874,6 +877,12 @@ nav.navbar .logo img {
 .block_course_custom_fields {
   height: 200px;
   overflow: hidden; }
+  .block_course_custom_fields .ccm-kft {
+    margin-left: 10px; }
+  .block_course_custom_fields .ccm-kfh {
+    margin-left: 10px;
+    margin-bottom: 5px;
+    font-weight: bold; }
 
 @media (min-width: 1000px) and (max-width: 1400px) {
   .block_course_custom_fields {
@@ -994,14 +1003,24 @@ div.footer_menu ul li a.nav-link {
     color: #016771;
     line-height: 1.181818181818182;
     margin-bottom: 3px; }
-  .forumpost .content p {
-    line-height: 26px;
-    margin: 0; }
-  .forumpost .content .posting.fullpost {
-    margin: 5px 0; }
+  .forumpost .content {
+    font-weight: normal; }
+    .forumpost .content p {
+      font-weight: normal;
+      line-height: 26px;
+      margin: 0; }
+    .forumpost .content .posting.fullpost {
+      font-weight: normal;
+      margin: 5px 0; }
+  .forumpost .options {
+    font-weight: normal; }
+    .forumpost .options a {
+      font-weight: normal; }
   .forumpost .row .topic .author {
-    color: #828282; }
+    color: #828282;
+    font-weight: normal; }
     .forumpost .row .topic .author a {
+      font-weight: normal;
       color: #828282; }
       .forumpost .row .topic .author a:hover {
         color: #016771; }
@@ -2120,6 +2139,10 @@ table {
   #frontpage-category-combo .coursebox.content-block {
     min-height: auto; }
 
+#frontpage-course-list {
+  height: 320px;
+  overflow: hidden; }
+
 #frontpage-course-list .coursebox {
   min-height: 240px; }
   #frontpage-course-list .coursebox.content-block {
@@ -2402,6 +2425,9 @@ i.icon {
   color: #016771;
   border-radius: 3px; }
 
+.fp-main-course-subtext {
+  font-weight: normal; }
+
 .fp-coursebox {
   height: 100%;
   position: relative;
@@ -2435,6 +2461,8 @@ i.icon {
       .fp-coursebox .fp-courseinfo h5 a {
         color: #016771;
         word-wrap: break-word; }
+    .fp-coursebox .fp-courseinfo .fp-author-text {
+      text-align: left !important; }
     .fp-coursebox .fp-courseinfo .fp-courseinfo-title span {
       position: absolute;
       bottom: 0;
@@ -2476,7 +2504,6 @@ i.icon {
       color: #016771; }
   .fp-coursebox .fp-courseinfo-tag {
     color: #016771;
-    font-weight: bold;
     padding: 3px;
     font-size: 10px; }
     .fp-coursebox .fp-courseinfo-tag:hover {
@@ -2487,7 +2514,6 @@ i.icon {
     float: right;
     font-size: 12px;
     color: #016771;
-    font-weight: bold;
     margin-right: 3px;
     margin-top: 5px; }
   .fp-coursebox .fp-courseinfo-upper-info {
@@ -2785,6 +2811,9 @@ td.submit input[disabled] {
   font-weight: bold;
   border-bottom: 1px solid #F0CA40;
   margin-bottom: 10px; }
+  .fp-main-sub-title p {
+    margin-bottom: 10px;
+    font-weight: normal; }
 
 div.backup-section + form {
   background: none;
