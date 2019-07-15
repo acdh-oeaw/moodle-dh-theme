@@ -60,6 +60,15 @@ echo $headerlayout;
     }
     ?>
 </div>    
+<!--Custom theme slider-->
+
+    <div class="container">
+    <h2><?php echo $whotitle; ?></h2>
+    <?php if ($whodesc) { ?>
+        <p><?php echo $whodesc; ?></p>
+        <?php } ?>
+  </div>
+
 <!--Custom theme Who We Are block-->
 <div id="page" class="container-fluid">
     <header id="page-header" class="clearfix">
@@ -73,41 +82,53 @@ echo $headerlayout;
         $class = "col-md-12";
     ?>
         
-        
-        
          <div class="container-fluid frontpage-container-fluid">             
             <div class="row">
+                
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">                    
                     <div class="container-fluid">             
                         <div class="row fp-main-sub-title">
-                            <div class="col-md-4 col-lg-6">                                
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2 nopadding">                                
                                  <h2>Courses</h2>
-                                <div class="fp-main-course-subtext">Courses represent the equivalent level of student effort as a 5 or 10 ECTS module.</div>
+                                <div class="fp-main-course-subtext"></div>
                             </div>
-                                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 mb-10 header-filter-div">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 mb-10 header-filter-div">
                                 
-                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 float-right" style="max-width: 75px;">
-                                    <h5>Credits: </h5>   
-                                    <?php
-                                        $courserenderer->frontpage_ects_box(); 
-                                    ?>
+                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 float-right fp-credits" >
+                                    <div class="float-left mr-1">
+                                        <h5>Credits: </h5>   
+                                    </div>
+                                    <div class="float-left">
+                                        <?php
+                                            $courserenderer->frontpage_ects_box(); 
+                                        ?>
+                                    </div>
                                 </div>
                                 
-                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 float-right" style="max-width: 150px;">
-                                    <h5>Languages: </h5>
-                                    <?php
-                                        $courserenderer->frontpage_languages_box(); 
-                                    ?>
+                                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 float-right fp-languages" >
+                                    <div class="float-left mr-1">
+                                        <h5>Languages: </h5>
+                                    </div>
+                                    <div class="float-left">
+                                        <?php
+                                            $courserenderer->frontpage_languages_box(); 
+                                        ?>
+                                    </div>
                                 </div>
                                 
-                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 float-right" style="max-width: 200px;">
-                                    <h5>Order by: </h5>
-                                    <select name="fp-order-by-box" class="fp-order-by-box fp-select">                     
-                                        <option value="date_desc" selected="selected">Release Date Desc</option>
-                                        <option value="date_asc">Release Date Asc</option>
-                                        <option value="title_asc">Title Asc</option>
-                                        <option value="title_desc">Title Desc</option>
-                                    </select>
+                                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 float-right fp-order-by">
+                                    <div class="float-left mr-1">
+                                        <h5>Order by: </h5>
+                                    </div>
+                                    <div class="">
+                                        <select name="fp-order-by-box" class="fp-order-by-box fp-select">                     
+                                            <option value="date_desc" selected="selected">Release Date Desc</option>
+                                            <option value="date_asc">Release Date Asc</option>
+                                            <option value="title_asc">Title Asc</option>
+                                            <option value="title_desc">Title Desc</option>
+                                        </select>
+                                    </div>
+                                    
                                 </div>
                                 
                             </div>
@@ -123,59 +144,84 @@ echo $headerlayout;
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
                     <div class="container-fluid">
                         <div class="row justify-content-center">
-                            <p class="text-center font-weight-bold"><a href="#" class="show_hide_frontpage_courses">Show All Courses</a></p>
+                            <p class="text-center font-weight-bold"><a href="#" class="show_frontpage_courses">Show All Courses</a></p>
+                            <p class="text-center font-weight-bold"><a href="#" class="hide_frontpage_courses">Collapse Courses</a></p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 justify-content-center d-flex" >
                     <div class="container-fluid">    
-                        <div class="row">    
-                            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 justify-content-center d-flex" >
-                                <div class="fp-info-box">
-                                    <h3 class="text-center"><a href="#">The Publication Concept</a></h3>
-                                    <span class="font-weight-normal">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
-                                </div>
-                            </div>
+                        <div class="row">
+                            
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 justify-content-center d-flex " >
+                                
+                                
+                                <div class="container-fluid">    
+                                    <div class="row">
+                                        <div class="col-md-12 col-lg-12 nopadding">                                
+                                            <h2>Contribute</h2>
+                                            <div class="fp-main-sub-title"></div>
+                                        </div>
+                                        
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 justify-content-center  padding-0 " >
+                                            <div class="fp-info-box">
+                                                <div class="h-25">
+                                                    <h3 class="text-center"><a href="#">The Publication Concept</a></h3>
+                                                </div>
+                                                <div class="h-75">
+                                                    <span class="font-weight-normal">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 justify-content-center d-flex" >
-                                <div class="fp-info-box">
-                                    <h3 class="text-center"><a href="#">How to Collaborate</a></h3>
-                                    <span class="font-weight-normal">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 justify-content-center padding-0" >  
+                                            <div class="fp-info-box">
+                                                <div class="h-25">
+                                                    <h3 class="text-center"><a href="#">How to Collaborate</a></h3>
+                                                </div>
+                                                <div class="h-75">
+                                                    <span class="font-weight-normal">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 justify-content-center padding-0" >  
+                                            <div class="fp-info-box">
+                                                <div class="h-25">
+                                                    <h3 class="text-center"><a href="#">Submit a Course</a></h3>
+                                                </div>
+                                                <div class="h-75">
+                                                    <span class="font-weight-normal">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                
                             </div>
                             
-                            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 justify-content-center d-flex" >
-                                <div class="fp-info-box">
-                                    <h3 class="text-center"><a href="#">Submit a Course</a></h3>
-                                    <span class="font-weight-normal">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren</span>
-                                </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 justify-content-center h-100" id="tagcloud_dh">
+                                 <center>
+                                    <?php echo $OUTPUT->blocks('fp-tag', ''); ?>
+                                </center>
                             </div>
                             
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
-                    <div class="container-fluid">    
-                        <div class="row">    
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 h-100" >
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 justify-content-center" >
+                                <div class="col-md-12 col-lg-12 nopadding">                                
+                                    <h2>News</h2>
+                                    <div class="fp-main-sub-title"></div>
+                                </div>
                                 <?php
                                     echo $OUTPUT->course_content_header();
                                     echo $OUTPUT->main_content();
                                     echo $OUTPUT->course_content_footer();
                                 ?>
                             </div>
-
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" id="tagcloud_dh">
-                                <center>
-                                    <?php echo $OUTPUT->blocks('fp-tag', ''); ?>
-                                </center>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>       
     </div>

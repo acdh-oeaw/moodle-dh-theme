@@ -58,36 +58,36 @@ if ($numberofslides) { ?>
             $content = html_writer::start_tag('div', array('class' => "carousel-item ".
                 $clstxt2, 'style' => "background-image:url(".$slideimg.")"));
             $content .= html_writer::start_tag('div', array('class' => "carousel-overlay-content container-fluid",));
-            $slidecaption = "
-                <h2 class=''>Welcome to #dariahTeach Beta ! </h2><br>
-                <div>
-                    <span class='slider-subtext'>
-                        #dariahTeach is an open source, multilingual, community-driven platform for high quality teaching and training materials for the digital arts and humanities.<br/>                    
-                    </span>
-                </div>                    
-                ";
+            
             //#dariahTeach was launched on 23 March 2017 with beta content. All modules will go through a rigorous post-launch review process. If you would like to form part of a Trusted User Group to improve our courses/workshops, please email #dariahTeach AT gmail.com with the subject line ‘Trusted User Group’ and let us know which course you would be interested in testing.<br/>
             //In the coming months we will be opening the platform for new content. Join us by contributing a course, a workshop, or a video!
             $content .= html_writer::start_tag('div', array('class' => "content-wrap"));
-            if ($slidecaption != '' || $slidebtn != '') {
+             if ($slidecaption != '' || $slidebtn != '') {
                 $content .= html_writer::start_tag('div', array('class' => 'carousel-content'));
-                
+                $content .= html_writer::start_tag('h2');
+                $content .= $slidecaption;
+                $content .= html_writer::end_tag('h2');
+
                 if ($slidebtn != '') {
                     $content .= html_writer::start_tag('div', array('class' => 'carousel-btn'));
+
                     $content .= html_writer::start_tag('a', array('href' => $slideurl, 'class' => 'read-more'));
                     $content .= $slidebtn;
                     /*$content .= html_writer::start_tag('i', array('class' => 'fa fa-angle-right'));
                     $content .= html_writer::end_tag('i');*/
+
                     $content .= html_writer::end_tag('a');
+
                     $content .= html_writer::end_tag('div');
                 }
                 $content .= html_writer::end_tag('div');
             }
+            /*
             if (!empty($slidecaption)) {
                 $content .= html_writer::start_tag('div', array('class' => 'carousel-btn'));
                 $content .= $slidecaption;
                 $content .= html_writer::end_tag('div');
-            }
+            }*/
             $content .= html_writer::empty_tag('br');
            /* if (!empty($slideurl)) {
                 $content .= html_writer::start_tag('a', array('href' => $slideurl, 'class' => 'read-more'));

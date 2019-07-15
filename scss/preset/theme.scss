@@ -49,7 +49,7 @@ $dh_left_menu_light_green: rgba(234,240,241,1);
 $dh_left_menu_grey_bg: rgba(240,240,240,1);
 
 
-$font_0: arvoregular;
+$font_0: Montserrat;
 $font_1: FontAwesome;
 $font_2: Arial;
 $font_3: Helvetica;
@@ -92,7 +92,7 @@ $url_11: url([[pix:theme|t/collapsed_rtl]]);
 
 body {
     &#page-site-index {
-        background: $white;
+        background: $dh_fp_course_bg;
     }
     #region-main .mform:not(.unresponsive) .fitem {
         .fcheckbox > span {
@@ -728,32 +728,42 @@ nav.navbar .logo img {
 #site-news-forum {    
     color: $dh_green;
     font-weight: bold;
-    border: 1px solid #d5d5d5;
-    padding: 10px 20px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    //border: 1px solid #d5d5d5;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     overflow: hidden;
-    background-color: $dh_fp_course_bg;
+    //background-color: $dh_fp_course_bg;
     article .forumpost {
         background: transparent;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
     }
 }
-.fp-info-box {
-    min-width: 350px;
-    min-height: 120px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    color: $dh_green;
-    font-weight: 700;
-    margin: 30px;
-    padding: 20px;
-    overflow: hidden;
-    background-color: $dh_fp_course_bg;
-    border: 1px solid #d5d5d5;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    text-align: center;
+.carousel-content {
+    min-height: 200px;
 }
+.fp-info-box {
+    color: $dh_green;
+    background-color: white;
+    font-weight: 700;
+    padding: 5px;
+    overflow: hidden;
+    border: 1px solid #d5d5d5;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    text-align: center;
+    height: 120px;
+    margin-bottom: 5px;
+}
+@media (max-width: 1420px) and (min-width: 1200px) {
+    .fp-info-box {
+        h3 {
+            font-size: 18px;
+        }
+    }
+}
+
+
 .menubar .dropdown .caret {
     display: none;
 }
@@ -938,7 +948,7 @@ nav.navbar .logo img {
 }
 #tagcloud_dh .block .content .tag_cloud a {
     font-size:18px;
-    font-family: arvoregular;
+    font-family: $font_0;
 }
 #tagcloud_dh .wordcloud {
     /*border: 1px solid #036;*/
@@ -950,8 +960,13 @@ nav.navbar .logo img {
     min-height:300px;
     width:100%;
     height:100%;    
-    font-family: arvoregular;
 }
+@media (min-width: 950px) {
+    #tagcloud_dh {
+        padding-top: 30px;
+    }
+}
+
 #tagcloud_dh .wordcloud  #awesomeCloudwordcloud1{
     height: 100vh; 
     width: 100vw; 
@@ -959,17 +974,20 @@ nav.navbar .logo img {
     z-index: 0!important;
 }
 .block.block_oeaw_tags {
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    //border-bottom-left-radius: 10px;
+    //border-bottom-right-radius: 10px;
+    background: transparent !important;
+    border: none !important;
 }
 .block-region .block.block_oeaw_tags .card-body .content {
-    background-color: $dh_fp_course_bg;
+    //background-color: $dh_fp_course_bg;
     color: $dh_green;
     font-weight: bold;
     padding: 10px 20px;
     overflow: hidden;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    //border-bottom-left-radius: 5px;
+    //border-bottom-right-radius: 5px;
+    
 }
 .block-region .block.block_oeaw_tags .card-body .card-title {
   display: none !important; 
@@ -1458,6 +1476,10 @@ div.footer_menu ul li a.nav-link {
         padding: 0;
     }
 }
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
 .forumpost {
     background: $alabaster;
     padding: 18px;
@@ -1499,6 +1521,9 @@ div.footer_menu ul li a.nav-link {
                 color: $dh_green;
             }
         }
+    }
+    .row .left {
+        display: none;
     }
 }
 #page-site-index {
@@ -2901,7 +2926,7 @@ table {
     }
 }
 #frontpage-course-list {
-    height: 320px;
+    height: 270px;
     overflow: hidden;
 }
 #frontpage-course-list .coursebox {
@@ -3210,15 +3235,31 @@ i.icon {
         background: $seashell;
     }
 }
+.fp-filter-text {
+    display: table-cell;
+    vertical-align: middle;
+}
 .col-fp-coursebox {    
     width: 300px !important;
-    height: 310px !important;
+    height: 260px !important;
     //margin-bottom: 30px;
     margin: 0 auto; /* Added */
     float: none; /* Added */
     margin-top: 10px; /* Added */
     margin-right: 10px; /* Added */
+    margin-left: 0px;
+    
 }
+.header-filter-div {
+    height: 40px !important;
+    line-height: 40px !important;
+    h5 {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: normal;
+    }
+}
+
 @media (max-width: 635px) {
     .col-fp-coursebox {  
         margin: 0 auto !important;
@@ -3244,23 +3285,73 @@ i.icon {
       padding: 10px !important;
   }
 }
+.fp-order-by {
+    max-width: 280px;
+}
+.fp-languages {
+    max-width: 250px;
+}
+.fp-credits {
+    max-width: 150px;
+}
 
+@media (max-width: 700px)  {
+    .header-filter-div {
+        width: 100%;
+        height: 100% !important;
+        line-height: 100% !important;
+        
+    }
+    .fp-order-by {
+        width: 100%;
+        max-width: 100%;
+    }
+    .fp-languages {
+        width: 100%;
+        max-width: 100%;
+    }
+    .fp-credits {
+        width: 100%;
+        max-width: 100%;
+    }    
+}
+@media (max-width: 900px) and (min-width: 701px)  {
+    .header-filter-div {
+        h5 {
+            font-size: 14px !important;
+        }
+    }
+    .fp-order-by-box {
+        width: 150px;
+        
+    }
+    .fp-select {
+        height: 30px;
+        font-size: 13px;
+        
+    }
+    .fp-order-by {
+        max-width: 250px
+    }
+    .fp-languages {
+        max-width: 220px
+    }
+    .fp-credits {
+        max-width: 140px
+    }    
+}
 .fp-select {
     cursor: pointer;
-    font-size: 14px;
-    padding: 9px; 
-    border: solid 1px #517B97; 
+    font-size: 13px;
+    padding: 2px; 
+    //border: solid 1px #517B97; 
     outline: 0; 
     font-weight: bold;
     color: $dh_green;
-    border-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
     //background-color: $header_main_color;
-    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px; 
-    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px; 
-    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px; 
-    -webkit-appearance: none;
     line-height: 0px;    
-    margin-bottom: 10px !important;
 }
 
 .fp-select .select select{
@@ -3284,14 +3375,15 @@ i.icon {
     height: 100%;
     position: relative;
     text-align: center;
-    height: 300px;
+    height: 250px;
     max-width: 410px;
-    background-color: $dh_fp_course_bg;
+    background-color: white;
+    //background-color: $dh_fp_course_bg;
     border: 1px solid $color_quill_gray_approx;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
     .fp-coursethumb {
-        background-color: $dh_fp_course_bg;
+        //background-color: $dh_fp_course_bg;
         height: 160px;
         border: 1px solid $color_mercury_approx;
         margin: 0 auto;
@@ -3306,9 +3398,10 @@ i.icon {
     }
     .fp-courseinfo {
         width:100%;
-        background-color: $dh_fp_course_bg;
-        padding: 5px;
-        max-height: 150px;
+        //background-color: $dh_fp_course_bg;
+        padding-right: 5px;
+        padding-left: 5px;
+        height: 65px;
         overflow: hidden;
         h5 {
             text-align: left;
@@ -3320,6 +3413,7 @@ i.icon {
         }
         .fp-author-text {
             text-align: left !important;
+            font-size: 11px;
         }
         .fp-courseinfo-title span {
             position: absolute;
@@ -3366,7 +3460,7 @@ i.icon {
         width: 80%;
         //line-height: 2;
         .fa-tag {
-            margin-left: 3px;
+            margin-left: 5px;
             margin-top: 5px;
             color: $dh_green;
         }
@@ -3392,7 +3486,7 @@ i.icon {
         margin-top: 5px;
     }
     .fp-courseinfo-upper-info {
-        max-height: 45px;
+        height: 25px;
     }
 }
 
@@ -3536,7 +3630,10 @@ i.icon {
     .read-more {
         font-family: $font_0, $font_2, $font_3, $font_4;
         color: $white;
-        background: $dh_green;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        //background: $dh_green;
         //display: inline-block;
         text-transform: uppercase;
         &:hover {
@@ -4029,7 +4126,7 @@ form#movecourses table tbody > tr:nth-child(2n + 1) {
         margin-bottom: 0px !important;
     }
     .card-text {
-        background-color: $dh_left_menu_grey_bg;
+        //background-color: $dh_left_menu_grey_bg;
         //padding: 20px;
         margin-top: 0px !important;
         p { 
@@ -4098,9 +4195,44 @@ select.form-control:not([size]):not([multiple]) {
         width: 100%;
     }
 }
+#site-news-forum article .forumpost {
+    background-color: white;
+}
+.padding-0{
+    padding-right:0;
+    padding-left:0;
+}
 #site-news-forum {
+    
+    h2 {
+        display: none;
+    }
+    .forumpost {
+        background-color: white;
+    }
     .forumaddnew {
         margin-bottom: 10px;
+    }
+    .forumpost .picture img.userpicture {
+        display: none;
+    }
+    .forumpost .row {
+        margin: 0px !important;
+        .left {
+            margin: 0px !important;
+        }
+    }
+    .forumpost .options .commands, .forumpost .content .attachments, .forumpost .options .footer, .forumpost .options .link {
+        display: none;
+    }
+    .forumpost .topic .firstpost .starter .author {
+        display: none;
+    }
+    .forumpost .row .topic {
+        margin: 0px !important;
+    }
+    .forumpost .row .topic .author {
+        display: none;
     }
     .forumpost .posting {
         p img {
@@ -5578,6 +5710,7 @@ button.close, .moodle-dialogue-base button.closebutton {
             font-size: 16px;
             line-height: 22px;
             //padding: 7px 14px;
+            background-color: transparent;
         }
     }
     #footer .footer-main {

@@ -23,8 +23,11 @@
 
 (function($) {
     var resized = false;
-        
-    if(window.location.pathname == "/") {
+    var windowurl = window.location.href;    
+    
+    if(window.location.pathname == "/" || (windowurl.indexOf("orderby=") > -1 ) || 
+            (windowurl.indexOf("languages=") > -1 ) || (windowurl.indexOf("ects=") > -1 )
+            || (windowurl.indexOf("/index.php?") > -1 )) {
         $(window).bind('resize', function(e)
         {
           if (window.RT) clearTimeout(window.RT);
@@ -61,14 +64,16 @@
     
     if(!getCookie("more_course_opened")) {
         //hide the course div
-        $('.more_courses_div').hide();        
+        $("#frontpage-course-list").css("height", "270px");
+        $("#frontpage-course-list").css("overflow", "hidden");
         //show the button
-        $(".more_courses").show();
-        $(".hide_courses").hide();
+        $(".show_frontpage_courses").show();
+        $(".hide_frontpage_courses").hide();
     }else {
-        $('.more_courses_div').show();
-        $(".more_courses").hide();
-        $(".hide_courses").show();
+        $("#frontpage-course-list").css("height", "100%");
+        $("#frontpage-course-list").css("overflow", "visible");
+        $(".show_frontpage_courses").hide();
+        $(".hide_frontpage_courses").show();
     }
     
     var img = $("header#header").find('.avatars').find('img[src$="/u/f2"]');
@@ -200,44 +205,24 @@
         window.location.reload();
     });
     
-    $("#show_more_course").click(function(e) {
+    $(".show_frontpage_courses").click(function(e) {
         setCookie("more_course_opened", true, 100);
-        $('.more_courses_div').show();
-        $(".more_courses").hide();   
-        $(".hide_courses").show();
+        $("#frontpage-course-list").css("height", "100%");
+            $("#frontpage-course-list").css("overflow", "visible");
+        $(".show_frontpage_courses").hide();
+        $(".hide_frontpage_courses").show();
         e.preventDefault();
     });
     
-     $("#hide_more_course").click(function(e) {
+     $(".hide_frontpage_courses").click(function(e) {
         setCookie("hide_course_opened", true, 100);
-         $('.more_courses_div').hide();
-        $(".more_courses").show();        
-        $(".hide_courses").hide();
+         $("#frontpage-course-list").css("height", "270px");
+            $("#frontpage-course-list").css("overflow", "hidden");
+         $(".show_frontpage_courses").show();
+        $(".hide_frontpage_courses").hide();
+        
         e.preventDefault();
     });
-    
-    
-    $(".show_hide_frontpage_courses").click(function(e){
-        var height = $("#frontpage-course-list").css("height");
-        if(height > "320px") {
-            $( "#frontpage-course-list" ).slideUp( "slow", function() {
-                $("#frontpage-course-list").css("height", "320px");
-                $("#frontpage-course-list").css("display", "block");
-                $("#frontpage-course-list").css("overflow", "hidden");
-            });
-            $(".show_hide_frontpage_courses").text('Show All Courses');
-            e.preventDefault();
-        }else {
-            $( "#frontpage-course-list" ).slideDown( "slow", function() {
-                $("#frontpage-course-list").css("height", "100%");
-                $("#frontpage-course-list").css("overflow", "visible");
-            });
-            $(".show_hide_frontpage_courses").text('Collapse Courses');
-            e.preventDefault();
-        }
-        e.preventDefault();
-    });
-    
     
 
 })(jQuery);

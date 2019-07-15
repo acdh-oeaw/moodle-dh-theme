@@ -81,6 +81,7 @@ function theme_dh_page_init(moodle_page $page) {
     $page->requires->js('/theme/dh/javascript/cookie.js');
     $page->requires->js('/theme/dh/javascript/jquery.modal.min.0.9.1.js');
     $page->requires->css('/theme/dh/css/jquery.modal.min.css');
+    
 }
 
 /**

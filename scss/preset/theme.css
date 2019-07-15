@@ -1,6 +1,6 @@
 h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #016771; }
 
 #header .navbar-nav button, #header .navbar-nav button:hover, #header .navbar-nav button:focus {
@@ -8,13 +8,13 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 4px; }
 
 @font-face {
-  font-family: arvoregular;
+  font-family: Montserrat;
   src: url([[setting:fontwww]]arvo-regular_201-webfont.eot);
   src: url([[setting:fontwww]]arvo-regular_201-webfont.eot?#iefix) format("embedded-opentype"), url([[setting:fontwww]]arvo-regular_201-webfont.woff2) format("woff2"), url([[setting:fontwww]]arvo-regular_201-webfont.woff) format("woff"), url([[setting:fontwww]]arvo-regular_201-webfont.ttf) format("truetype"), url([[setting:fontwww]]arvo-regular_201-webfont.svg#arvoregular) format("svg");
   font-weight: normal;
   font-style: normal; }
 body#page-site-index {
-  background: #fff; }
+  background: #F0F0F0; }
 body #region-main .mform:not(.unresponsive) .fitem .fcheckbox > span {
   margin-top: 0; }
 body #region-main .mform:not(.unresponsive) .fitem .fradio > span {
@@ -441,31 +441,33 @@ nav.navbar .logo img {
 #site-news-forum {
   color: #016771;
   font-weight: bold;
-  border: 1px solid #d5d5d5;
-  padding: 10px 20px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  overflow: hidden;
-  background-color: #F0F0F0; }
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  overflow: hidden; }
   #site-news-forum article .forumpost {
-    background: transparent; }
+    background: transparent;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px; }
+
+.carousel-content {
+  min-height: 200px; }
 
 .fp-info-box {
-  min-width: 350px;
-  min-height: 120px;
-  margin-top: 20px;
-  margin-bottom: 20px;
   color: #016771;
+  background-color: white;
   font-weight: 700;
-  margin: 30px;
-  padding: 20px;
+  padding: 5px;
   overflow: hidden;
-  background-color: #F0F0F0;
   border: 1px solid #d5d5d5;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  text-align: center; }
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  text-align: center;
+  height: 120px;
+  margin-bottom: 5px; }
 
+@media (max-width: 1420px) and (min-width: 1200px) {
+  .fp-info-box h3 {
+    font-size: 18px; } }
 .menubar .dropdown .caret {
   display: none; }
 
@@ -552,7 +554,7 @@ nav.navbar .logo img {
       .header-main .header-main-content .top-search input[type="text"] {
         width: 100%;
         height: 36px;
-        font-family: arvoregular, Arial, Helvetica, sans-serif;
+        font-family: Montserrat, Arial, Helvetica, sans-serif;
         color: #fff;
         line-height: 1;
         padding: 5px;
@@ -589,7 +591,7 @@ nav.navbar .logo img {
     float: left;
     margin: 10px 0; }
     .header-main .header-main-menubar .navbar-text a {
-      font-family: arvoregular, Arial, Helvetica, sans-serif;
+      font-family: Montserrat, Arial, Helvetica, sans-serif;
       color: #232323;
       text-transform: uppercase; }
       .header-main .header-main-menubar .navbar-text a:hover {
@@ -607,7 +609,7 @@ nav.navbar .logo img {
 
 #tagcloud_dh .block .content .tag_cloud a {
   font-size: 18px;
-  font-family: arvoregular; }
+  font-family: Montserrat; }
 
 #tagcloud_dh .wordcloud {
   /*border: 1px solid #036;*/
@@ -618,9 +620,11 @@ nav.navbar .logo img {
   min-width: 300px;
   min-height: 300px;
   width: 100%;
-  height: 100%;
-  font-family: arvoregular; }
+  height: 100%; }
 
+@media (min-width: 950px) {
+  #tagcloud_dh {
+    padding-top: 30px; } }
 #tagcloud_dh .wordcloud #awesomeCloudwordcloud1 {
   height: 100vh;
   width: 100vw;
@@ -628,17 +632,14 @@ nav.navbar .logo img {
   z-index: 0 !important; }
 
 .block.block_oeaw_tags {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px; }
+  background: transparent !important;
+  border: none !important; }
 
 .block-region .block.block_oeaw_tags .card-body .content {
-  background-color: #F0F0F0;
   color: #016771;
   font-weight: bold;
   padding: 10px 20px;
-  overflow: hidden;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px; }
+  overflow: hidden; }
 
 .block-region .block.block_oeaw_tags .card-body .card-title {
   display: none !important; }
@@ -687,7 +688,7 @@ nav.navbar .logo img {
 .navbar {
   margin: 0; }
   .navbar .nav > li > a {
-    font-family: arvoregular, Arial, Helvetica, sans-serif;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
     color: #232323;
     line-height: 21px;
     padding-right: 18px;
@@ -767,7 +768,7 @@ nav.navbar .logo img {
   box-shadow: none;
   margin: 0; }
   .dropdown-menu > li > a {
-    font-family: arvoregular, Arial, Helvetica, sans-serif;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
     color: #232323;
     padding: 10px 30px 10px 20px; }
     .dropdown-menu > li > a:hover {
@@ -991,6 +992,10 @@ div.footer_menu ul li a.nav-link {
   .paging:empty {
     padding: 0; }
 
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important; }
+
 .forumpost {
   background: #fafafa;
   padding: 18px;
@@ -1024,6 +1029,8 @@ div.footer_menu ul li a.nav-link {
       color: #828282; }
       .forumpost .row .topic .author a:hover {
         color: #016771; }
+  .forumpost .row .left {
+    display: none; }
 
 #page-site-index .forumpost {
   background: #fff; }
@@ -1283,7 +1290,7 @@ div.footer_menu ul li a.nav-link {
 legend {
   float: left;
   font-size: 18px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #016771;
   padding-bottom: 10px;
   border-bottom-color: #d6d6d6;
@@ -1576,7 +1583,7 @@ input[type="color"] {
 
 .btn-navigation-top {
   height: 40px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 40px;
   background: transparent;
@@ -1616,7 +1623,7 @@ input[type="color"] {
 
 .btn-secondary {
   height: 40px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 40px;
   background: #016771;
@@ -1656,7 +1663,7 @@ input[type="color"] {
 
 .btn-default {
   height: 40px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 40px;
   background: #016771;
@@ -1685,7 +1692,7 @@ input[type="color"] {
 
 button {
   height: 40px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 40px;
   background: #016771;
@@ -1726,7 +1733,7 @@ button {
 
 input.form-submit {
   height: 40px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 40px;
   padding: 0 18px;
@@ -1830,7 +1837,7 @@ input#id_submitbutton2[disabled] {
 
 input[type="button"] {
   height: 40px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 40px;
   background: #016771;
@@ -1859,7 +1866,7 @@ input[type="button"] {
 
 input[type="submit"] {
   height: 40px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 40px;
   background: #016771;
@@ -1888,7 +1895,7 @@ input[type="submit"] {
 
 input[type="reset"] {
   height: 40px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 40px;
   background: #016771;
@@ -2140,7 +2147,7 @@ table {
     min-height: auto; }
 
 #frontpage-course-list {
-  height: 320px;
+  height: 270px;
   overflow: hidden; }
 
 #frontpage-course-list .coursebox {
@@ -2226,7 +2233,7 @@ table {
       margin: 0; }
       .coursebox > .info > .coursename a {
         font-size: 21px;
-        font-family: arvoregular, Arial, Helvetica, sans-serif;
+        font-family: Montserrat, Arial, Helvetica, sans-serif;
         line-height: 27px;
         color: #016771;
         background-position: left 7px;
@@ -2240,7 +2247,7 @@ table {
   line-height: 22px; }
 .course-content .topics .section .activity .activityinstance a {
   font-size: 18px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #656565;
   line-height: 24px; }
   .course-content .topics .section .activity .activityinstance a img {
@@ -2331,7 +2338,7 @@ table {
     box-sizing: border-box; }
 
 .btn {
-  font-family: arvoregular, Arial, Helvetica, sans-serif; }
+  font-family: Montserrat, Arial, Helvetica, sans-serif; }
   .btn.btn-link {
     height: auto; }
     .btn.btn-link i:before {
@@ -2364,9 +2371,13 @@ i.icon {
   .fp-viewbar.btn-group .btn.btn-secondary:disabled:hover {
     background: #f1f1f1; }
 
+.fp-filter-text {
+  display: table-cell;
+  vertical-align: middle; }
+
 .col-fp-coursebox {
   width: 300px !important;
-  height: 310px !important;
+  height: 260px !important;
   margin: 0 auto;
   /* Added */
   float: none;
@@ -2374,7 +2385,16 @@ i.icon {
   margin-top: 10px;
   /* Added */
   margin-right: 10px;
-  /* Added */ }
+  /* Added */
+  margin-left: 0px; }
+
+.header-filter-div {
+  height: 40px !important;
+  line-height: 40px !important; }
+  .header-filter-div h5 {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal; }
 
 @media (max-width: 635px) {
   .col-fp-coursebox {
@@ -2396,21 +2416,61 @@ i.icon {
     margin-left: 0px !important;
     margin-bottom: 0px !important;
     padding: 10px !important; } }
+.fp-order-by {
+  max-width: 280px; }
+
+.fp-languages {
+  max-width: 250px; }
+
+.fp-credits {
+  max-width: 150px; }
+
+@media (max-width: 700px) {
+  .header-filter-div {
+    width: 100%;
+    height: 100% !important;
+    line-height: 100% !important; }
+
+  .fp-order-by {
+    width: 100%;
+    max-width: 100%; }
+
+  .fp-languages {
+    width: 100%;
+    max-width: 100%; }
+
+  .fp-credits {
+    width: 100%;
+    max-width: 100%; } }
+@media (max-width: 900px) and (min-width: 701px) {
+  .header-filter-div h5 {
+    font-size: 14px !important; }
+
+  .fp-order-by-box {
+    width: 150px; }
+
+  .fp-select {
+    height: 30px;
+    font-size: 13px; }
+
+  .fp-order-by {
+    max-width: 250px; }
+
+  .fp-languages {
+    max-width: 220px; }
+
+  .fp-credits {
+    max-width: 140px; } }
 .fp-select {
   cursor: pointer;
-  font-size: 14px;
-  padding: 9px;
-  border: solid 1px #517B97;
+  font-size: 13px;
+  padding: 2px;
   outline: 0;
   font-weight: bold;
   color: #016771;
-  border-radius: 3px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
-  -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
-  -webkit-appearance: none;
-  line-height: 0px;
-  margin-bottom: 10px !important; }
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  line-height: 0px; }
 
 .fp-select .select select {
   background: transparent;
@@ -2432,14 +2492,13 @@ i.icon {
   height: 100%;
   position: relative;
   text-align: center;
-  height: 300px;
+  height: 250px;
   max-width: 410px;
-  background-color: #F0F0F0;
+  background-color: white;
   border: 1px solid #d5d5d5;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px; }
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px; }
   .fp-coursebox .fp-coursethumb {
-    background-color: #F0F0F0;
     height: 160px;
     border: 1px solid #e6e6e6;
     margin: 0 auto; }
@@ -2451,9 +2510,9 @@ i.icon {
         object-fit: cover; }
   .fp-coursebox .fp-courseinfo {
     width: 100%;
-    background-color: #F0F0F0;
-    padding: 5px;
-    max-height: 150px;
+    padding-right: 5px;
+    padding-left: 5px;
+    height: 65px;
     overflow: hidden; }
     .fp-coursebox .fp-courseinfo h5 {
       text-align: left;
@@ -2462,7 +2521,8 @@ i.icon {
         color: #016771;
         word-wrap: break-word; }
     .fp-coursebox .fp-courseinfo .fp-author-text {
-      text-align: left !important; }
+      text-align: left !important;
+      font-size: 11px; }
     .fp-coursebox .fp-courseinfo .fp-courseinfo-title span {
       position: absolute;
       bottom: 0;
@@ -2499,7 +2559,7 @@ i.icon {
     float: left;
     width: 80%; }
     .fp-coursebox .fp-courseinfo-tags .fa-tag {
-      margin-left: 3px;
+      margin-left: 5px;
       margin-top: 5px;
       color: #016771; }
   .fp-coursebox .fp-courseinfo-tag {
@@ -2517,7 +2577,7 @@ i.icon {
     margin-right: 3px;
     margin-top: 5px; }
   .fp-coursebox .fp-courseinfo-upper-info {
-    max-height: 45px; }
+    height: 25px; }
 
 .fp-site-customdesc {
   background: #fff;
@@ -2620,13 +2680,15 @@ i.icon {
   top: 50px;
   left: 50px; }
   .carousel-overlay-content .content-wrap h2 {
-    font-family: arvoregular, Arial, Helvetica, sans-serif;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
     color: #fff;
     margin: 0; }
   .carousel-overlay-content .content-wrap .read-more {
-    font-family: arvoregular, Arial, Helvetica, sans-serif;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
     color: #fff;
-    background: #016771;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     text-transform: uppercase; }
     .carousel-overlay-content .content-wrap .read-more:hover {
       text-decoration: none; }
@@ -2707,7 +2769,7 @@ input[type="checkbox"] + label {
 
 #notice .singlebutton + .singlebutton input {
   height: 40px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 40px;
   background: #016771;
@@ -2736,7 +2798,7 @@ input[type="checkbox"] + label {
 
 .submit.buttons input[name="cancel"] {
   height: 40px;
-  font-family: arvoregular, Arial, Helvetica, sans-serif;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 40px;
   background: #016771;
@@ -3004,7 +3066,6 @@ form#movecourses table tbody > tr:nth-child(2n + 1) > th {
     margin-right: 0 !important;
     margin-bottom: 0px !important; }
   .block-region .block .card-body .card-text {
-    background-color: #f0f0f0;
     margin-top: 0px !important; }
     .block-region .block .card-body .card-text p {
       margin-left: 10px;
@@ -3060,8 +3121,33 @@ select.form-control:not([size]):not([multiple]) {
 .card div[data-region="managetemplates"] .no-overflow {
   width: 100%; }
 
+#site-news-forum article .forumpost {
+  background-color: white; }
+
+.padding-0 {
+  padding-right: 0;
+  padding-left: 0; }
+
+#site-news-forum h2 {
+  display: none; }
+#site-news-forum .forumpost {
+  background-color: white; }
 #site-news-forum .forumaddnew {
   margin-bottom: 10px; }
+#site-news-forum .forumpost .picture img.userpicture {
+  display: none; }
+#site-news-forum .forumpost .row {
+  margin: 0px !important; }
+  #site-news-forum .forumpost .row .left {
+    margin: 0px !important; }
+#site-news-forum .forumpost .options .commands, #site-news-forum .forumpost .content .attachments, #site-news-forum .forumpost .options .footer, #site-news-forum .forumpost .options .link {
+  display: none; }
+#site-news-forum .forumpost .topic .firstpost .starter .author {
+  display: none; }
+#site-news-forum .forumpost .row .topic {
+  margin: 0px !important; }
+#site-news-forum .forumpost .row .topic .author {
+  display: none; }
 #site-news-forum .forumpost .posting p img {
   width: 100%;
   max-width: 300px;
@@ -4058,7 +4144,8 @@ section[data-region="blocks-column"] {
     line-height: 40px; }
   .carousel-overlay-content .content-wrap .read-more {
     font-size: 16px;
-    line-height: 22px; }
+    line-height: 22px;
+    background-color: transparent; }
 
   #footer .footer-main {
     text-align: center; }

@@ -446,20 +446,19 @@ class theme_dh_core_course_renderer extends core_course_renderer {
                     if (empty($imgurl)) {
                         $imgurl = $noimgurl;
                     }
-
-                    $descriptionText = "";
-                    if($course->summary){
-                        $numberOfChars = 200;
-                        if (strpos($course->summary, '<img src=') !== false) {
-                            $imgTags = substr_count($course->summary, '<img src=');
-                            $numberOfChars = 250;
-                            if($imgTags == 0) { $imgTags = 1; }
-                            $numberOfChars = $numberOfChars * $imgTags;
-                        }
-                        $descriptionText = substr(strip_tags($course->summary, "<a><br><img>"), 0, $numberOfChars).'...';
-                    }else {
-                        $descriptionText = "This course has no description";
+                    $numOfTitleChars = 50;
+                    $numOfTagChars = 50;
+                    $numOfAuthorChars = 60;
+                    
+                    $courseTitle = substr(strip_tags($course->get_formatted_name(), "<a><br><img>"), 0, $numOfTitleChars);
+                    
+                    (strlen($course->get_formatted_name()) > 50) ? $courseTitle = $courseTitle."..." : $courseTitle;
+                                        
+                    if(!empty($authors)) {
+                        $authors = substr(strip_tags($authors, "<a><br><img>"), 0, $numOfAuthorChars);
+                        (strlen($authors) > 60) ? $authors = $authors."..." : $authors;
                     }
+                    
 
                     $icon = "fa-angle-double-right";
                     if (right_to_left()) {
@@ -481,7 +480,7 @@ class theme_dh_core_course_renderer extends core_course_renderer {
                                             $i = 0;
                                             $content .= '<i class="fa fa-tag"></i>';
                                             foreach($tags as $t) {
-                                                if($i >= 4) { break; }
+                                                if($i >= 3) { break; }
                                                 $content .= "<a href='/tag/index.php?tc=1&tag=".$t."' class='fp-courseinfo-tag'>".$t."</a> ";
                                                 $i++;
                                             }
@@ -501,7 +500,7 @@ class theme_dh_core_course_renderer extends core_course_renderer {
                             
                             $content .= '<div class="fp-courseinfo">';
                                 $content .= '<div class="fp-courseinfo-title">';
-                                    $content .= '<h5><a href="'.$courseurl.'">'.$course->get_formatted_name().'</a></h5>';
+                                    $content .= '<h5><a href="'.$courseurl.'" title="'.$course->get_formatted_name().'">'.$courseTitle.'</a></h5>';
                                     if(!empty($authors)) {
                                         $content .= '<span class="fp-author-text">'.$authors.'</span>';
                                     }
