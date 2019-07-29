@@ -30,14 +30,24 @@ require_once($CFG->libdir . '/behat/lib.php');
 
 $bodyattributes = $OUTPUT->body_attributes($extraclasses);
 $blockshtml = $OUTPUT->blocks('side-pre');
-$hasblocks = strpos($blockshtml, 'data-block=') !== false;
 
+
+$hasblocks = strpos($blockshtml, 'data-block=') !== false;
 $actual_url = "";
 $actual_url = (string)$PAGE->url->__toString();
 
 $course_top_desc = false;
 if ( (strpos($actual_url, '/course/') !== false) ||(strpos($actual_url, '/mod/') !== false)  ) {
     $course_top_desc = true;
+}
+$course_top_image = false;
+if ( (strpos($actual_url, '/course/view.php') !== false)  ) {
+    $course_top_image = true;
+}
+
+$course_edit = false;
+if ( (strpos($actual_url, '/edit.php') !== false) ||  (strpos($actual_url, '/editpage.php') !== false)) {
+    $course_edit = true;
 }
 
 $regionmainsettingsmenu = $OUTPUT->region_main_settings_menu();
@@ -139,7 +149,10 @@ $templatecontext = [
     "dhlogo" => $dhlogo,
     "eulogo" => $eulogo,
     "moodlelogo" => $moodlelogo,
-    "course_top_desc" => $course_top_desc
+    "course_top_desc" => $course_top_desc,
+    "course_top_image" => $course_top_image,
+    "course_edit" => $course_edit
+    
 ];
 
 $templatecontext['flatnavigation'] = $PAGE->flatnav;

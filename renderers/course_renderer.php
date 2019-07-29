@@ -447,7 +447,7 @@ class theme_dh_core_course_renderer extends core_course_renderer {
                         $imgurl = $noimgurl;
                     }
                     $numOfTitleChars = 50;
-                    $numOfTagChars = 50;
+                    $numOfTagChars = 40;
                     $numOfAuthorChars = 60;
                     
                     $courseTitle = substr(strip_tags($course->get_formatted_name(), "<a><br><img>"), 0, $numOfTitleChars);
@@ -456,7 +456,7 @@ class theme_dh_core_course_renderer extends core_course_renderer {
                                         
                     if(!empty($authors)) {
                         $authors = substr(strip_tags($authors, "<a><br><img>"), 0, $numOfAuthorChars);
-                        (strlen($authors) > 60) ? $authors = $authors."..." : $authors;
+                        (strlen($authors) > 45) ? $authors = substr($authors,0,45)."..." : $authors;
                     }
                     
 
@@ -478,13 +478,17 @@ class theme_dh_core_course_renderer extends core_course_renderer {
                                     $content .= '<div class="fp-courseinfo-tags">';
                                         if(count($tags) > 0) {
                                             $i = 0;
+                                            $sum = 0;
                                             $content .= '<i class="fa fa-tag"></i>';
                                             foreach($tags as $t) {
-                                                if($i >= 3) { break; }
+                                                $sum = strlen($t) + $sum;
+                                                if($i >= 3 || $sum > 35) { break; }
                                                 $content .= "<a href='/tag/index.php?tc=1&tag=".$t."' class='fp-courseinfo-tag'>".$t."</a> ";
                                                 $i++;
                                             }
+                                            
                                         }
+                                        
                                     $content .= '</div>';
                                 }
                                 $content .= '<div class="fp-courseinfo-ects">';

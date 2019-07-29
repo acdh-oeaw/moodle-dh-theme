@@ -24,7 +24,7 @@
 (function($) {
     var resized = false;
     var windowurl = window.location.href;    
-    
+        
     if(window.location.pathname == "/" || (windowurl.indexOf("orderby=") > -1 ) || 
             (windowurl.indexOf("languages=") > -1 ) || (windowurl.indexOf("ects=") > -1 )
             || (windowurl.indexOf("/index.php?") > -1 )) {
@@ -130,8 +130,9 @@
     var languages = url.searchParams.get("languages");    
     var orderby = url.searchParams.get("orderby");    
     var ects = url.searchParams.get("ects");    
-        
+    
     function createNewUrl(orderBy = "", languages = "", ects = ""){
+        
         if (history.pushState) {
             var path = window.location.pathname;
             
@@ -146,8 +147,11 @@
                 values = values + "&ects="+ects;
             }
             values = values.substring(1);
-            
-            var newurl = window.location.protocol + "//" + window.location.host  + "/index.php?" + values;
+            if(window.location.host == "clarin.oeaw.ac.at") {
+                var newurl = window.location.protocol + "//" + window.location.host  + "/moodle-dev/index.php?" + values;
+            }else {
+                var newurl = window.location.protocol + "//" + window.location.host  + "/index.php?" + values;
+            }
             window.history.pushState({path:newurl},'',newurl);
         }
     }

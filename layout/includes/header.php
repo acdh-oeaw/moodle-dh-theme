@@ -53,6 +53,12 @@ if ($custom == '') {
     $class = "navbar-toggler hidden-lg-up";
 }
 
+$actual_url = "";
+$actual_url = (string)$PAGE->url->__toString();
+$course_top_image = false;
+if ( (strpos($actual_url, '/course/view.php') !== false)  ) {
+    $course_top_image = true;
+}
 
 // Footer Content.
 $logourlfooter = get_logo_url('footer');
@@ -100,7 +106,7 @@ $templatecontext = [
     "s_phone" => $sphone,
     "s_email" => $semail,
     "s_get_social" => $sgetsocial,
-    "customclass" => $class
+    "customclass" => $class,
 ];
 
 $templatecontext['flatnavigation'] = $PAGE->flatnav;

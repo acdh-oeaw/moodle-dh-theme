@@ -94,6 +94,9 @@ body {
     &#page-site-index {
         background: $dh_fp_course_bg;
     }
+    &#page-course-view-oeaw_cf {
+        background: $dh_fp_course_bg;
+    }    
     #region-main .mform:not(.unresponsive) .fitem {
         .fcheckbox > span {
             margin-top: 0;
@@ -218,6 +221,7 @@ nav.navbar .logo img {
     .dropdown-menu {
         top: auto;
         margin-top: 7px;
+        border: 1px solid $dh_green;
         a {
             padding-top: .5rem;
             padding-bottom: .5rem;
@@ -298,6 +302,7 @@ nav.navbar .logo img {
         .dropdown-divider {
             display: none;
         }
+        border: 1px solid $dh_green;
         a {
             color: rgba(0, 0, 0, 0.533);
             background: $white;
@@ -328,11 +333,15 @@ nav.navbar .logo img {
 #page {
     margin-top: 0px !important;
 }
+.format-oeaw_cf {
+    background: $dh_fp_course_bg !important;
+}
 .header-main-menubar {
     background: $white;
     .dropdown-menu {
         top: auto;
         right: 0;
+        border: 1px solid $dh_green;
         a {
             &:hover {
                 color: $white;
@@ -804,11 +813,11 @@ nav.navbar .logo img {
                     color: $dh_green;
                     padding: 43px 15px;
                     &:hover {
-                        color: $dh_green;
+                        color: $white;
                         background: $dh_green;
                     }
                     &:focus {
-                        color: $dh_green;
+                        color: $white;
                         background: $dh_green;
                     }
                 }
@@ -944,8 +953,45 @@ nav.navbar .logo img {
     color: $dh_green;
 }
 .modal {
-    width: 90% !important;
+    position: sticky !important;
 }
+.case-study {
+    position: relative !important;
+    width: 90% !important;
+    top: 0 !important;
+    bottom: initial !important;
+    right: initial !important;
+    left: initial !important;
+    background: white !important;
+    -webkit-box-shadow: none !important;
+}
+/** EDITOR START **/
+.left_rounded_image_class {
+    float: left !important;
+    margin: 5px 10px 0px 0px;
+    border: 1px solid #ddd;
+}
+
+.right_rounded_image_class {
+    float: right !important;
+    margin: 5px 0px 10px 0px;
+    border: 1px solid #ddd; 
+}
+
+.center_rounded_image_class {
+    margin-left: auto; 
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #ddd; 
+    display: block;
+}
+.img-rounded {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+/** EDITOR END **/
 #tagcloud_dh .block .content .tag_cloud a {
     font-size:18px;
     font-family: $font_0;
@@ -1169,10 +1215,11 @@ nav.navbar .logo img {
 .dropdown-menu {
     background: $seashell;
     padding: 0;
-    border: 0;
+    border: 1px solid $dh_green;
     border-radius: 0;
     box-shadow: none;
     margin: 0;
+    
     > li > a {
         font-family: $font_0, $font_2, $font_3, $font_4;
         color: $color_log_cabin_approx;
@@ -1696,7 +1743,7 @@ div.footer_menu ul li a.nav-link {
         a {
             color: $color_storm_dust_approx;
             &:hover {
-                color: $dh_green;
+                color: $white;
             }
             &.btn {
                 &.active {
@@ -4179,12 +4226,15 @@ select.form-control:not([size]):not([multiple]) {
     max-width: 300px;
 }
 .block_course_custom_menu .card-text {
-    background-color: white !important;
+    background-color: rgba(240,240,240,1) !important;
 } 
 .block_course_custom_menu {
     margin-top: -10px;
     width: 335px;
     border : none !important;
+}
+.block_course_custom_menu .content {
+    background-color: rgba(240,240,240,1) !important;
 }
 .card {    
     
@@ -4265,6 +4315,7 @@ select.form-control:not([size]):not([multiple]) {
 .card-body .block-controls {
     .dropdown {
         .dropdown-menu a:hover {
+            color: $white;
             background: $dh_green;
         }
         .dropdown-toggle {
@@ -4596,6 +4647,10 @@ button.closebutton {
         margin: 0;
     }
 }
+.dropdown-menu a:hover .menu-action-text {
+  color: white !important;
+}
+
 .block-myoverview {
     .dropdown-menu {
         .dropdown-item {
@@ -4816,7 +4871,8 @@ button.close, .moodle-dialogue-base button.closebutton {
 }
 #region-main {
     &.has-blocks {
-        background-color: $dh_left_menu_grey_bg;
+        /*background-color: $dh_left_menu_grey_bg;*/
+        background-color: $white;
         .dashboard-card-deck .dashboard-card {
             .card-body {
                 .card-title {
@@ -5736,11 +5792,11 @@ button.close, .moodle-dialogue-base button.closebutton {
                 font-weight: normal;
                 color: $color_log_cabin_approx;
                 &:hover {
-                    color: black;
+                    color: $white;
                     background: $dh_green;
                 }
                 &:focus {
-                    color: black;
+                    color: $white;
                     background: $dh_green;
                 }
             }
@@ -5948,4 +6004,8 @@ button.close, .moodle-dialogue-base button.closebutton {
             margin-left: 0;
         }
     }
+}
+
+.hiddenifjs .addresourcedropdown {
+    display: block;
 }

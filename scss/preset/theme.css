@@ -15,6 +15,8 @@ h1, h2, h3, h4, h5, h6 {
   font-style: normal; }
 body#page-site-index {
   background: #F0F0F0; }
+body#page-course-view-oeaw_cf {
+  background: #F0F0F0; }
 body #region-main .mform:not(.unresponsive) .fitem .fcheckbox > span {
   margin-top: 0; }
 body #region-main .mform:not(.unresponsive) .fitem .fradio > span {
@@ -103,7 +105,8 @@ nav.navbar .logo img {
         margin-right: 5px; }
   #header .dropdown-menu {
     top: auto;
-    margin-top: 7px; }
+    margin-top: 7px;
+    border: 1px solid #016771; }
     #header .dropdown-menu a {
       padding-top: .5rem;
       padding-bottom: .5rem; }
@@ -151,35 +154,41 @@ nav.navbar .logo img {
         margin-top: 5px; }
   #header .navbar-nav button i {
     display: none; }
-  #header .menubar .dropdown-menu .dropdown-divider {
-    display: none; }
-  #header .menubar .dropdown-menu a {
-    color: rgba(0, 0, 0, 0.533);
-    background: #fff;
-    border-bottom: 1px solid #e6e6e6; }
-    #header .menubar .dropdown-menu a:last-child {
-      border-bottom: 0; }
-    #header .menubar .dropdown-menu a:hover {
-      color: #fff;
-      background: #016771; }
-      #header .menubar .dropdown-menu a:hover i.icon {
-        color: #fff; }
-    #header .menubar .dropdown-menu a:focus {
-      color: #fff;
-      background: #016771; }
-      #header .menubar .dropdown-menu a:focus i.icon {
-        color: #fff; }
+  #header .menubar .dropdown-menu {
+    border: 1px solid #016771; }
+    #header .menubar .dropdown-menu .dropdown-divider {
+      display: none; }
+    #header .menubar .dropdown-menu a {
+      color: rgba(0, 0, 0, 0.533);
+      background: #fff;
+      border-bottom: 1px solid #e6e6e6; }
+      #header .menubar .dropdown-menu a:last-child {
+        border-bottom: 0; }
+      #header .menubar .dropdown-menu a:hover {
+        color: #fff;
+        background: #016771; }
+        #header .menubar .dropdown-menu a:hover i.icon {
+          color: #fff; }
+      #header .menubar .dropdown-menu a:focus {
+        color: #fff;
+        background: #016771; }
+        #header .menubar .dropdown-menu a:focus i.icon {
+          color: #fff; }
   #header .moodle-actionmenu.show[data-enhanced] .menu a:hover {
     color: #232323; }
 
 #page {
   margin-top: 0px !important; }
 
+.format-oeaw_cf {
+  background: #F0F0F0 !important; }
+
 .header-main-menubar {
   background: #fff; }
   .header-main-menubar .dropdown-menu {
     top: auto;
-    right: 0; }
+    right: 0;
+    border: 1px solid #016771; }
     .header-main-menubar .dropdown-menu a:hover {
       color: #fff;
       background: #016771; }
@@ -503,10 +512,10 @@ nav.navbar .logo img {
         color: #016771;
         padding: 43px 15px; }
         .header-main .navbar .navbar-inner .navbar-toggleable-md a.nav-link:hover {
-          color: #016771;
+          color: #fff;
           background: #016771; }
         .header-main .navbar .navbar-inner .navbar-toggleable-md a.nav-link:focus {
-          color: #016771;
+          color: #fff;
           background: #016771; }
       .header-main .navbar .navbar-inner button.navbar-toggler {
         padding: 0;
@@ -605,8 +614,43 @@ nav.navbar .logo img {
   color: #016771; }
 
 .modal {
-  width: 90% !important; }
+  position: sticky !important; }
 
+.case-study {
+  position: relative !important;
+  width: 90% !important;
+  top: 0 !important;
+  bottom: initial !important;
+  right: initial !important;
+  left: initial !important;
+  background: white !important;
+  -webkit-box-shadow: none !important; }
+
+/** EDITOR START **/
+.left_rounded_image_class {
+  float: left !important;
+  margin: 5px 10px 0px 0px;
+  border: 1px solid #ddd; }
+
+.right_rounded_image_class {
+  float: right !important;
+  margin: 5px 0px 10px 0px;
+  border: 1px solid #ddd; }
+
+.center_rounded_image_class {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border: 1px solid #ddd;
+  display: block; }
+
+.img-rounded {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px; }
+
+/** EDITOR END **/
 #tagcloud_dh .block .content .tag_cloud a {
   font-size: 18px;
   font-family: Montserrat; }
@@ -763,7 +807,7 @@ nav.navbar .logo img {
 .dropdown-menu {
   background: #f1f1f1;
   padding: 0;
-  border: 0;
+  border: 1px solid #016771;
   border-radius: 0;
   box-shadow: none;
   margin: 0; }
@@ -1171,7 +1215,7 @@ div.footer_menu ul li a.nav-link {
     .block .content a {
       color: #656565; }
       .block .content a:hover {
-        color: #016771; }
+        color: #fff; }
       .block .content a.btn.active {
         background: #0073a5; }
     .block .content .userpicture {
@@ -3109,12 +3153,15 @@ select.form-control:not([size]):not([multiple]) {
   max-width: 300px; }
 
 .block_course_custom_menu .card-text {
-  background-color: white !important; }
+  background-color: #f0f0f0 !important; }
 
 .block_course_custom_menu {
   margin-top: -10px;
   width: 335px;
   border: none !important; }
+
+.block_course_custom_menu .content {
+  background-color: #f0f0f0 !important; }
 
 .card div[data-region="managecompetencies"] .no-overflow {
   width: 100%; }
@@ -3170,6 +3217,7 @@ select.form-control:not([size]):not([multiple]) {
   outline: none; }
 
 .card-body .block-controls .dropdown .dropdown-menu a:hover {
+  color: #fff;
   background: #016771; }
 .card-body .block-controls .dropdown .dropdown-toggle i {
   margin: 0; }
@@ -3400,6 +3448,9 @@ button.closebutton:active {
 .dropdown .dropdown-menu .dropdown-divider {
   margin: 0; }
 
+.dropdown-menu a:hover .menu-action-text {
+  color: white !important; }
+
 .block-myoverview .dropdown-menu .dropdown-item.active {
   color: #fff;
   background: #0073a5; }
@@ -3521,7 +3572,8 @@ button.close:focus, .moodle-dialogue-base button.closebutton:focus {
   padding: 1.25rem !important; }
 
 #region-main.has-blocks {
-  background-color: #f0f0f0; }
+  /*background-color: $dh_left_menu_grey_bg;*/
+  background-color: #fff; }
   #region-main.has-blocks .dashboard-card-deck .dashboard-card .card-body .card-title {
     width: 100%;
     color: #39b3e6;
@@ -4164,10 +4216,10 @@ section[data-region="blocks-column"] {
     font-weight: normal;
     color: #232323; }
     .nav-collapse .dropdown-menu a:hover {
-      color: black;
+      color: #fff;
       background: #016771; }
     .nav-collapse .dropdown-menu a:focus {
-      color: black;
+      color: #fff;
       background: #016771; }
   .nav-collapse .dropdown-menu > li > a:hover {
     color: #fff;
@@ -4304,5 +4356,7 @@ section[data-region="blocks-column"] {
     margin-left: 0; }
   .dir-rtl .form-horizontal .controls {
     margin-left: 0; } }
+.hiddenifjs .addresourcedropdown {
+  display: block; }
 
 /*# sourceMappingURL=theme.css.map */

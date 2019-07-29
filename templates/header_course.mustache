@@ -20,7 +20,11 @@
 
 {{>theme_dh/navbar}}
 
-{{#courseImg}}    
+{{#course_top_image}}
+{{/course_top_image}}
+
+
+{{#courseImg}}
     <div style='background-image: url("{{courseImg}}");' class='row header_course_main_image'> 
         <div class='header_course_main_image_layer'>
             <div class="header_course_main_image_text">
@@ -44,4 +48,27 @@
         </div>
     </div>
 {{/courseImg}}
-    
+{{^ courseImg }}
+    <div style='background-color:#016771 ' class='row header_course_main_image'> 
+        <div class='header_course_main_image_layer'>
+            <div class="header_course_main_image_text">
+                <h2>{{coursename}}</h3>
+                <p>{{coursesummary}}</p>
+            </div>
+            <div class="header_course_main_image_navbar">
+                {{#hasnavbar}}
+                    <div id="page-navbar">
+                        {{{navbar}}}
+                    </div>
+                {{/hasnavbar}}
+            </div>
+            {{#settingsmenu}}
+                <div class="header_course_main_image_settings">
+                    <div class="">
+                        {{{settingsmenu}}}
+                    </div>
+                </div>
+            {{/settingsmenu}}
+        </div>
+    </div>
+{{/ courseImg }}
