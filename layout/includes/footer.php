@@ -56,6 +56,18 @@ $surl = new moodle_url('/course/search.php');
 $ssearchcourses = get_string('searchcourses');
 $shome = get_string('home', 'theme_dh');
 
+$piwikid = 39;
+
+$actual_url = (string)$PAGE->url->__toString();
+
+if ( (strpos($actual_url, '//teach.dariah.eu/') !== false)  ) {
+    $piwikid = 39;
+}
+
+if ( (strpos($actual_url, '//clarin.oeaw.ac.at/moodle-dev') !== false)  ) {
+    $piwikid = 130;
+}
+
 
 // Footer Content.
 $logourlfooter = get_logo_url('footer');
@@ -130,7 +142,8 @@ $templatecontext = [
     "contact" => $contact,
     "footerall" => $footerall,
     "block1" => $block1,
-    "colclass" => $colclass
+    "colclass" => $colclass,
+    "piwikid" => $piwikid
 ];
 
 $templatecontext['flatnavigation'] = $PAGE->flatnav;
