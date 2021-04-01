@@ -15,145 +15,103 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * columns2.php
  *
- * @package   theme_dh
- * @copyright 2019 ACDH
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   theme_lambda
+ * @copyright 2019 redPIthemes
+ *
  */
 
-defined('MOODLE_INTERNAL') || die();
+$hide_breadrumb_setting = theme_lambda_get_setting('hide_breadcrumb');
+$hide_breadrumb = ((!isloggedin() or isguestuser()) and $hide_breadrumb_setting);
+$left = (!right_to_left());
+$standardlayout = FALSE;
+if ($PAGE->theme->settings->block_layout == 1) {$standardlayout = TRUE;}
+$sidebar = FALSE;
+if ($PAGE->theme->settings->block_layout == 2) {$sidebar = TRUE; theme_lambda_init_sidebar($PAGE); $sidebar_stat = theme_lambda_get_sidebar_stat();}
 
-user_preference_allow_ajax_update('drawer-open-nav', PARAM_ALPHA);
-require_once($CFG->libdir . '/behat/lib.php');
+echo $OUTPUT->doctype() ?>
+<html <?php echo $OUTPUT->htmlattributes(); ?>>
+<head>
+    <title><?php echo $OUTPUT->page_title(); ?></title>
+    <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
+    <?php echo $OUTPUT->standard_head_html(); ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google web fonts -->
+    <?php require_once(dirname(__FILE__).'/includes/fonts.php'); ?>
+</head>
 
+<?php 
+	$lambda_body_attributes = 'columns2';
+	$lambda_body_attributes .= ' has-region-side-pre';
+	$hassidepre = $PAGE->blocks->region_has_content('side-pre', $OUTPUT);
+	if ($hassidepre) {$lambda_body_attributes .= ' used-region-side-pre';} else {$lambda_body_attributes .= ' empty-region-side-pre';}
+	if ($sidebar) {$lambda_body_attributes .= ' sidebar-enabled '.$sidebar_stat;}
+	$blockstyle = theme_lambda_get_setting('block_style');
+	if ($blockstyle == 0) {$lambda_body_attributes .= ' blockstyle-01';}
+	if ($blockstyle == 1) {$lambda_body_attributes .= ' blockstyle-02';}
+	if ($blockstyle == 2) {$lambda_body_attributes .= ' blockstyle-03';}
+?>
+<body <?php echo $OUTPUT->body_attributes("$lambda_body_attributes"); ?>>
 
-$bodyattributes = $OUTPUT->body_attributes($extraclasses);
-$blockshtml = $OUTPUT->blocks('side-pre');
+<?php echo $OUTPUT->standard_top_of_body_html(); ?>
 
+<?php if ($sidebar) { ?>
+<div id="sidebar" class="">
+	<?php echo $OUTPUT->blocks('side-pre');?>
+    <div id="sidebar-btn"><span></span><span></span><span></span></div>
+</div>
+<?php } ?>
 
-$hasblocks = strpos($blockshtml, 'data-block=') !== false;
-$actual_url = "";
-$actual_url = (string)$PAGE->url->__toString();
+<div id="wrapper">
+<?php require_once(dirname(__FILE__).'/includes/header.php'); ?>
 
-$course_top_desc = false;
-if ( (strpos($actual_url, '/course/') !== false) ||(strpos($actual_url, '/mod/') !== false)  ) {
-    $course_top_desc = true;
-}
-$course_top_image = false;
-if ( (strpos($actual_url, '/course/view.php') !== false)  ) {
-    $course_top_image = true;
-}
+<div id="page" class="container-fluid">
 
-$course_edit = false;
-if ( (strpos($actual_url, '/edit.php') !== false) ||  (strpos($actual_url, '/editpage.php') !== false)) {
-    $course_edit = true;
-}
+    <div id ="page-header-nav" class="clearfix">
+    	<?php if (!($hide_breadrumb)) { ?>
+        <div id="page-navbar" class="clearfix">
+            <div class="breadcrumb-nav"><?php echo $OUTPUT->navbar(); ?></div>
+            <nav class="breadcrumb-button"><?php echo $OUTPUT->page_heading_button(); echo $OUTPUT->context_header_settings_menu(); ?></nav>
+        </div>
+        <?php } ?>
+    </div>
 
-$regionmainsettingsmenu = $OUTPUT->region_main_settings_menu();
-// Header content.
-$logourl = get_logo_url();
-$sitelogo = $CFG->wwwroot.'/theme/dh/pix/dh_transparent_logo_100.png';
-$dhlogo = $CFG->wwwroot.'/theme/dh/pix/dh_logo_200.png';
-$eulogo = $CFG->wwwroot.'/theme/dh/pix/eu_logo_200.png';
-$moodlelogo = $CFG->wwwroot.'/theme/dh/pix/md_logo_200.png';
+    <div id="page-content" class="row-fluid">
+        <section id="region-main" class="<?php if ($sidebar) {echo 'span12';} else {echo 'span9';} ?><?php if ($left) {echo ' pull-left';} ?><?php if ($standardlayout) {echo ' pull-right';} ?>">
+            <?php
+            echo $OUTPUT->course_content_header();
+            echo $OUTPUT->main_content();
+            echo $OUTPUT->course_content_footer();
+            ?>
+        </section>
+        <?php if (!$sidebar) {
+        $classextra1 = '';
+		$classextra2 = '';
+		if (!$standardlayout) {
+            $classextra1 = ' pull-right';
+        }
+        if ($left or (!$left and $standardlayout)) {
+            $classextra2 = ' desktop-first-column';
+        }
+        echo $OUTPUT->blocks('side-pre', 'span3'.$classextra1.$classextra2);
+		} ?>
+    </div>
 
-$surl = new moodle_url('/course/search.php');
-if (!$PAGE->url->compare($surl, URL_MATCH_BASE)) {
-    $compare = 1;
-} else {
-    $compare = 0;
-}
-$surl = new moodle_url('/course/search.php');
-$ssearchcourses = get_string('searchcourses');
-$shome = get_string('home', 'theme_dh');
+    <a href="#top" class="back-to-top"><i class="fa fa-chevron-circle-up fa-3x"></i><span class="lambda-sr-only"><?php echo get_string('back'); ?></span></a>
 
-$custom = $OUTPUT->custom_menu();
+</div>
+	<?php if ($CFG->version >= 2018120300) {echo $OUTPUT->standard_after_main_region_html();} ?>
+	<footer id="page-footer" class="container-fluid">
+		<?php require_once(dirname(__FILE__).'/includes/footer.php'); echo $OUTPUT->login_info();?>
+	</footer>
 
-if ($custom == '') {
-    $class = "navbar-toggler hidden-lg-up nocontent-navbar";
-} else {
-    $class = "navbar-toggler hidden-lg-up";
-}
+    <?php echo $OUTPUT->standard_end_of_body_html() ?>
 
-// Footer Content.
-$logourlfooter = get_logo_url('footer');
-$footlogo = theme_dh_get_setting('footerlogo');
-$footnote = theme_dh_get_setting('footnote', 'format_html');
-$address  = theme_dh_get_setting('address');
-$emailid  = theme_dh_get_setting('emailid');
-$phoneno  = theme_dh_get_setting('phoneno');
-$copyrightfooter = theme_dh_get_setting('copyright_footer');
-$infolink = theme_dh_get_setting('infolink');
-$infolink = theme_dh_infolink();
+</div>
 
-$sinfo = get_string('info', 'theme_dh');
-$scontactus = get_string('contact_us', 'theme_dh');
-$sphone = get_string('phone', 'theme_dh');
-$semail = get_string('email', 'theme_dh');
-$sgetsocial = get_string('get_social', 'theme_dh');
+<!--[if lte IE 9]>
+<script src="<?php echo $CFG->wwwroot;?>/theme/lambda/javascript/ie/iefix.js"></script>
+<![endif]-->
 
-$url = ($fburl != '' || $pinurl != '' || $twurl != '' || $gpurl != '') ? 1 : 0;
-$contact = ($emailid != '' || $address != '' || $phoneno != '') ? 1 : 0;
-
-if ($footlogo != '' || $footnote != '' || $infolink != '' || $url != 0 || $contact != 0 || $copyrightfooter != '') {
-    $footerall = 1;
-} else {
-    $footerall = 0;
-}
-
-$block1 = ($footlogo != '' || $footnote != '') ? 1 : 0;
-$infoslink = ($infolink != '') ? 1 : 0;
-$blockarrange = $block1 + $infoslink + $contact + $url;
-
-switch ($hasblocks) {
-    case 4:
-        $colclass = 'col-sm-12 col-md-8 col-lg-9 col-xl-9';
-        break;    
-    default:
-        $colclass = 'col-sm-12 col-md-12 col-lg-12 col-xl-12';
-    break;
-}
-
-$templatecontext = [
-    'sitename' => format_string($SITE->shortname, true, ['context' => context_course::instance(SITEID), "escape" => false]),
-    'output' => $OUTPUT,
-    'sidepreblocks' => $blockshtml,
-    'hasblocks' => $hasblocks,
-    'bodyattributes' => $bodyattributes,
-    'navdraweropen' => $navdraweropen,
-    'regionmainsettingsmenu' => $regionmainsettingsmenu,
-    'hasregionmainsettingsmenu' => !empty($regionmainsettingsmenu),
-    "surl" => $surl,
-    "s_searchcourses" => $ssearchcourses,
-    "s_home" => $shome,
-    "logourl" => $logourl,
-    "sitelogo" => $sitelogo,
-    "compare" => $compare,
-    "logourl_footer" => $logourlfooter,
-    "footnote" => $footnote,    
-    "address" => $address,    
-    "copyright_footer" => $copyrightfooter,
-    "infolink" => $infolink,
-    "s_info" => $sinfo,
-    "s_contact_us" => $scontactus,
-    "s_phone" => $sphone,
-    "s_email" => $semail,
-    "s_get_social" => $sgetsocial,
-    "url" => $url,    
-    "footerall" => $footerall,
-    "customclass" => $class,
-    "block1" => $block1,
-    "colclass" => $colclass,
-    "logourl" => $logourl,
-    "dhlogo" => $dhlogo,
-    "eulogo" => $eulogo,
-    "moodlelogo" => $moodlelogo,
-    "course_top_desc" => $course_top_desc,
-    "course_top_image" => $course_top_image,
-    "course_edit" => $course_edit
-    
-];
-
-$templatecontext['flatnavigation'] = $PAGE->flatnav;
-echo $OUTPUT->render_from_template('theme_dh/columns2', $templatecontext);
+</body>
+</html>

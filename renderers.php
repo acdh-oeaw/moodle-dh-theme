@@ -15,13 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * renderers.php
  *
- * @package    theme_dh
- * @copyright  2019 ACDH
- * @author    LMSACE Dev Team , lmsace.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   theme_lambda
+ * @copyright 2019 redPIthemes
+ *
  */
-defined('MOODLE_INTERNAL') || die;
-require_once('renderers/course_renderer.php');
+
 require_once('renderers/core_renderer.php');
+require_once('renderers/core_course_renderer.php');

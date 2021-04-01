@@ -1,181 +1,178 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * slideshow.php
- *
- * @package     theme_dh
- * @copyright   2019 ACDH
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-defined('MOODLE_INTERNAL') || die();
-$numberofslides = theme_dh_get_setting('numberofslides');
-
-if ($numberofslides) { ?>
-
-<div class="theme-slider">
-  <div id="home-page-carousel" class="carousel slide" data-ride="carousel" data-interval= "2000">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-        <?php for($s = 0; $s < $numberofslides; $s++):
-                 $clstxt = ($s == "0") ? ' class="active"' : '';
-            ?>
-     <li data-target="#home-page-carousel" data-slide-to="<?php echo $s; ?>" <?php echo $clstxt; ?>></li>
-            <?php endfor; ?>
-    </ol>
-
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner" role="listbox">
-
-        <?php
-        $allcontent = "";
-        for($s1 = 1; $s1 <= $numberofslides; $s1++):
-            $clstxt2 = ($s1 == "1") ? ' active' : '';
-            $slidecaption = theme_dh_get_setting('slide' . $s1 . 'caption', true);
-            $slideimg = theme_dh_render_slideimg($s1, 'slide' . $s1 . 'image');
-            $icon = "fa-angle-right";
-            if (right_to_left()) {
-                $icon = "fa-angle-left";
-            }
-            $slidebtn = theme_dh_get_setting('slide'.$s1.'urltext');
-            $slidebtn = theme_dh_lang($slidebtn);
-            $slideurl = theme_dh_get_setting('slide' . $s1 . 'url');
-            //$readmore = get_string("readmore", "theme_dh");
-            $content = html_writer::start_tag('div', array('class' => "carousel-item ".
-                $clstxt2, 'style' => "background-image:url(".$slideimg.")"));
-            $content .= html_writer::start_tag('div', array('class' => "carousel-overlay-content container-fluid",));
-            
-            //#dariahTeach was launched on 23 March 2017 with beta content. All modules will go through a rigorous post-launch review process. If you would like to form part of a Trusted User Group to improve our courses/workshops, please email #dariahTeach AT gmail.com with the subject line ‘Trusted User Group’ and let us know which course you would be interested in testing.<br/>
-            //In the coming months we will be opening the platform for new content. Join us by contributing a course, a workshop, or a video!
-            $content .= html_writer::start_tag('div', array('class' => "content-wrap"));
-             if ($slidecaption != '' || $slidebtn != '') {
-                $content .= html_writer::start_tag('div', array('class' => 'carousel-content'));
-                $content .= html_writer::start_tag('h2');
-                $content .= $slidecaption;
-                $content .= html_writer::end_tag('h2');
-
-                if ($slidebtn != '') {
-                    $content .= html_writer::start_tag('div', array('class' => 'carousel-btn'));
-
-                    $content .= html_writer::start_tag('a', array('href' => $slideurl, 'class' => 'read-more'));
-                    $content .= $slidebtn;
-                    /*$content .= html_writer::start_tag('i', array('class' => 'fa fa-angle-right'));
-                    $content .= html_writer::end_tag('i');*/
-
-                    $content .= html_writer::end_tag('a');
-
-                    $content .= html_writer::end_tag('div');
-                }
-                $content .= html_writer::end_tag('div');
-            }
-            /*
-            if (!empty($slidecaption)) {
-                $content .= html_writer::start_tag('div', array('class' => 'carousel-btn'));
-                $content .= $slidecaption;
-                $content .= html_writer::end_tag('div');
-            }*/
-            $content .= html_writer::empty_tag('br');
-           /* if (!empty($slideurl)) {
-                $content .= html_writer::start_tag('a', array('href' => $slideurl, 'class' => 'read-more'));
-                $content .= $readmore.' ';
-                $content .= html_writer::start_tag('i', array('class' => 'fa '.$icon));
-                $content .= html_writer::end_tag('i');
-                $content .= html_writer::end_tag('a');
-            }*/
-            $content .= html_writer::end_tag('div');
-            $content .= html_writer::end_tag('div');
-            $content .= html_writer::end_tag('div');
-            $allcontent .= $content;
-
-        endfor;
-            echo $allcontent;
-
-    ?>
-
-    </div>
-
-      <a class="left carousel-control carousel-control-prev" href="#home-page-carousel" data-slide="prev"></a>
-      <a class="right carousel-control carousel-control-next" href="#home-page-carousel" data-slide="next"></a>
-
-  </div>
-
-</div>
-<style>
-
-.carousel-item-next.carousel-item-left,
-.carousel-item-prev.carousel-item-right {
-  -webkit-transform: translateX(0);
-  transform: translateX(0);
+$shadow_effect = theme_lambda_get_setting('shadow_effect');
+$hasslide1image = (!empty($PAGE->theme->settings->slide1image));
+$hasslide2image = (!empty($PAGE->theme->settings->slide2image));
+$hasslide3image = (!empty($PAGE->theme->settings->slide3image));
+$hasslide4image = (!empty($PAGE->theme->settings->slide4image));
+$hasslide5image = (!empty($PAGE->theme->settings->slide5image));
+$hasslideshow = ($hasslide1image||$hasslide2image||$hasslide3image||$hasslide4image||$hasslide5image);
+$pattern='';
+if($PAGE->theme->settings->slideshowpattern==1) {$pattern='pattern_1';}
+else if($PAGE->theme->settings->slideshowpattern==2) {$pattern='pattern_2';}
+else if($PAGE->theme->settings->slideshowpattern==3) {$pattern='pattern_3';}
+else if($PAGE->theme->settings->slideshowpattern==4) {$pattern='pattern_4';}
+$advance='true';
+if($PAGE->theme->settings->slideshow_advance==0) {$advance='false';}
+$navhover='true';
+if($PAGE->theme->settings->slideshow_nav==0) {$navhover='false';}
+$slideshow_height='auto';
+if($PAGE->theme->settings->slideshow_height=='responsive') {
+	if ($hasslideshow) {
+		if ($hasslide1image) {$i = 1;}
+		else if ($hasslide2image) {$i = 2;}
+		else if ($hasslide3image) {$i = 3;}
+		else if ($hasslide4image) {$i = 4;}
+		else if ($hasslide5image) {$i = 5;}
+		$slide_img_src = $PAGE->theme->setting_file_url('slide'.$i.'image', 'slide'.$i.'image');
+		if (!empty($_SERVER['HTTPS'])) {$slide_img_src = 'https:'.$slide_img_src;} else {$slide_img_src = 'http:'.$slide_img_src;}
+		list($width, $height) = theme_lambda_getslidesize($slide_img_src);
+		$relative = $height/$width*100;
+		$relative .= '%';
+		$slideshow_height=$relative;
+	}
 }
+$loader='';
+if($PAGE->theme->settings->slideshow_loader==0) {$loader='bar';}
+else if($PAGE->theme->settings->slideshow_loader==1) {$loader='pie';}
+else if($PAGE->theme->settings->slideshow_loader==3) {$loader='none';}
+$imgfx='random';
+if ($PAGE->theme->settings->slideshow_imgfx!='') {$imgfx=$PAGE->theme->settings->slideshow_imgfx;}
+$txtfx='moveFromLeft';
+if ($PAGE->theme->settings->slideshow_txtfx!='') {$txtfx=$PAGE->theme->settings->slideshow_txtfx;}
+?>
 
-@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
-  .carousel-item-next.carousel-item-left,
-  .carousel-item-prev.carousel-item-right {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.carousel-item-next,
-.active.carousel-item-right {
-  -webkit-transform: translateX(100%);
-  transform: translateX(100%);
-}
-
-@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
-  .carousel-item-next,
-  .active.carousel-item-right {
-    -webkit-transform: translate3d(100%, 0, 0);
-    transform: translate3d(100%, 0, 0);
-  }
-}
-
-.carousel-item-prev,
-.active.carousel-item-left {
-  -webkit-transform: translateX(-100%);
-  transform: translateX(-100%);
-}
-
-@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
-  .carousel-item-prev,
-  .active.carousel-item-left {
-    -webkit-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-.carousel-fade .carousel-item {
-  opacity: 0;
-  transition-duration: .6s;
-  transition-property: opacity;
-}
-
-
-@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
-  .carousel-fade .carousel-item-next,
-  .carousel-fade .carousel-item-prev,
-  .carousel-fade .carousel-item.active,
-  .carousel-fade .active.carousel-item-left,
-  .carousel-fade .active.carousel-item-prev {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-</style>
-<!--E.O.Slider-->
-<?php }
+<?php if ($hasslideshow) { ?>
+	<div class="camera_wrap camera_emboss <?php echo $pattern; ?>" id="camera_wrap" <?php if (!$shadow_effect) { ?>style="margin-bottom:10px;"<?php } ?>>
+    
+    <?php if ($hasslide1image) { ?>
+		<div data-src="<?php echo $PAGE->theme->setting_file_url('slide1image', 'slide1image'); ?>">
+			<div class="camera_caption <?php echo $txtfx; ?>">
+            	<?php if (!empty($PAGE->theme->settings->slide1)) { 
+                	$slideheading_HTML = $PAGE->theme->settings->slide1;
+					$slideheading_HTML = format_text($slideheading_HTML,FORMAT_HTML);				
+				?>
+				<h1><?php echo $slideheading_HTML; ?></h1>
+                <?php } ?>
+                <?php if (!empty($PAGE->theme->settings->slide1caption)) { 
+                	$slidecaption_HTML = $PAGE->theme->settings->slide1caption;
+					$slidecaption_HTML = format_text($slidecaption_HTML,FORMAT_HTML);
+				?>
+				<span><?php echo $slidecaption_HTML; ?>
+                 <?php if (!empty($PAGE->theme->settings->slide1_url)) { ?>
+                 <div style="text-align: right; margin-bottom: 0px;">
+                   <a class="btn btn-default" href="<?php echo $PAGE->theme->settings->slide1_url; ?>"><?php echo get_string('more'); ?>&nbsp;...</a>
+                 </div>
+                <?php } ?>
+                </span>
+                <?php } ?>
+			</div>
+		</div>
+    <?php } ?>
+    
+    <?php if ($hasslide2image) { ?>
+		<div data-src="<?php echo $PAGE->theme->setting_file_url('slide2image', 'slide2image'); ?>">
+			<div class="camera_caption <?php echo $txtfx; ?>">
+            	<?php if (!empty($PAGE->theme->settings->slide2)) { 
+                	$slideheading_HTML = $PAGE->theme->settings->slide2;
+					$slideheading_HTML = format_text($slideheading_HTML,FORMAT_HTML);				
+				?>
+				<h1><?php echo $slideheading_HTML; ?></h1>
+                <?php } ?>
+                <?php if (!empty($PAGE->theme->settings->slide2caption)) { 
+                	$slidecaption_HTML = $PAGE->theme->settings->slide2caption;
+					$slidecaption_HTML = format_text($slidecaption_HTML,FORMAT_HTML);
+				?>
+				<span><?php echo $slidecaption_HTML; ?>
+                 <?php if (!empty($PAGE->theme->settings->slide2_url)) { ?>
+                 <div style="text-align: right; margin-bottom: 0px;">
+                   <a class="btn btn-default" href="<?php echo $PAGE->theme->settings->slide2_url; ?>"><?php echo get_string('more'); ?>&nbsp;...</a>
+                 </div>
+                <?php } ?>
+                </span>
+                <?php } ?>
+			</div>
+		</div>
+    <?php } ?>
+    
+    <?php if ($hasslide3image) { ?>
+		<div data-src="<?php echo $PAGE->theme->setting_file_url('slide3image', 'slide3image'); ?>">
+			<div class="camera_caption <?php echo $txtfx; ?>">
+            	<?php if (!empty($PAGE->theme->settings->slide3)) { 
+                	$slideheading_HTML = $PAGE->theme->settings->slide3;
+					$slideheading_HTML = format_text($slideheading_HTML,FORMAT_HTML);				
+				?>
+				<h1><?php echo $slideheading_HTML; ?></h1>
+                <?php } ?>
+                <?php if (!empty($PAGE->theme->settings->slide3caption)) { 
+                	$slidecaption_HTML = $PAGE->theme->settings->slide3caption;
+					$slidecaption_HTML = format_text($slidecaption_HTML,FORMAT_HTML);
+				?>
+				<span><?php echo $slidecaption_HTML; ?>
+                 <?php if (!empty($PAGE->theme->settings->slide3_url)) { ?>
+                 <div style="text-align: right; margin-bottom: 0px;">
+                   <a class="btn btn-default" href="<?php echo $PAGE->theme->settings->slide3_url; ?>"><?php echo get_string('more'); ?>&nbsp;...</a>
+                 </div>
+                <?php } ?>
+                </span>
+                <?php } ?>
+			</div>
+		</div>
+    <?php } ?>
+    
+    <?php if ($hasslide4image) { ?>
+		<div data-src="<?php echo $PAGE->theme->setting_file_url('slide4image', 'slide4image'); ?>">
+			<div class="camera_caption <?php echo $txtfx; ?>">
+            	<?php if (!empty($PAGE->theme->settings->slide4)) { 
+                	$slideheading_HTML = $PAGE->theme->settings->slide4;
+					$slideheading_HTML = format_text($slideheading_HTML,FORMAT_HTML);				
+				?>
+				<h1><?php echo $slideheading_HTML; ?></h1>
+                <?php } ?>
+                <?php if (!empty($PAGE->theme->settings->slide4caption)) { 
+                	$slidecaption_HTML = $PAGE->theme->settings->slide4caption;
+					$slidecaption_HTML = format_text($slidecaption_HTML,FORMAT_HTML);
+				?>
+				<span><?php echo $slidecaption_HTML; ?>
+                 <?php if (!empty($PAGE->theme->settings->slide4_url)) { ?>
+                 <div style="text-align: right; margin-bottom: 0px;">
+                   <a class="btn btn-default" href="<?php echo $PAGE->theme->settings->slide4_url; ?>"><?php echo get_string('more'); ?>&nbsp;...</a>
+                 </div>
+                <?php } ?>
+                </span>
+                <?php } ?>
+			</div>
+		</div>
+    <?php } ?>
+    
+    <?php if ($hasslide5image) { ?>
+		<div data-src="<?php echo $PAGE->theme->setting_file_url('slide5image', 'slide5image'); ?>">
+			<div class="camera_caption <?php echo $txtfx; ?>">
+            	<?php if (!empty($PAGE->theme->settings->slide5)) { 
+                	$slideheading_HTML = $PAGE->theme->settings->slide5;
+					$slideheading_HTML = format_text($slideheading_HTML,FORMAT_HTML);				
+				?>
+				<h1><?php echo $slideheading_HTML; ?></h1>
+                <?php } ?>
+                <?php if (!empty($PAGE->theme->settings->slide5caption)) { 
+                	$slidecaption_HTML = $PAGE->theme->settings->slide5caption;
+					$slidecaption_HTML = format_text($slidecaption_HTML,FORMAT_HTML);
+				?>
+				<span><?php echo $slidecaption_HTML; ?>
+                 <?php if (!empty($PAGE->theme->settings->slide5_url)) { ?>
+                 <div style="text-align: right; margin-bottom: 0px;">
+                   <a class="btn btn-default" href="<?php echo $PAGE->theme->settings->slide5_url; ?>"><?php echo get_string('more'); ?>&nbsp;...</a>
+                 </div>
+                <?php } ?>
+                </span>
+                <?php } ?>
+			</div>
+		</div>
+    <?php } ?>
+    				
+	</div>
+    
+<?php if ($shadow_effect) { ?>
+	<div class="container-fluid"><img src="<?php echo $OUTPUT->image_url('bg/lambda-shadow', 'theme'); ?>" class="lambda-shadow" alt=""></div>
+<?php } ?>
+    
+<?php } ?>

@@ -15,19 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * version.php
  *
- * @package    theme_dh
- * @copyright  2019 ACDH
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   theme_lambda
+ * @copyright 2019 redPIthemes
+ *
  */
 
 defined('MOODLE_INTERNAL') || die;
-$plugin->version   = 2019012601; // This component release level.
-$plugin->maturity = MATURITY_STABLE; // this version's maturity level.
-$plugin->release = 'v3.6.2'; // This version's release version.
-$plugin->requires  = 2018120300; // This version's moodle require release.
-$plugin->component = 'theme_dh'; // This component type_name.
-$plugin->dependencies = array(
-    'theme_boost'  => 2017111300, // This version's depended the component and its require release.
-);
+
+$plugin->component = 'theme_lambda'; // Full name of the plugin (used for diagnostics)
+$plugin->release   = '1.95';
+$plugin->version   = 2019091837; // The current module version (Date: YYYYMMDDXX)
+$plugin->maturity  = MATURITY_STABLE;
+$plugin->requires  = 2019041800; // Requires this Moodle version

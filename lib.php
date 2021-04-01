@@ -15,374 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * lib.php
  *
- * @package   theme_dh
- * @copyright 2019 ACDH
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-defined('MOODLE_INTERNAL') || die();
-/**
- * Get the pre scss for the theme
- * @param string $theme
- * @return string $scss.
- */
-function theme_dh_get_pre_scss($theme) {
-    global $CFG;
-    $scss = '';
-    // Prepend pre-scss.
-    if (!empty($theme->settings->scsspre)) {
-        $scss .= $theme->settings->scsspre;
-    }
-    $logo = $theme->setting_file_url('logo', 'logo');
-    $scss .= theme_dh_set_logo($scss, $logo);
-    $scss .= theme_dh_set_fontwww();
-    return $scss;
-}
-
-/**
- * Add the custom scss into the theme scss.
+ * @package   theme_lambda
+ * @copyright 2019 redPIthemes
  *
- * @param string $theme
- * @return string
  */
-function theme_dh_get_extra_scss($theme) {
-    return !empty($theme->settings->customcss) ? $theme->settings->customcss : '';
-}
-
-/**
- * Get the main scss content for the theme.
- *
- * @param string $theme
- * @return string
- */
-function theme_dh_get_main_scss_content($theme) {
-    global $CFG;
-    $theme = theme_config::load('boost');
-    $scss = theme_boost_get_main_scss_content($theme);
-    $themescssfile = $CFG->dirroot.'/theme/dh/scss/preset/theme.scss';
-    if ( file_exists($themescssfile) ) {
-        $scss .= file_get_contents($themescssfile);
-    }    
-    return $scss;
-}
-
-/**
- * Load the Jquery and migration files
- * Load the our theme js file
- *
- * @param  moodle_page $page [description]
- */
-function theme_dh_page_init(moodle_page $page) {
-    $page->requires->jquery();
-    $page->requires->js('/theme/dh/javascript/theme.js');
-    if($page->url) {
-        $urltochk = (array)$page->url;
-        if($urltochk) {
-            if($urltochk["\0*\0" . 'path']) {
-                if( 
-                    ($urltochk["\0*\0" . 'path'] == "/moodle-dev/") || 
-                    ($urltochk["\0*\0" . 'path'] == "/") || 
-                    ($urltochk["\0*\0" . 'path'] == "moodle-dev/")) {
-                    $page->requires->js('/theme/dh/javascript/jquery.awesomeCloud-0.2.js');
-                }
-            }
-        }
-    }
-    $page->requires->js('/theme/dh/javascript/cookie.js');
-    $page->requires->js('/theme/dh/javascript/jquery.modal.min.0.9.1.js');
-    $page->requires->css('/theme/dh/css/jquery.modal.min.css');
-    
-    
-}
-
-/**
- * Loads the CSS Styles and replace the background images.
- * If background image not available in the settings take the default images.
- *
- * @param string $css
- * @param string $theme
- * @return string
- */
-function theme_dh_process_css($css, $theme) {
-    // Set the background image for the logo.
-    $logo = $theme->setting_file_url('logo', 'logo');
-    $css = theme_dh_set_logo($css, $logo);
-    // Set custom CSS.
-    if (!empty($theme->settings->customcss)) {
-        $customcss = $theme->settings->customcss;
-    } else {
-        $customcss = null;
-    }
-    $css = theme_dh_set_customcss($css, $customcss);
-    $css = theme_dh_pre_css_set_fontwww($css);
-    return $css;
-}
-
-/**
- * Adds the logo to CSS.
- *
- * @param string $scss The CSS.
- * @param string $logo The URL of the logo.
- * @return string The parsed CSS
- */
-function theme_dh_set_logo($scss, $logo) {
-    $tag = '$logo: ';
-    $replacement = $logo;
-    if (is_null($replacement)) {
-        $replacement = '';
-    }
-    $scss = str_replace($tag, $replacement, $scss);
-    return $scss;
-}
-
-/**
- * Serves any files associated with the theme settings.
- *
- * @param stdClass $course
- * @param stdClass $cm
- * @param context $context
- * @param string $filearea
- * @param array $args
- * @param bool $forcedownload
- * @param array $options
- * @return bool
- */
-function theme_dh_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
-    static $theme;
-    if (empty($theme)) {
-        $theme = theme_config::load('dh');
-    }
-    if ($context->contextlevel == CONTEXT_SYSTEM) {
-        if ($filearea === 'logo') {
-            return $theme->setting_file_serve('logo', $args, $forcedownload, $options);
-        } else if ($filearea === 'footerlogo') {
-            return $theme->setting_file_serve('footerlogo', $args, $forcedownload, $options);
-        } else if ($filearea === 'style') {
-            theme_dh_serve_css($args[1]);
-        } else if ($filearea === 'pagebackground') {
-            return $theme->setting_file_serve('pagebackground', $args, $forcedownload, $options);
-        } else if (preg_match("/slide[1-9][0-9]*image/", $filearea) !== false) {
-            return $theme->setting_file_serve($filearea, $args, $forcedownload, $options);
-        } else {
-            send_file_not_found();
-        }
-    } else {
-        send_file_not_found();
-    }
-}
-
-/**
- * Serves CSS for image file updated to styles.
- *
- * @param string $filename
- * @return string
- */
-function theme_dh_serve_css($filename) {
-    global $CFG;
-    if (!empty($CFG->themedir)) {
-        $thestylepath = $CFG->themedir . '/dh/style/';
-    } else {
-        $thestylepath = $CFG->dirroot . '/theme/dh/style/';
-    }
-    $thesheet = $thestylepath . $filename;
-    $etagfile = md5_file($thesheet);
-    // File.
-    $lastmodified = filemtime($thesheet);
-    // Header.
-    $ifmodifiedsince = (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : false);
-    $etagheader = (isset($_SERVER['HTTP_IF_NONE_MATCH']) ? trim($_SERVER['HTTP_IF_NONE_MATCH']) : false);
-    if ((($ifmodifiedsince) && (strtotime($ifmodifiedsince) == $lastmodified)) || $etagheader == $etagfile) {
-        theme_dh_send_unmodified($lastmodified, $etagfile);
-    }
-    theme_dh_send_cached_css($thestylepath, $filename, $lastmodified, $etagfile);
-}
-
-
-/**
- * Set browser cache used in php header.
- *
- * @param  string $lastmodified
- * @param  string $etag
- */
-function theme_dh_send_unmodified($lastmodified, $etag) {
-    $lifetime = 60 * 60 * 24 * 60;
-    header('HTTP/1.1 304 Not Modified');
-    header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $lifetime) . ' GMT');
-    header('Cache-Control: public, max-age=' . $lifetime);
-    header('Content-Type: text/css; charset=utf-8');
-    header('Etag: "' . $etag . '"');
-    if ($lastmodified) {
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $lastmodified) . ' GMT');
-    }
-    die;
-}
-
-/**
- * Cached css.
- * @param  string $path
- * @param  string $filename
- * @param  int $lastmodified
- * @param  string $etag
- */
-function theme_dh_send_cached_css($path, $filename, $lastmodified, $etag) {
-    global $CFG;
-    require_once($CFG->dirroot . '/lib/configonlylib.php');
-    // 60 days only - the revision may get incremented quite often.
-    $lifetime = 60 * 60 * 24 * 60;
-    header('Etag: "' . $etag . '"');
-    header('Content-Disposition: inline; filename="'.$filename.'"');
-    header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $lastmodified) . ' GMT');
-    header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $lifetime) . ' GMT');
-    header('Pragma: ');
-    header('Cache-Control: public, max-age=' . $lifetime);
-    header('Accept-Ranges: none');
-    header('Content-Type: text/css; charset=utf-8');
-    if (!min_enable_zlib_compression()) {
-        header('Content-Length: ' . filesize($path . $filename));
-    }
-    readfile($path . $filename);
-    die;
-}
-
-
-/**
- * Adds any custom CSS to the CSS before it is cached.
- *
- * @param string $css The original CSS.
- * @param string $customcss The custom CSS to add.
- * @return string The CSS which now contains our custom CSS.
- */
-function theme_dh_set_customcss($css, $customcss) {
-    $tag = '[[setting:customcss]]';
-    $replacement = $customcss;
-    if (is_null($replacement)) {
-        $replacement = '';
-    }
-    $css = str_replace($tag, $replacement, $css);
-    return $css;
-}
-
-/**
- * Returns an object containing HTML for the areas affected by settings.
- *
- * Do not add Clean specific logic in here, child themes should be able to
- * rely on that function just by declaring settings with similar names.
- *
- * @param renderer_base $output Pass in $OUTPUT.
- * @param moodle_page $page Pass in $PAGE.
- * @return stdClass An object with the following properties:
- *      - navbarclass A CSS class to use on the navbar. By default ''.
- *      - heading HTML to use for the heading. A logo if one is selected or the default heading.
- *      - footnote HTML to use as a footnote. By default ''.
- */
-function theme_dh_get_html_for_settings(renderer_base $output, moodle_page $page) {
-    global $CFG;
-    $return = new stdClass;
-    $return->navbarclass = '';
-    if (!empty($page->theme->settings->invert)) {
-        $return->navbarclass .= ' navbar-inverse';
-    }
-    if (!empty($page->theme->settings->logo)) {
-        $return->heading = html_writer::link($CFG->wwwroot, '', array('title' => get_string('home'), 'class' => 'logo'));
-    } else {
-        $return->heading = $output->page_heading();
-    }
-    $return->footnote = '';
-    if (!empty($page->theme->settings->footnote)) {
-        $return->footnote = '<div class="footnote text-center">'.format_text($page->theme->settings->footnote).'</div>';
-    }
-    return $return;
-}
-
-/**
- * Loads the CSS Styles and put the font path
- *
- * @return string
- */
-function theme_dh_set_fontwww() {
-    global $CFG, $PAGE;
-
-    $themewww = $CFG->wwwroot."/theme";
-    $theme = theme_config::load('dh');
-    $fontwww = '$fontwww: "'. $themewww.'/dh/fonts/"'.";\n";
-    return $fontwww;
-}
-
-/**
- * Process the css for font url
- * @param string $css
- * @return string
- */
-function theme_dh_pre_css_set_fontwww($css) {
-    global $CFG, $PAGE;
-
-    $themewww = $CFG->wwwroot."/theme";
-    $tag = '[[setting:fontwww]]';
-    $theme = theme_config::load('dh');
-    $css = str_replace($tag, $themewww.'/dh/fonts/', $css);
-    return $css;
-}
-
-
-// Logo Image URL Fetch from theme settings.
-// @ return string.
-if (!function_exists('get_logo_url')) {
-    /**
-     * get_logo_url description
-     *
-     * @param  string $type
-     * @return image
-     */
-    function get_logo_url($type = 'header') {
-        global $OUTPUT;
-        static $theme;
-        if ( empty($theme)) {
-            $theme = theme_config::load('dh');
-        }
-        if ($type == "header") {
-            $logo = $theme->setting_file_url('logo', 'logo');
-            $logo = empty($logo) ? $OUTPUT->image_url('home/logo', 'theme') : $logo;
-        } else if ($type == "footer") {
-            $logo = $theme->setting_file_url('footerlogo', 'footerlogo');
-            $logo = empty($logo) ? '' : $logo;
-        }
-        return $logo;
-    }
-}
-
-/**
- * Renderer the slideimg
- *
- * @param int $p
- * @param string $sliname
- * @return image
- */
-function theme_dh_render_slideimg($p, $sliname) {
-    global $PAGE, $OUTPUT;
-    $nos = theme_dh_get_setting('numberofslides');
-    $i = $p % 3;
-    $slideimage = $OUTPUT->image_url('home/slide'.$i, 'theme');
-    // Get slide image or fallback to default.
-    if (theme_dh_get_setting($sliname)) {
-        $slideimage = $PAGE->theme->setting_file_url($sliname , $sliname);
-    }
-    return $slideimage;
-}
-
-/**
- * Function to get the theme setting
- * @param  string $setting
- * @param  boolean $format
- * @return string
- */
-function theme_dh_get_setting($setting, $format = true) {
+function theme_lambda_get_setting($setting, $format = false) {
     global $CFG;
     require_once($CFG->dirroot . '/lib/weblib.php');
     static $theme;
     if (empty($theme)) {
-        $theme = theme_config::load('dh');
+        $theme = theme_config::load('lambda');
     }
     if (empty($theme->settings->$setting)) {
         return false;
@@ -397,101 +40,1037 @@ function theme_dh_get_setting($setting, $format = true) {
     }
 }
 
-// Return the current theme url.
-// @ return string.
-if (!function_exists('theme_url')) {
-    /**
-     * theme_url
-     *
-     * @return string
-     */
-    function theme_url() {
-        global $CFG, $PAGE;
-        $themeurl = $CFG->wwwroot.'/theme/'. $PAGE->theme->name;
-        return $themeurl;
-    }
-}
-
-/**
- * Get the infolinks from settings page and display on the footer.
- * @return type|string
- */
-function theme_dh_infolink() {
-    $infolink = theme_dh_get_setting('infolink');
-    $content = "";
-    $infosettings = explode("\n", $infolink);
-    foreach ($infosettings as $key => $settingval) {
-        $expset = explode("|", $settingval);
-        if (isset($expset[0]) && isset($expset[1]) ) {
-            list($ltxt, $lurl) = $expset;
-        } else {
-            $ltxt = $expset[0];
-            $lurl = "#";
-        }
-        $ltxt = trim($ltxt);
-        $lurl = trim($lurl);
-
-        if (empty($ltxt)) {
-            continue;
-        }
-        $content .= '<li><a href="'.$lurl.'" target="_blank">'.$ltxt.'</a></li>';
-    }
-
-    return $content;
-}
-
-function theme_dh_lang($key = '') {
-    $pos = strpos($key, 'lang:');
-    if ($pos !== false) {
-        list($l, $k) = explode(":", $key);
-        if (get_string_manager()->string_exists($k, 'theme_dh')) {
-            $v = get_string($k, 'theme_dh');
-            return $v;
-        } else {
-            return $key;
+function theme_lambda_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+    if ($context->contextlevel == CONTEXT_SYSTEM) {
+        $theme = theme_config::load('lambda');		
+		if ($filearea === 'logo') {
+            return $theme->setting_file_serve('logo', $args, $forcedownload, $options);
+        } else if ($filearea === 'pagebackground') {
+            return $theme->setting_file_serve('pagebackground', $args, $forcedownload, $options);
+        } else if ($filearea === 'header_background') {
+            return $theme->setting_file_serve('header_background', $args, $forcedownload, $options);
+        } else if ($filearea === 'category_background') {
+            return $theme->setting_file_serve('category_background', $args, $forcedownload, $options);
+		} else if ($filearea === 'slide1image') {
+            return $theme->setting_file_serve('slide1image', $args, $forcedownload, $options);
+        } else if ($filearea === 'slide2image') {
+            return $theme->setting_file_serve('slide2image', $args, $forcedownload, $options);
+        } else if ($filearea === 'slide3image') {
+            return $theme->setting_file_serve('slide3image', $args, $forcedownload, $options);
+        } else if ($filearea === 'slide4image') {
+            return $theme->setting_file_serve('slide4image', $args, $forcedownload, $options);
+        } else if ($filearea === 'slide5image') {
+            return $theme->setting_file_serve('slide5image', $args, $forcedownload, $options);
+        } else if ((substr($filearea, 0, 15) === 'carousel_image_')) {
+            return $theme->setting_file_serve($filearea, $args, $forcedownload, $options);
+        } else if ($filearea === 'fonts_file_body') {
+            return $theme->setting_file_serve('fonts_file_body', $args, $forcedownload, $options);
+        } else if ($filearea === 'fonts_file_headings') {
+            return $theme->setting_file_serve('fonts_file_headings', $args, $forcedownload, $options);
+		} else {
+            send_file_not_found();
         }
     } else {
-        return $key;
+        send_file_not_found();
     }
 }
 
-function getCourseImage($courseid){
-    global $CFG;
-    if (empty($CFG->courseoverviewfileslimit)) {
-        return array();
+function theme_lambda_page_init(moodle_page $page)
+{
+    $page->requires->jquery();
+	if ($page->pagelayout === 'frontpage') {
+        $page->requires->jquery_plugin('jquery.easing.min.1.4', 'theme_lambda');
+        $page->requires->jquery_plugin('slideshow', 'theme_lambda');
+        $page->requires->jquery_plugin('carousel', 'theme_lambda');
+        $page->requires->js('/theme/lambda/javascript/frontpage.js');        
     }
-    require_once($CFG->libdir. '/filestorage/file_storage.php');
-    require_once($CFG->dirroot. '/course/lib.php');
-    $fs = get_file_storage();
-    $context = context_course::instance($courseid);
-    $files = $fs->get_area_files($context->id, 'course', 'overviewfiles', false, 'filename', false);
-    if (count($files)) {
-        $overviewfilesoptions = course_overviewfiles_options($courseid);
-        $acceptedtypes = $overviewfilesoptions['accepted_types'];
-        if ($acceptedtypes !== '*') {
-            // Filter only files with allowed extensions.
-            require_once($CFG->libdir. '/filelib.php');
-            foreach ($files as $key => $file) {
-                if (!file_extension_in_typegroup($file->get_filename(), $acceptedtypes)) {
-                    unset($files[$key]);
+    $page->requires->js('/theme/lambda/lightbox/lightbox.js');        
+    $page->requires->js('/theme/lambda/javascript/custom_js.js');        
+    
+    $page->requires->js('/theme/lambda/jquery/jquery.modal.min.0.9.1.js');
+    $page->requires->css('/theme/lambda/css/jquery.modal.min.css');
+    $page->requires->css('/theme/lambda/css/custom_css.css');
+    $page->requires->css('/theme/lambda/lightbox/lightbox.css');
+    
+}
+
+function lambda_set_pagewidth1($css, $pagewidth) {
+    $tag = '[[setting:pagewidth]]';
+    $replacement = $pagewidth;
+    if (is_null($replacement)) {
+        $replacement = '1600';
+    }
+    if ( ($replacement == "90") || ($replacement == "100") ) {
+		$css = str_replace($tag, $replacement.'%', $css);
+	} else {
+		$css = str_replace($tag, $replacement.'px', $css);
+	}
+    return $css;
+}
+
+function lambda_set_pagewidth2($css, $pagewidth) {
+    $tag = '[[setting:pagewidth_wide]]';
+    if ($pagewidth == "100") {
+        $replacement = 'body {background:none repeat scroll 0 0 #fff;padding-top:0;} @media(max-width:767px){body {padding-left: 0; padding-right: 0;} #page {padding: 10px 0;}} #wrapper {max-width:100%;width:100%;} #page-header {margin:0 auto;max-width:100%;} @media(min-width: 768px) {#page-header > .container-fluid {max-width: 90%;}} .container-fluid {padding: 0; max-width:100%} .navbar {background: none repeat scroll 0 0 [[setting:menufirstlevelcolor]];padding: 0;} .navbar-inner {margin: 0 auto; max-width: 90%;} .navbar .brand {margin-left:0;} .navbar #search {margin-right:0;} .pagelayout-frontpage header.navbar + .container-fluid > img.lambda-shadow {display: none;} #page {margin: 0 auto; max-width: 90%;} #page-footer .row-fluid {margin: 0 auto; max-width: 90%;} .spotlight-full {margin-left: -5.75% !important; margin-right: -5.75% !important;} .socials-header .social_icons.pull-right {padding-right:10%;} .socials-header .social_contact {padding-left:10%;}';
+		$css = str_replace($tag, $replacement, $css);
+	}
+	else { 
+		$css = str_replace($tag, "", $css);
+	}
+    return $css;
+}
+
+function lambda_set_category_layout($css,$category_layout) {
+	global $CFG;
+    $tag = '[[setting:category_layout]]';
+    if ($category_layout == "0") {
+        $replacement = '.coursebox{border:none;border-bottom:1px solid #e5e5e5;margin-bottom:25px;padding-bottom:35px}.coursebox .content .courseimage{float:left;margin-right:2em}@media (min-width:1187px){.coursebox .content .courseimage{height:225px;width:325px}}@media (max-width:1186px){.coursebox .content .courseimage{height:200px;width:290px}}@media (max-width:980px){.coursebox .content .courseimage{height:150px;width:220px}.coursebox .content .coursecat,.coursebox .content .summary{padding-top:0}}@media (max-width:580px){.coursebox .content .courseimage{height:250px;width:100%;float:unset}}';
+		$replacement .= '#myoverview_courses_view .row-fluid .span6{border-bottom:1px solid #e5e5e5;margin-bottom:1em;position:relative}@media (min-width:440px){#myoverview_courses_view .row-fluid .span6{width:100%;padding-bottom:.5em}#myoverview_courses_view .myoverviewimg{float:left}}@media (min-width:647px) and (max-width:767px){#myoverview_courses_view .row-fluid .span6{padding-bottom:2.5em}}#myoverview_courses_view .course-info-container{margin-top:1em}#myoverview_courses_view .myoverviewimg{width:240px;height:166px;margin-right:2em}#myoverview_courses_view .course-info-container .media-heading a,#myoverview_timeline_courses .course-info-container h4 a{color:#555;margin-top:2em}#myoverview_courses_view .course-info-container p.text-muted,#myoverview_timeline_courses .course-info-container p.muted{color:#555}#myoverview_courses_view .course-info-container .progress-chart-container{position:absolute;left:175px;top:1.5em}.progress-chart-container .no-progress{display:none}.progress-chart-container .progress-doughnut .progress-indicator svg .circle{stroke:[[setting:maincolor]]}.progress-chart-container .progress-doughnut{background:rgba(255,255,255,.5)}.progress-chart-container .progress-doughnut .progress-text.has-percent{color:#333;font-weight:700}#myoverview_timeline_courses .progress-chart-container .no-progress{height:0;width:0;margin-bottom:-70px;display:block}#myoverview_timeline_courses .progress-chart-container .no-progress .icon{display:none}';
+		$css = str_replace($tag, $replacement, $css);
+	}
+	else if ($category_layout == "1") {
+        $replacement = '#frontpage-course-list,.courses.frontpage-course-list-all{display:inline-block}.frontpage-course-list-enrolled .paging.paging-morelink::before{clear: both;content: "";display: table;}#frontpage-category-combo .category.loaded.with_children .content .courses .coursebox{margin-top:10px}.coursebox{float:left;width:325px;position:relative;border:1px solid #fff;box-shadow:0 0 10px rgba(0,0,0,.15);transition:all .3s ease-out 0s;padding:0;margin:0 30px 30px 0}.coursebox:hover{box-shadow:1px 4px 20px -2px rgba(0,0,0,.2);transform:translateY(-1px)}.coursebox h3.coursename{line-height:25px}.coursebox .course-btn,.coursebox h3.coursename{text-align:center;margin-top:0}.coursebox .content .summary{width:auto;padding:0 .5em;margin:0;height:140px;overflow:hidden}.coursebox .summary>div{overflow:hidden;text-align:justify;line-height:25px;max-height:100px}.coursebox .content .courseimage{width:100%!important;height:166px;margin:0 0 10px!important;float:unset}.coursebox .content .teachers{display:none}.coursebox .enrolmenticons,.coursebox .moreinfo{padding:0}.coursebox .enrolmenticons img{padding:5px!important;background:rgba(255,255,255,.75);border-radius:50%;height:16px;width:16px;float:left;position:absolute;top:10px;left:10px}.coursebox .enrolmenticons img+img{left:40px}.coursebox .enrolmenticons img+img+img{left:70px}.coursebox .enrolmenticons img+img+img+img{left:100px}.coursebox .enrolmenticons img+img+img+img+img{left:130px}@media (max-width:360px){.coursebox{width:85%}} #page-enrol-index #fitem_id_submitbutton{background: transparent; border: none;} @media (min-width:850px){#page-enrol-index .coursebox.clearfix{width:50%}}@media (max-width:849px){#page-enrol-index .coursebox.clearfix{width:99%}}#page-enrol-index .coursebox .content .summary,#page-enrol-index .coursebox .summary>div{height:auto;max-height:none}#page-enrol-index .fcontainer .col-md-9.form-inline.felement{width:100%;margin-left:0}#page-enrol-index #fitem_id_submitbutton .col-md-9.form-inline.felement{margin-left:0;float:left;display:block;width:auto}';
+		$replacement .= '#myoverview_courses_view .row-fluid .span6{width:325px!important}#myoverview_courses_view .row-fluid .span6 .well{border:1px solid #fff;box-shadow:0 0 10px rgba(0,0,0,.15);transition:all .3s ease-out 0s;padding:0 0 10px;position:relative;margin-bottom:15px}#myoverview_courses_view .row-fluid .span6 .well .course-info-container{padding:0 5px;height:110px;overflow:hidden}.well .course-info-container p{overflow:hidden;text-align:justify;line-height:25px}.well .course-info-container h4.media-heading{line-height:25px;text-align:center}#myoverview_courses_view .row-fluid .span6 .well:hover{box-shadow:1px 4px 20px -2px rgba(0,0,0,.2);transform:translateY(-1px)}#myoverview_courses_view .course-info-container .media-heading a,#myoverview_timeline_courses .course-info-container h4 a{color:#555;margin-top:2em}#myoverview_courses_view .course-info-container p.text-muted,#myoverview_timeline_courses .course-info-container p.muted{color:#555}#myoverview_courses_view .myoverviewimg{height:166px}#myoverview_courses_view .course-info-container .progress-chart-container{position:absolute;left:225px;top:1.5em}.progress-chart-container .no-progress{display:none}.progress-chart-container .progress-doughnut .progress-indicator svg .circle{stroke:[[setting:maincolor]]}.progress-chart-container .progress-doughnut{background:rgba(255,255,255,.5)}.progress-chart-container .progress-doughnut .progress-text.has-percent{color:#333;font-weight:700}#myoverview_timeline_courses .progress-chart-container .no-progress{height:0;width:0;margin-bottom:-70px;display:block}#myoverview_timeline_courses .progress-chart-container .no-progress .icon{display:none}';
+		$css = str_replace($tag, $replacement, $css);
+	}
+	else { 
+		$css = str_replace($tag, "", $css);
+	}
+    return $css;
+}
+
+function lambda_set_logo_res($css, $logo_res) {
+    $tag = '[[setting:logo_res]]';
+    if ($logo_res) {
+        $replacement = 'a.logo img {max-height:90px;} @media(max-width:767px){a.logo img {max-height:75px;}} @media(max-width:480px){a.logo img {max-height:60px;}}';
+		$css = str_replace($tag, $replacement, $css);
+	}
+	else { 
+		$css = str_replace($tag, "", $css);
+	}
+    return $css;
+}
+
+function lambda_set_block_icons($css, $block_icons) {
+    $tag = '[[setting:block_icons]]';
+    if ($block_icons == "1") {
+		$replacement = '.block .card-title::before {background: transparent !important; color: #999;}';
+		$css = str_replace($tag, $replacement, $css);
+	}
+	else if ($block_icons == "2") { 
+		$replacement = '.block .card-title::before {display: none;}';
+		$css = str_replace($tag, $replacement, $css);
+	}
+	else { 
+		$css = str_replace($tag, "", $css);
+	}
+    return $css;
+}
+
+function lambda_hide_category_background($css, $hide_category_background) {
+    $tag = '[[setting:hide_category_background]]';
+    if ($hide_category_background == "1") {
+		$replacement = '.course_category_tree .collapsible-actions {margin-bottom: 25px; background: #fff; height: 0; padding: 0; border-bottom: none;} .course_category_tree .collapsible-actions:before {display: none;} .course_category_tree .collapsible-actions .collapseexpand {color: #555 !important; font-size: 1em; font-weight: 300;}';
+		$css = str_replace($tag, $replacement, $css);
+	}
+	else { 
+		$css = str_replace($tag, "", $css);
+	}
+    return $css;
+}
+
+function lambda_set_customcss($css, $customcss) {
+    $tag = '[[setting:customcss]]';
+    $replacement = $customcss;
+    if (is_null($replacement)) {
+        $replacement = '';
+    }
+
+    $css = str_replace($tag, $replacement, $css);
+
+    return $css;
+}
+
+function theme_lambda_process_css($css, $theme) {
+    $pagewidth = $theme->settings->pagewidth;
+    $css = lambda_set_pagewidth1($css,$pagewidth);
+	$css = lambda_set_pagewidth2($css,$pagewidth);
+	$logo_res = $theme->settings->logo_res;
+	$css = lambda_set_logo_res($css,$logo_res);
+	$category_layout = $theme->settings->category_layout;
+	$css = lambda_set_category_layout($css,$category_layout);
+	$block_icons = $theme->settings->block_icons;
+	$css = lambda_set_block_icons($css,$block_icons);
+	$hide_category_background = $theme->settings->hide_category_background;
+	$css = lambda_hide_category_background($css,$hide_category_background);
+	$socials_header_bg = $theme->settings->socials_header_bg;
+	$css = theme_lambda_set_border_top($css,$socials_header_bg);
+    
+	// Set the Fonts.
+	$font_heading_src = '';
+	$font_body_src = '';
+	
+	if ($theme->settings->font_body_size ==1) {
+        $bodysize = '12px';
+    } else if ($theme->settings->font_body_size ==2) {
+        $bodysize = '13px';
+	} else if ($theme->settings->font_body_size ==3) {
+        $bodysize = '14px';
+	} else if ($theme->settings->font_body_size ==4) {
+        $bodysize = '15px';
+	} else if ($theme->settings->font_body_size ==5) {
+        $bodysize = '16px';}
+	
+	if ($theme->settings->fonts_source ==1) {
+    if ($theme->settings->font_body ==1) {
+        $bodyfont = 'Open Sans';
+    } else if ($theme->settings->font_body ==2) {
+        $bodyfont = 'Arimo';
+    } else if ($theme->settings->font_body ==3) {
+        $bodyfont = 'Arvo';
+	} else if ($theme->settings->font_body ==4) {
+        $bodyfont = 'Bree Serif';
+	} else if ($theme->settings->font_body ==5) {
+        $bodyfont = 'Cabin';
+	} else if ($theme->settings->font_body ==6) {
+        $bodyfont = 'Cantata One';
+	} else if ($theme->settings->font_body ==7) {
+        $bodyfont = 'Crimson Text';
+	} else if ($theme->settings->font_body ==8) {
+        $bodyfont = 'Droid Sans';
+	} else if ($theme->settings->font_body ==9) {
+        $bodyfont = 'Droid Serif';
+	} else if ($theme->settings->font_body ==10) {
+        $bodyfont = 'Gudea';
+	} else if ($theme->settings->font_body ==11) {
+        $bodyfont = 'Imprima';
+	} else if ($theme->settings->font_body ==12) {
+        $bodyfont = 'Lekton';
+	} else if ($theme->settings->font_body ==13) {
+        $bodyfont = 'Nunito';
+	} else if ($theme->settings->font_body ==14) {
+        $bodyfont = 'Montserrat';
+	} else if ($theme->settings->font_body ==15) {
+        $bodyfont = 'Playfair Display';
+	} else if ($theme->settings->font_body ==16) {
+        $bodyfont = 'Pontano Sans';
+	} else if ($theme->settings->font_body ==17) {
+        $bodyfont = 'PT Sans';
+	} else if ($theme->settings->font_body ==18) {
+        $bodyfont = 'Raleway';
+	} else if ($theme->settings->font_body ==22) {
+        $bodyfont = 'Roboto';
+	} else if ($theme->settings->font_body ==19) {
+        $bodyfont = 'Ubuntu';
+	} else if ($theme->settings->font_body ==20) {
+        $bodyfont = 'Vollkorn';
+	} else if ($theme->settings->font_body ==21) {
+        $bodyfont = 'Work Sans';}
+		
+	if ($theme->settings->font_heading ==1) {
+        $headingfont = 'Open Sans';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==2) {
+        $headingfont = 'Abril Fatface';
+		$headingweight = '400';
+    } else if ($theme->settings->font_heading ==3) {
+        $headingfont = 'Arimo';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==4) {
+        $headingfont = 'Arvo';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==5) {
+        $headingfont = 'Bevan';
+		$headingweight = '400';
+    } else if ($theme->settings->font_heading ==6) {
+        $headingfont = 'Bree Serif';
+		$headingweight = '400';
+    } else if ($theme->settings->font_heading ==7) {
+        $headingfont = 'Cabin';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==8) {
+        $headingfont = 'Cantata One';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==9) {
+        $headingfont = 'Crimson Text';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==10) {
+        $headingfont = 'Encode Sans';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==11) {
+        $headingfont = 'Enriqueta';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==12) {
+        $headingfont = 'Gudea';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==13) {
+        $headingfont = 'Imprima';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==14) {
+        $headingfont = 'Josefin Sans';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==15) {
+        $headingfont = 'Lekton';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==16) {
+        $headingfont = 'Lobster';
+		$headingweight = '400';
+    } else if ($theme->settings->font_heading ==17) {
+        $headingfont = 'Nunito';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==18) {
+        $headingfont = 'Montserrat';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==19) {
+        $headingfont = 'Pacifico';
+		$headingweight = '400';
+    } else if ($theme->settings->font_heading ==20) {
+        $headingfont = 'Playfair Display';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==21) {
+        $headingfont = 'Pontano Sans';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==22) {
+        $headingfont = 'PT Sans';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==23) {
+        $headingfont = 'Raleway';
+		$headingweight = '500';
+    } else if ($theme->settings->font_heading ==28) {
+        $headingfont = 'Roboto';
+		$headingweight = '500';
+    } else if ($theme->settings->font_heading ==24) {
+        $headingfont = 'Sansita One';
+		$headingweight = '400';
+    } else if ($theme->settings->font_heading ==25) {
+        $headingfont = 'Ubuntu';
+		$headingweight = '700';
+    } else if ($theme->settings->font_heading ==26) {
+        $headingfont = 'Vollkorn';
+		$headingweight = '700';
+	} else if ($theme->settings->font_heading ==27) {
+        $headingfont = 'Work Sans';
+        $headingweight = '700';}
+	} else {
+			$headingfont = 'custom_heading_font';
+			if ($theme->settings->font_headings_weight == 3) {$headingweight = 300;}
+			else if ($theme->settings->font_headings_weight == 2) {$headingweight = 400;}
+			else {$headingweight = 700;}
+			if (!is_null($theme->setting_file_url('fonts_file_headings', 'fonts_file_headings'))) {
+                $font_heading_src = "url(".$theme->setting_file_url('fonts_file_headings', 'fonts_file_headings').")";
+            }
+			$bodyfont = 'custom_body_font';
+			if (!is_null($theme->setting_file_url('fonts_file_body', 'fonts_file_body'))) {
+                $font_body_src = "url(".$theme->setting_file_url('fonts_file_body', 'fonts_file_body').")";
+            }
+    }
+    $css = theme_lambda_set_customfontface($css, $font_heading_src, $font_body_src);
+    $css = theme_lambda_set_headingfont($css, $headingfont, $headingweight);
+    $css = theme_lambda_set_bodyfont($css, $bodyfont, $bodysize);
+  
+    if (!empty($theme->settings->customcss)) {
+        $customcss = $theme->settings->customcss;
+    } else {
+        $customcss = null;
+    }
+    $css = lambda_set_customcss($css, $customcss);
+	
+	if ($theme->settings->banner_font_color==0) {
+        $banner_font_color = '#fff';
+    } else if ($theme->settings->banner_font_color==1) {
+        $banner_font_color = '#000';
+    } else if ($theme->settings->banner_font_color==2) {
+        $banner_font_color = '[[setting:maincolor]]';
+    } else {
+        $banner_font_color = null;
+    }
+    $css = theme_lambda_set_category_banner_font_color($css, $banner_font_color);
+	
+	if (!empty($theme->settings->socials_header_bg)) {
+        $socials_header_bg = $theme->settings->socials_header_bg;
+    } else {
+        $socials_header_bg = null;
+    }
+    $css = theme_lambda_set_socials_header_bg($css, $socials_header_bg);
+	
+    if (!empty($theme->settings->maincolor)) {
+        $maincolor = $theme->settings->maincolor;
+    } else {
+        $maincolor = null;
+    }
+    $css = theme_lambda_set_maincolor($css, $maincolor);
+
+    if (!empty($theme->settings->mainhovercolor)) {
+        $mainhovercolor = $theme->settings->mainhovercolor;
+    } else {
+        $mainhovercolor = null;
+    }
+    $css = theme_lambda_set_mainhovercolor($css, $mainhovercolor);
+	
+	if (!empty($theme->settings->linkcolor)) {
+        $linkcolor = $theme->settings->linkcolor;
+    } else {
+        $linkcolor = null;
+    }
+    $css = theme_lambda_set_linkcolor($css, $linkcolor);
+
+    if (!empty($theme->settings->def_buttoncolor)) {
+        $def_buttoncolor = $theme->settings->def_buttoncolor;
+    } else {
+        $def_buttoncolor = null;
+    }
+    $css = theme_lambda_set_def_buttoncolor($css, $def_buttoncolor);
+
+    if (!empty($theme->settings->def_buttonhovercolor)) {
+        $def_buttonhovercolor = $theme->settings->def_buttonhovercolor;
+    } else {
+        $def_buttonhovercolor = null;
+    }
+    $css = theme_lambda_set_def_buttonhovercolor($css, $def_buttonhovercolor);
+	
+    if (!empty($theme->settings->headercolor)) {
+        $headercolor = $theme->settings->headercolor;
+    } else {
+        $headercolor = null;
+    }
+    $css = theme_lambda_set_headercolor($css, $headercolor);
+
+    if (!empty($theme->settings->menufirstlevelcolor)) {
+        $menufirstlevelcolor = $theme->settings->menufirstlevelcolor;
+    } else {
+        $menufirstlevelcolor = null;
+    }
+    $css = theme_lambda_set_menufirstlevelcolor($css, $menufirstlevelcolor);
+
+    if (!empty($theme->settings->menufirstlevel_linkcolor)) {
+        $menufirstlevel_linkcolor = $theme->settings->menufirstlevel_linkcolor;
+    } else {
+        $menufirstlevel_linkcolor = null;
+    }
+    $css = theme_lambda_set_menufirstlevel_linkcolor($css, $menufirstlevel_linkcolor);
+
+    if (!empty($theme->settings->menusecondlevelcolor)) {
+        $menusecondlevelcolor = $theme->settings->menusecondlevelcolor;
+    } else {
+        $menusecondlevelcolor = null;
+    }
+    $css = theme_lambda_set_menusecondlevelcolor($css, $menusecondlevelcolor);
+
+    if (!empty($theme->settings->menusecondlevel_linkcolor)) {
+        $menusecondlevel_linkcolor = $theme->settings->menusecondlevel_linkcolor;
+    } else {
+        $menusecondlevel_linkcolor = null;
+    }
+    $css = theme_lambda_set_menusecondlevel_linkcolor($css, $menusecondlevel_linkcolor);
+
+    if (!empty($theme->settings->footercolor)) {
+        $footercolor = $theme->settings->footercolor;
+    } else {
+        $footercolor = null;
+    }
+    $css = theme_lambda_set_footercolor($css, $footercolor);
+
+    if (!empty($theme->settings->footerheadingcolor)) {
+        $footerheadingcolor = $theme->settings->footerheadingcolor;
+    } else {
+        $footerheadingcolor = null;
+    }
+    $css = theme_lambda_set_footerheadingcolor($css, $footerheadingcolor);
+
+    if (!empty($theme->settings->footertextcolor)) {
+        $footertextcolor = $theme->settings->footertextcolor;
+    } else {
+        $footertextcolor = null;
+    }
+    $css = theme_lambda_set_footertextcolor($css, $footertextcolor);
+	
+    if (!empty($theme->settings->copyrightcolor)) {
+        $copyrightcolor = $theme->settings->copyrightcolor;
+    } else {
+        $copyrightcolor = null;
+    }
+    $css = theme_lambda_set_copyrightcolor($css, $copyrightcolor);
+
+    if (!empty($theme->settings->copyright_textcolor)) {
+        $copyright_textcolor = $theme->settings->copyright_textcolor;
+    } else {
+        $copyright_textcolor = null;
+    }
+	$css = theme_lambda_set_copyright_textcolor($css, $copyright_textcolor);
+	
+	if (!empty($theme->settings->socials_color)) {
+        $socials_color = $theme->settings->socials_color;
+    } else {
+        $socials_color = null;
+    }
+    $css = theme_lambda_set_socials_color($css, $socials_color);
+	
+	if (!empty($theme->settings->carousel_img_dim)) {
+        $carousel_img_dim = $theme->settings->carousel_img_dim;
+    } else {
+        $carousel_img_dim = null;
+    }
+    $css = theme_lambda_set_carousel_img_dim($css, $carousel_img_dim);
+	
+	if (!empty($theme->settings->slideshow_height)) {
+        $slideshow_height = $theme->settings->slideshow_height;
+    } else {
+        $slideshow_height = null;
+    }
+	$hide_captions = $theme->settings->slideshow_hide_captions;
+    $css = theme_lambda_set_slideshow_height($css, $slideshow_height, $hide_captions);
+	
+	if (!is_null($theme->setting_file_url('category_background', 'category_background'))) {
+		$background = $theme->setting_file_url('category_background', 'category_background');
+	} else {
+		$background = null;
+	}
+	$css = theme_lambda_set_category_banner_bg($css, $background);
+	
+	if (!is_null($theme->setting_file_url('header_background', 'header_background'))) {
+		$background = $theme->setting_file_url('header_background', 'header_background');
+	} else {
+		$background = null;
+	}
+	if ($theme->settings->header_bg_repeat==1)  {
+        $repeat = ' repeat 0 0';
+    }
+	else {
+		$repeat = ' 50% 50% / cover';
+	}
+	$css = theme_lambda_set_header_bg($css, $background, $repeat);
+
+    $setting = 'list_bg';
+	if (is_null($theme->setting_file_url('pagebackground', 'pagebackground'))) {
+    	global $OUTPUT;
+		if ($theme->settings->list_bg==0)  {
+        	$pagebackground = $OUTPUT->image_url('page_bg/page_bg_01', 'theme');
+			$repeat = 'no-repeat fixed 0 0';
+			$size = 'cover';}
+		else if ($theme->settings->list_bg==1)  {
+        	$pagebackground = $OUTPUT->image_url('page_bg/page_bg_02', 'theme');
+			$repeat = 'no-repeat fixed 0 0';
+			$size = 'cover';}
+		else if ($theme->settings->list_bg==2)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/page_bg_blur01', 'theme');
+			$repeat = 'no-repeat fixed 0 0';
+			$size = 'cover';}
+		else if ($theme->settings->list_bg==3)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/page_bg_blur02', 'theme');
+			$repeat = 'no-repeat fixed 0 0';
+			$size = 'cover';}
+		else if ($theme->settings->list_bg==4)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/page_bg_blur03', 'theme');
+			$repeat = 'no-repeat fixed 0 0';
+			$size = 'cover';}
+		else if ($theme->settings->list_bg==5)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/cream_pixels', 'theme');
+			$repeat = 'repeat fixed 0 0';
+			$size = 'auto';}
+		else if ($theme->settings->list_bg==6)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/mochaGrunge', 'theme');
+			$repeat = 'repeat fixed 0 0';
+			$size = 'auto';}
+		else if ($theme->settings->list_bg==7)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/skulls', 'theme');
+			$repeat = 'repeat fixed 0 0';
+			$size = 'auto';}
+		else if ($theme->settings->list_bg==8)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/sos', 'theme');
+			$repeat = 'repeat fixed 0 0';
+			$size = 'auto';}
+		else if ($theme->settings->list_bg==9)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/squairy_light', 'theme');
+			$repeat = 'repeat fixed 0 0';
+			$size = 'auto';}
+		else if ($theme->settings->list_bg==10)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/subtle_white_feathers', 'theme');
+			$repeat = 'repeat fixed 0 0';
+			$size = 'auto';}
+		else if ($theme->settings->list_bg==11)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/tweed', 'theme');
+			$repeat = 'repeat fixed 0 0';
+			$size = 'auto';}
+		else if ($theme->settings->list_bg==12)  {
+			$pagebackground = $OUTPUT->image_url('page_bg/wet_snow', 'theme');
+			$repeat = 'repeat fixed 0 0';
+			$size = 'auto';}
+		else {
+			$pagebackground = $OUTPUT->image_url('page_bg/page_bg_00', 'theme');
+			$repeat = 'no-repeat fixed 0 0';
+			$size = 'cover';}
+		$css = theme_lambda_set_pagebackground($css, $pagebackground, $setting);
+		$css = theme_lambda_set_background_repeat($css, $repeat, $size);
+    } else {
+    	$setting = 'pagebackground';
+    	$pagebackground = $theme->setting_file_url($setting, $setting);
+    	$css = theme_lambda_set_pagebackground($css, $pagebackground, $setting);
+	
+		$repeat = 'no-repeat fixed 0 0';
+		$size = 'cover';
+    	if ($theme->settings->page_bg_repeat==1)  {
+     	   $repeat = 'repeat fixed 0 0';
+			$size = 'auto';
+    	}
+    	$css = theme_lambda_set_background_repeat($css, $repeat, $size);
+	}
+	
+    return $css;
+}
+
+function theme_lambda_set_customfontface($css, $font_heading_src, $font_body_src) {
+    $tag = '[[setting:fontface]]';
+	$replacement = '';
+    if ($font_heading_src != '') {$replacement .= '@font-face {font-family: "custom_heading_font"; src: '.$font_heading_src.';}';}
+	if ($font_body_src != '') {$replacement .= ' @font-face {font-family: "custom_body_font"; src: '.$font_body_src.';}';}
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_headingfont($css, $headingfont, $headingweight) {
+    $tag = '[[setting:headingfont]]';
+    $replacement = $headingfont;
+    if (is_null($replacement)) {
+        $replacement = 'Open Sans';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    $tag = '[[setting:headingweight]]';
+    $replacement = $headingweight;
+    if (is_null($replacement)) {
+        $replacement = '700';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_bodyfont($css, $bodyfont, $bodysize) {
+    $tag = '[[setting:bodyfont]]';
+    $replacement = $bodyfont;
+    if (is_null($replacement)) {
+        $replacement = 'Open Sans';
+    }
+    $css = str_replace($tag, $replacement, $css);
+	$tag = '[[setting:bodysize]]';
+    $replacement = $bodysize;
+    if (is_null($replacement)) {
+        $replacement = '13px';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_maincolor($css, $themecolor) {
+    $tag = '[[setting:maincolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#ffae00';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_mainhovercolor($css, $themecolor) {
+    $tag = '[[setting:mainhovercolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#efa300';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_linkcolor($css, $themecolor) {
+    $tag = '[[setting:linkcolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#efa300';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_def_buttoncolor($css, $themecolor) {
+    $tag = '[[setting:def_buttoncolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#8ec63f';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_def_buttonhovercolor($css, $themecolor) {
+    $tag = '[[setting:def_buttonhovercolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#77ae29';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_headercolor($css, $themecolor) {
+    $tag = '[[setting:headercolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#ffffff';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_menufirstlevelcolor($css, $themecolor) {
+    $tag = '[[setting:menufirstlevelcolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#323A45';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_menufirstlevel_linkcolor($css, $themecolor) {
+    $tag = '[[setting:menufirstlevel_linkcolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#ffffff';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_menusecondlevelcolor($css, $themecolor) {
+    $tag = '[[setting:menusecondlevelcolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#f4f4f4';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_menusecondlevel_linkcolor($css, $themecolor) {
+    $tag = '[[setting:menusecondlevel_linkcolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#444444';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_footercolor($css, $themecolor) {
+    $tag = '[[setting:footercolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#323A45';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_footerheadingcolor($css, $themecolor) {
+    $tag = '[[setting:footerheadingcolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#f9f9f9';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_footertextcolor($css, $themecolor) {
+    $tag = '[[setting:footertextcolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#bdc3c7';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_copyrightcolor($css, $themecolor) {
+    $tag = '[[setting:copyrightcolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#292F38';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_copyright_textcolor($css, $themecolor) {
+    $tag = '[[setting:copyright_textcolor]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#bdc3c7';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_socials_color($css, $themecolor) {
+    $tag = '[[setting:socials_color]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#a9a9a9';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_socials_header_bg($css, $themecolor) {
+    $tag = '[[setting:socials_header_bg]]';
+	$replacement = '#ff0000';
+	switch ($themecolor) {
+    case 0:
+        $replacement = 'transparent';
+        break;
+    case 1:
+        $replacement = 'rgba(0,0,0,0.025)';
+        break;
+    case 2:
+        $replacement = 'rgba(0,0,0,0.25)';
+        break;
+    case 3:
+        $replacement = '[[setting:maincolor]]';
+        break;
+    case 4:
+        $replacement = '[[setting:copyrightcolor]]';
+        break;
+	}
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_carousel_img_dim($css, $carousel_img_dim) {
+    $tag = '[[setting:carousel_img_dim]]';
+    $replacement = $carousel_img_dim;
+    if (is_null($replacement)) {
+        $replacement = '260px';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_slideshow_height($css, $slideshow_height, $hide_captions) {
+    $tag = '[[setting:slideshow_height]]';
+    $replacement = $slideshow_height;
+    if (is_null($replacement) || ($replacement == 'responsive')) {
+        $replacement = '475px';
+    }
+    $css = str_replace($tag, $replacement, $css);
+	if ($replacement == '475px') {
+		$tag = '[[setting:slideshow_height_desktop_s]]';
+		$replacement_tablet_l = '425px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+		$tag = '[[setting:slideshow_height_tablet]]';
+		$replacement_tablet_l = '375px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+		$tag = '[[setting:slideshow_height_mobile]]';
+		$replacement_tablet_l = '300px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+	}
+	else if ($replacement == '525px') {
+		$tag = '[[setting:slideshow_height_desktop_s]]';
+		$replacement_tablet_l = '475px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+		$tag = '[[setting:slideshow_height_tablet]]';
+		$replacement_tablet_l = '425px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+		$tag = '[[setting:slideshow_height_mobile]]';
+		$replacement_tablet_l = '350px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+	}
+	else if ($replacement == '575px') {
+		$tag = '[[setting:slideshow_height_desktop_s]]';
+		$replacement_tablet_l = '525px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+		$tag = '[[setting:slideshow_height_tablet]]';
+		$replacement_tablet_l = '475px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+		$tag = '[[setting:slideshow_height_mobile]]';
+		$replacement_tablet_l = '400px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+	}
+	else if ($replacement == '425px') {
+		$tag = '[[setting:slideshow_height_desktop_s]]';
+		$replacement_tablet_l = '375px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+		$tag = '[[setting:slideshow_height_tablet]]';
+		$replacement_tablet_l = '325px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+		$tag = '[[setting:slideshow_height_mobile]]';
+		$replacement_tablet_l = '275px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+	}
+	else if ($replacement == '375px') {
+		$tag = '[[setting:slideshow_height_desktop_s]]';
+		$replacement_tablet_l = '325px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+		$tag = '[[setting:slideshow_height_tablet]]';
+		$replacement_tablet_l = '275px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+		$tag = '[[setting:slideshow_height_mobile]]';
+		$replacement_tablet_l = '200px';
+		$css = str_replace($tag, $replacement_tablet_l, $css);
+	}
+	
+	$tag = '[[setting:slideshow_height_responsive]]';
+    $replacement = '';
+    if ($slideshow_height=='responsive') {
+        $replacement = '.camera_wrap {position: relative;} .camera_fakehover {min-height: 60px !important;}';
+    }
+    $css = str_replace($tag, $replacement, $css);
+	
+	$tag = '[[setting:slideshow_hide_captions]]';
+    $replacement = '';
+    if ($hide_captions == 1) {
+        $replacement = '@media(max-width:767px){#camera_wrap .camera_caption {display: none !important;}}';
+    }
+    $css = str_replace($tag, $replacement, $css);
+	
+    return $css;
+}
+
+function theme_lambda_set_category_banner_font_color($css, $themecolor) {
+    $tag = '[[setting:category_banner_font_color]]';
+    $replacement = $themecolor;
+    if (is_null($replacement)) {
+        $replacement = '#fff';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_category_banner_bg($css, $background) {
+    global $OUTPUT;
+    $tag = '[[setting:category_banner_bg]]';
+    $replacement = $background;
+    if (is_null($replacement)) {
+		$replacement = $OUTPUT->image_url('bg/category-bg', 'theme');
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_header_bg($css, $background, $repeat) {
+    global $OUTPUT;
+    $tag = '[[setting:header_bg]]';
+    $replacement = 'url('.$background.')';
+	$replacement .= $repeat;
+    if (is_null($background)) {
+        $replacement = '';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_pagebackground($css, $pagebackground, $setting) {
+    global $OUTPUT;
+    $tag = '[[setting:pagebackground]]';
+    $replacement = $pagebackground;
+    if (is_null($replacement)) {
+		$replacement = $OUTPUT->image_url('page_bg/page_bg_00', 'theme');
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_set_background_repeat($css, $repeat, $size) {
+    $tag = '[[setting:background-repeat]]';
+    $css = str_replace($tag, $repeat, $css);
+	$tag = '[[setting:background-size]]';
+    $css = str_replace($tag, $size, $css);
+    return $css;
+}
+
+function theme_lambda_set_border_top($css,$socials_header_bg) {
+    $tag = '[[setting:border_top]]';
+	$replacement = '';
+	if (($socials_header_bg==3) || ($socials_header_bg==4)) {$replacement = '#wrapper {border-top: none;
+}';}
+	$css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function theme_lambda_init_sidebar(moodle_page $page) {
+    user_preference_allow_ajax_update('theme_lambda_sidebar', PARAM_TEXT);
+    $page->requires->yui_module('moodle-theme_lambda-sidebar', 'M.theme_lambda.sidebar.init', array());
+}
+
+function theme_lambda_get_sidebar_stat() {
+    return get_user_preferences('theme_lambda_sidebar', '');
+}
+
+function theme_lambda_is_jpeg(&$pict) {
+    return (bin2hex($pict[0]) == 'ff' && bin2hex($pict[1]) == 'd8');
+}
+
+function theme_lambda_is_png(&$pict) {
+    return (bin2hex($pict[0]) == '89' && $pict[1] == 'P' && $pict[2] == 'N' && $pict[3] == 'G');
+}
+
+function theme_lambda_getslidesize($img_loc) {
+	if (theme_lambda_is_jpeg($img_loc)) {
+    $handle = fopen($img_loc, "rb");
+    $new_block = NULL;
+    if(!feof($handle)) {
+        $new_block = fread($handle, 32);
+        $i = 0;
+        if($new_block[$i]=="\xFF" && $new_block[$i+1]=="\xD8" && $new_block[$i+2]=="\xFF" && $new_block[$i+3]=="\xE0") {
+            $i += 4;
+            if($new_block[$i+2]=="\x4A" && $new_block[$i+3]=="\x46" && $new_block[$i+4]=="\x49" && $new_block[$i+5]=="\x46" && $new_block[$i+6]=="\x00") {
+                $block_size = unpack("H*", $new_block[$i] . $new_block[$i+1]);
+                $block_size = hexdec($block_size[1]);
+                while(!feof($handle)) {
+                    $i += $block_size;
+                    $new_block .= fread($handle, $block_size);
+                    if($new_block[$i]=="\xFF") {
+                        $sof_marker = array("\xC0", "\xC1", "\xC2", "\xC3", "\xC5", "\xC6", "\xC7", "\xC8", "\xC9", "\xCA", "\xCB", "\xCD", "\xCE", "\xCF");
+                        if(in_array($new_block[$i+1], $sof_marker)) {
+                            $size_data = $new_block[$i+2] . $new_block[$i+3] . $new_block[$i+4] . $new_block[$i+5] . $new_block[$i+6] . $new_block[$i+7] . $new_block[$i+8];
+                            $unpacked = unpack("H*", $size_data);
+                            $unpacked = $unpacked[1];
+                            $height = hexdec($unpacked[6] . $unpacked[7] . $unpacked[8] . $unpacked[9]);
+                            $width = hexdec($unpacked[10] . $unpacked[11] . $unpacked[12] . $unpacked[13]);
+                            return array($width, $height);
+                        } else {
+                            $i += 2;
+                            $block_size = unpack("H*", $new_block[$i] . $new_block[$i+1]);
+                            $block_size = hexdec($block_size[1]);
+                        }
+                    } else {
+                        return FALSE;
+                    }
                 }
             }
         }
-        if (count($files) > $CFG->courseoverviewfileslimit) {
-            // Return no more than $CFG->courseoverviewfileslimit files.
-            $files = array_slice($files, 0, $CFG->courseoverviewfileslimit, true);
-        }
     }
-    
-    // Display course overview files.
-    $courseimage = '';
-    foreach ($files as $file) {
-        $isimage = $file->is_valid_image();
-        if ($isimage) {
-            $courseimage = file_encode_url("$CFG->wwwroot/pluginfile.php",
-                '/'. $file->get_contextid(). '/'. $file->get_component(). '/'.
-            $file->get_filearea(). $file->get_filepath(). $file->get_filename(), !$isimage);
+    return FALSE;
+	} else if (theme_lambda_is_png($img_loc)) {
+		$handle = fopen( $img_loc, "rb" );
+    	if ( ! feof( $handle ) ) {
+        $new_block = fread( $handle, 24 );
+        if ( $new_block[0] == "\x89" &&
+            $new_block[1] == "\x50" &&
+            $new_block[2] == "\x4E" &&
+            $new_block[3] == "\x47" &&
+            $new_block[4] == "\x0D" &&
+            $new_block[5] == "\x0A" &&
+            $new_block[6] == "\x1A" &&
+            $new_block[7] == "\x0A" ) {
+                if ( $new_block[12] . $new_block[13] . $new_block[14] . $new_block[15] === "\x49\x48\x44\x52" ) {
+                    $width  = unpack( 'H*', $new_block[16] . $new_block[17] . $new_block[18] . $new_block[19] );
+                    $width  = hexdec( $width[1] );
+                    $height = unpack( 'H*', $new_block[20] . $new_block[21] . $new_block[22] . $new_block[23] );
+                    $height  = hexdec( $height[1] );
+                    return array( $width, $height );
+                }
+            }
         }
-    }
-    return $courseimage;
+    return FALSE;
+	} else {
+		return getimagesize($img_loc);
+	}
 }

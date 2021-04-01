@@ -15,16 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The secure layout.
  *
- * @package   theme_dh
- * @copyright 2019 ACDH
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   theme_lambda
+ * @copyright 2019 redPIthemes
+ *
  */
-
-defined('MOODLE_INTERNAL') || die();
-// Get the HTML for the settings bits.
-$html = theme_dh_get_html_for_settings($OUTPUT, $PAGE);
 
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
@@ -33,39 +28,36 @@ echo $OUTPUT->doctype() ?>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
     <?php echo $OUTPUT->standard_head_html() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google web fonts -->
+    <?php require_once(dirname(__FILE__).'/includes/fonts.php'); ?>
 </head>
 
 <body <?php echo $OUTPUT->body_attributes(); ?>>
 
 <?php echo $OUTPUT->standard_top_of_body_html() ?>
 
-<?php  require_once(dirname(__FILE__) . '/includes/header.php');
-    echo $headerlayout;
-?>
+<div id="wrapper">
 
-<div id="page" class="container">
+<div id="page" class="container-fluid">
 
-    <header id="page-header" class="clearfix">
-        <?php echo $html->heading; ?>
-    </header>
-
-    <div id="page-content" class="row">
-        <div id="region-bs-main-and-pre" class="col-md-9">
-            <div class="row">
-                <section id="region-main" class="col-md-8 pull-right">
-                    <?php echo $OUTPUT->main_content(); ?>
-                </section>
-                <?php echo $OUTPUT->blocks('side-pre', 'col-md-4 desktop-first-column'); ?>
-            </div>
-        </div>
-        <?php echo $OUTPUT->blocks('side-post', 'col-md-3'); ?>
+    <div id ="page-header-nav" class="clearfix">
     </div>
 
-</div>
+    <div id="page-content" class="row-fluid">
+        <div id="region-bs-main-and-pre" class="span12">
+            <div class="row-fluid">
+                <section id="region-main" class="span9 pull-right">
+                    <?php echo $OUTPUT->main_content(); ?>
+                </section>
+                <?php echo $OUTPUT->blocks('side-pre', 'span3 desktop-first-column'); ?>
+            </div>
+        </div>
+        <?php echo $OUTPUT->blocks('side-post', 'span3'); ?>
+    </div>
 
-<?php
-require_once(dirname(__FILE__) . '/includes/footer.php');
-echo $footerlayout;
-?>
+    <?php echo $OUTPUT->standard_end_of_body_html() ?>
+
+</div>
+</div>
 </body>
 </html>

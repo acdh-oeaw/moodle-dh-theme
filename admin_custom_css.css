@@ -1,0 +1,61 @@
+/*
+    Theme related admin custom css
+*/
+/* 
+    Created on : Oct 31, 2019, 8:55:33 AM
+    Author     : nczirjak
+*/
+
+.coursebox {
+margin: 10px !important;
+}
+
+.modal {
+  position: sticky !important; 
+}
+
+.case-study {
+  position: relative !important;
+  width: 90% !important;
+  top: 0 !important;
+  bottom: initial !important;
+  right: initial !important;
+  left: initial !important;
+  background: white !important;
+  -webkit-box-shadow: none !important; 
+}
+
+
+.left_rounded_image_class {
+  float: left !important;
+  margin: 5px 10px 0px 0px;
+  border: 1px solid #ddd; 
+}
+
+.right_rounded_image_class {
+  float: right !important;
+  margin: 5px 10px 10px 0px;
+  border: 1px solid #ddd; 
+}
+
+.center_rounded_image_class {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border: 1px solid #ddd;
+  display: block; 
+}
+
+.img-rounded {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px; 
+}
+a#prev-activity-link, a#next-activity-link {
+display:none;
+}
+.activity img.activityicon {
+  display:none;
+}
+

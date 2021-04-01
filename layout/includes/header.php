@@ -15,100 +15,122 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * header.php
  *
- * @package    theme_dh
- * @copyright  2019 ACDH
- * @author    LMSACE Dev Team
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   theme_lambda
+ * @copyright 2019 redPIthemes
+ *
  */
 
-defined('MOODLE_INTERNAL') || die();
+$searchbox = theme_lambda_get_setting('navbar_search_form');
+$login_link = theme_lambda_get_setting('login_link');
+$login_custom_url = theme_lambda_get_setting('custom_login_link_url');
+$login_custom_txt = theme_lambda_get_setting('custom_login_link_txt');
+$home_button = theme_lambda_get_setting('home_button');
+$shadow_effect = theme_lambda_get_setting('shadow_effect');
+$auth_googleoauth2 = theme_lambda_get_setting('auth_googleoauth2');
+$haslogo = (!empty($PAGE->theme->settings->logo));
+$hasheaderprofilepic = (empty($PAGE->theme->settings->headerprofilepic)) ? false : $PAGE->theme->settings->headerprofilepic;
+$moodle_global_search = 0;
 
-user_preference_allow_ajax_update('drawer-open-nav', PARAM_ALPHA);
-require_once($CFG->libdir . '/behat/lib.php');
-
-$extraclasses = [];
-$bodyattributes = $OUTPUT->body_attributes($extraclasses);
-$blockshtml = $OUTPUT->blocks('side-pre');
-$hasblocks = strpos($blockshtml, 'data-block=') !== false;
-$regionmainsettingsmenu = $OUTPUT->region_main_settings_menu();
-// Header content.
-$logourl = get_logo_url();
-$surl = new moodle_url('/course/search.php');
-if (! $PAGE->url->compare($surl, URL_MATCH_BASE)) {
-    $compare = 1;
-} else {
-    $compare = 0;
+$checkuseragent = '';
+if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+    $checkuseragent = $_SERVER['HTTP_USER_AGENT'];
 }
-$surl = new moodle_url('/course/search.php');
-$ssearchcourses = get_string('searchcourses');
-$shome = get_string('home', 'theme_dh');
+$username = get_string('username');
+if (strpos($checkuseragent, 'MSIE 8')) {$username = str_replace("'", "&prime;", $username);}
+?>
 
-$custom = $OUTPUT->custom_menu();
+<?php if($PAGE->theme->settings->socials_position==1) { ?>
+    	<div class="container-fluid socials-header"> 
+    	<?php require_once(dirname(__FILE__).'/socials.php');?>
+        </div>
+<?php
+} ?>
 
-if ($custom == '') {
-    $class = "navbar-toggler hidden-lg-up nocontent-navbar";
-} else {
-    $class = "navbar-toggler hidden-lg-up";
-}
+<header id="page-header" class="clearfix">              	
+		<?php 
+			if ($PAGE->theme->settings->page_centered_logo==0) {require_once(dirname(__FILE__).'/header_var1.php');}
+			else {require_once(dirname(__FILE__).'/header_var2.php');}
+		?>               
+</header>
+<header class="navbar">
+    <nav class="navbar-inner">
+        <div class="container-fluid">
+            <?php
+                if ($home_button == 'shortname') { 
+                    $home_button_string = '<a class="brand" href="'.$CFG->wwwroot.'/">'.$SITE->shortname.'</a>'; 
+                }
+                else if ($home_button == 'home') { 
+                    $home_button_string = '<a class="brand" href="'.$CFG->wwwroot.'/">'.get_string('home').'</a>'; 
+                }
+                else if ($home_button == 'frontpagedashboard') { 
+                    if (isloggedin()) {
+                        $home_button_string = '<a class="brand" href="'.$CFG->wwwroot.'/">'.get_string('mymoodle', 'admin').'</a>'; 
+                    }
+                    else {
+                        $home_button_string = '<a class="brand" href="'.$CFG->wwwroot.'/">'.get_string('frontpage', 'admin').'</a>'; 
+                    }
+                }
+                else { // Fallback, should not happen
+                    $home_button_string = '<a class="brand" href="'.$CFG->wwwroot.'/">'.$SITE->shortname.'</a>'; 
+                }
+                $home_button_string .= '<a class="brand" href="'.$CFG->wwwroot.'/local/simple_contact_form/">Contact</a>'; 
+                
+                
+            ?>
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <div class="nav-collapse collapse">
+                <?php echo $home_button_string; ?>
+                <div class="dropdown-about">
+                    <span>
+                        <?php echo '<a class="brand" href="'.$CFG->wwwroot.'/local/staticpage/view.php?page=about">About</a>'; ?>
+                    </span>
+                    <div class="dropdown-about-content">
+                      <?php
+                            echo '<ul>';
+                                echo '<li>';    
+                                    echo '<a  class="brand" href="'.$CFG->wwwroot.'/local/staticpage/view.php?page=about_dt">The #dariahTeach Project</a>'; 
+                                echo '</li>';    
+                                echo '<li>';    
+                                   echo '<a  class="brand" href="'.$CFG->wwwroot.'/local/staticpage/view.php?page=about_ignite">The IGNITE Project</a>'; 
+                                echo '</li>';    
+                            echo '</ul>';
+                      ?>
+                    </div>
+                </div> 
+                
+                    <?php echo '<a class="brand" href="'.$CFG->wwwroot.'/local/staticpage/view.php?page=testimonials">Testimonials</a>'; ?>
+                
+            	<ul class="nav">
+                    <?php echo $OUTPUT->custom_menu(); ?>
+                </ul>
+                <ul class="nav pull-right">
+                    <li><?php echo $OUTPUT->page_heading_menu(); ?></li>
+                </ul>
+                
+                <?php
+					if (!empty($CFG->enableglobalsearch) && has_capability('moodle/search:query', context_system::instance())) {
+						$moodle_global_search = 1;
+					}
+				?>
+                
+                <?php if (($searchbox==0) OR ($searchbox==1 AND (isloggedin() AND !isguestuser()))) { ?>
+                <form id="search" action="<?php if ($moodle_global_search) {echo $CFG->wwwroot.'/search/index.php';} else {echo $CFG->wwwroot.'/course/search.php';} ?>" >
+                	<label for="coursesearchbox" class="lambda-sr-only"><?php if ($moodle_global_search) {echo get_string('search', 'search');} else {echo get_string('searchcourses');} ?></label>						
+					<input id="coursesearchbox" type="text" onFocus="if(this.value =='<?php if ($moodle_global_search) {echo get_string('search', 'search');} else {echo get_string('searchcourses');} ?>' ) this.value=''" onBlur="if(this.value=='') this.value='<?php if ($moodle_global_search) {echo get_string('search', 'search');} else {echo get_string('searchcourses');} ?>'" value="<?php if ($moodle_global_search) {echo get_string('search', 'search');} else {echo get_string('searchcourses');} ?>" <?php if ($moodle_global_search) {echo 'name="q"';} else {echo 'name="search"';} ?> >
+					<button type="submit"><span class="lambda-sr-only"><?php echo get_string('submit'); ?></span></button>						
+				</form>
+                <?php } ?>
+                
+            </div>
+        </div>
+    </nav>
+</header>
 
-$actual_url = "";
-$actual_url = (string)$PAGE->url->__toString();
-$course_top_image = false;
-if ( (strpos($actual_url, '/course/view.php') !== false)  ) {
-    $course_top_image = true;
-}
-
-// Footer Content.
-$logourlfooter = get_logo_url('footer');
-$footnote = theme_dh_get_setting('footnote', 'format_html');
-$address  = theme_dh_get_setting('address');
-$emailid  = theme_dh_get_setting('emailid');
-$phoneno  = theme_dh_get_setting('phoneno');
-$copyrightfooter = theme_dh_get_setting('copyright_footer');
-$infolink = theme_dh_get_setting('infolink');
-$sinfo = get_string('info', 'theme_dh');
-$scontactus = get_string('contact_us', 'theme_dh');
-$sphone = get_string('phone', 'theme_dh');
-$semail = get_string('email', 'theme_dh');
-$sgetsocial = get_string('get_social', 'theme_dh');
-$infolink = theme_dh_infolink();
-
-
-$templatecontext = [
-    'sitename' => format_string($SITE->shortname, true, ['context' => context_course::instance(SITEID), "escape" => false]),
-    'output' => $OUTPUT,
-    'sidepreblocks' => $blockshtml,
-    'hasblocks' => $hasblocks,
-    'bodyattributes' => $bodyattributes,
-    'navdraweropen' => $navdraweropen,
-    'regionmainsettingsmenu' => $regionmainsettingsmenu,
-    'hasregionmainsettingsmenu' => !empty($regionmainsettingsmenu),
-    "surl" => $surl,
-    "s_searchcourses" => $ssearchcourses,
-    "s_home" => $shome,
-    "logourl" => $logourl,
-    "compare" => $compare,
-    "logourl_footer" => $logourlfooter,
-    "footnote" => $footnote,
-    "fburl" => $fburl,
-    "pinurl" => $pinurl,
-    "twurl" => $twurl,
-    "gpurl" => $gpurl,
-    "address" => $address,
-    "emailid" => $emailid,
-    "phoneno" => $phoneno,
-    "copyright_footer" => $copyrightfooter,
-    "infolink" => $infolink,
-    "s_info" => $sinfo,
-    "s_contact_us" => $scontactus,
-    "s_phone" => $sphone,
-    "s_email" => $semail,
-    "s_get_social" => $sgetsocial,
-    "customclass" => $class,
-];
-
-$templatecontext['flatnavigation'] = $PAGE->flatnav;
-$flatnavbar = $OUTPUT->render_from_template('theme_boost/nav-drawer', $templatecontext);
-$headerlayout = $OUTPUT->render_from_template('theme_dh/header', $templatecontext);
+<?php if ($shadow_effect) { ?>
+	<div class="container-fluid" style="background: #fff;"><img src="<?php echo $OUTPUT->image_url('bg/lambda-shadow', 'theme'); ?>" class="lambda-shadow" alt=""></div>
+<?php } ?>
